@@ -10,9 +10,7 @@
 #ifndef _LEX_H_
 #define _LEX_H_
 
-
 #include <stdio.h>
-
 
 void	lex_read_line( char *, int);
 void	lex_load_file( char *, unsigned int * );

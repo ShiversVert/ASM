@@ -35,6 +35,7 @@ all :
 	@echo "make release => build RELEASE version"
 	@echo "make clean   => clean everything"
 	@echo "make archive => produce an archive for the deliverable"
+	@echo ""
 
 debug   : $(OBJ_DBG)
 	$(LD) $^ $(LFLAGS) -o $(TARGET)

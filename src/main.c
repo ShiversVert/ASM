@@ -14,6 +14,8 @@
 #include <notify.h>
 #include <lex.h>
 #include <types.h>
+#include <file.h>
+#include <automate.h>
 
 /**
  * @param exec Name of executable.

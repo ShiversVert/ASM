@@ -1,6 +1,5 @@
 #include <file.h>
 
-
 File creer_file(void){
 	return(NULL);
 }

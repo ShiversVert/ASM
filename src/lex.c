@@ -17,6 +17,9 @@
 #include <global.h>
 #include <notify.h>
 #include <lex.h>
+#include <file.h>   
+#include <automate.h>
+
 /**
  * @param token The pointeur to the lexeme to be extracted.
  * @param current_line The address from which the analysis must be performed.
@@ -42,11 +45,11 @@ char* getNextToken(char** token, char* current_line) {
     end=start;
 
 
-    while (*end!='\0' && !isblank(*end) && !isspecial(end)) {
-	end++;
-    }
+    while (*end!='\0' && !isblank(*end) && !isspecial(end)) end++;
 
-    if (start == end && isspecial(start)) end++;
+
+    if (start == end && isspecial(start)) end++; /*Si le caractere est special*/
+
     /*compute size : if zero there is no more token to extract*/
     token_size=end-start;
     if (token_size>0){
@@ -72,9 +75,12 @@ char* getNextToken(char** token, char* current_line) {
 void lex_read_line( char *line, int nline) {
     char* token = NULL;
     char* current_address=line;
+    File file_lexeme = creer_file();
 
     while( (current_address= getNextToken(&token, current_address)) != NULL){
-        puts(token);
+        /*puts(token);*/
+        file_lexeme =  automate(file_lexeme, token, nline);
+
         /* TODO : faire l'analyse lexical de chaque token ici et les ajouter dans une collection*/
 
 
