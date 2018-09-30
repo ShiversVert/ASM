@@ -11,11 +11,13 @@
 #define _LEX_H_
 
 #include <stdio.h>
+#include <file.h>
 
-void	lex_read_line( char *, int);
-void	lex_load_file( char *, unsigned int * );
+File lex_read_line( char *line, int nline, File file_lexeme);
+File 	lex_load_file( char *file, unsigned int *nlines);
 char* 	getNextToken( char** , char* );
 int 	isspecial(char* c);
+int 	ishexa(char* c);
 
 #endif /* _LEX_H_ */
 

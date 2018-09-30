@@ -44,10 +44,10 @@ int main ( int argc, char *argv[] ) {
     /* WARNING_MSG : sera toujours affiche */
     WARNING_MSG("Un message WARNING_MSG !");
 
-    /* macro INFO_MSG : uniquement si compilé avec -DVERBOSE. Cf. Makefile*/
+    /* macro INFO_MSG : uniquement si compile avec -DVERBOSE. Cf. Makefile*/
     INFO_MSG("Un message INFO_MSG : Debut du programme %s", argv[0]);
 
-    /* macro DEBUG_MSG : uniquement si compilé avec -DDEBUG (ie : compilation avec make debug). Cf. Makefile */
+    /* macro DEBUG_MSG : uniquement si compile avec -DDEBUG (ie : compilation avec make debug). Cf. Makefile */
     DEBUG_MSG("Un message DEBUG_MSG !");
 
     /* La macro suivante provoquerait l'affichage du message
@@ -74,7 +74,8 @@ int main ( int argc, char *argv[] ) {
 
 
     /* ---------------- do the lexical analysis -------------------*/
-    lex_load_file( file, &nlines );
+    File file_lexeme = lex_load_file( file, &nlines );
+    afficher_file_lexeme(file_lexeme);
     
     DEBUG_MSG("source code got %d lines",nlines);
 

@@ -75,3 +75,64 @@ void liberer_file(File f){
 		defiler(f);
 	}
 }
+
+void afficher_file_lexeme(File f){
+	File dernier_elem = f;		/*On untilise une file qui pointe sur le dernier element, le premier est donc le suivant*/
+	f = f->suiv;
+	printf("###############\n\n");
+	char* category;
+	do{				/*Structure do-while permet de passer au moins une fois dans la boucle si la file ne contient qu'un element*/
+
+		switch (((LEXEME)((f->val)))->cat) {
+			case ETIQUETTE:
+				category = "ETIQUETTE";
+				break;
+			case COMMENTAIRE:
+				category = "COMMENTAIRE";
+				break;
+			case DIRECTIVE:
+				category = "DIRECTIVE";
+				break;
+			case REGISTRE:
+				category = "REGISTRE";
+				break;
+			case VIRGULE:
+				category = "VIRGULE";
+				break;
+			case CHAINE:
+				category = "CHAINE";
+				break;
+			case PARENTHESE:
+				category = "PARENTHESE";
+				break;
+			case SAUT_LIGNE:
+				category = "SAUT_LIGNE";
+				break;
+			case DECIMAL:
+				category = "DECIMAL";
+				break;
+			case HEXA:
+				category = "HEXA";
+				break;
+			case OCTAL:
+				category = "OCTAL";
+				break;
+			case SYMBOLE:
+				category = "SYMBOLE";
+				break;
+			case ERROR:
+				category = "ERROR";
+				break;
+		}
+		int line_nb = ( (LEXEME)(f->val) )->line_nb;
+		char* chain = ( (LEXEME)(f->val) )->chain;
+
+		printf("%s \t\t\t\t", category);
+		printf("%d\t\t\t", line_nb);
+		printf("%s\n", chain);
+
+		f=f->suiv;
+	}while(f!=dernier_elem);
+
+	printf("\n###############\n\n");
+}

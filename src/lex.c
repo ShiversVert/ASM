@@ -44,12 +44,15 @@ char* getNextToken(char** token, char* current_line) {
     /* go till next blank or end*/
     end=start;
 
+    if (*start!='#'){
+        while (*end!='\0' && !isblank(*end) && !isspecial(end)) end++;
 
-    while (*end!='\0' && !isblank(*end) && !isspecial(end)) end++;
-
-
-    if (start == end && isspecial(start)) end++; /*Si le caractere est special*/
-
+        if (start == end && isspecial(start)) end++; /*Si le caractere est special*/
+        if (*start == '\\') end++; /*On prend un caractère de plus si le \ sert d'echapement*/
+    }
+    else {
+        while (*end!='\0') end++;
+    }
     /*compute size : if zero there is no more token to extract*/
     token_size=end-start;
     if (token_size>0){
@@ -72,10 +75,9 @@ char* getNextToken(char** token, char* current_line) {
  * @brief This function performs lexical analysis of one standardized line.
  *
  */
-void lex_read_line( char *line, int nline) {
+File lex_read_line( char *line, int nline, File file_lexeme) {
     char* token = NULL;
     char* current_address=line;
-    File file_lexeme = creer_file();
 
     while( (current_address= getNextToken(&token, current_address)) != NULL){
         /*puts(token);*/
@@ -86,7 +88,7 @@ void lex_read_line( char *line, int nline) {
 
     }
 
-    return;
+    return file_lexeme;
 }
 
 /**
@@ -96,11 +98,10 @@ void lex_read_line( char *line, int nline) {
  * @brief This function loads an assembly code from a file into memory.
  *
  */
-void lex_load_file( char *file, unsigned int *nlines ) {
+File lex_load_file( char *file, unsigned int *nlines) {
 
     FILE        *fp   = NULL;
     char         line[STRLEN]; /* original source line */
-
 
 
     fp = fopen( file, "r" );
@@ -110,6 +111,7 @@ void lex_load_file( char *file, unsigned int *nlines ) {
     }
 
     *nlines = 0;
+    File file_lexeme = NULL;
 
     while(!feof(fp)) {
 
@@ -119,13 +121,13 @@ void lex_load_file( char *file, unsigned int *nlines ) {
             (*nlines)++;
 
             if ( 0 != strlen(line) ) {
-                lex_read_line(line,*nlines);
+                file_lexeme = lex_read_line(line,*nlines, file_lexeme);
             }
         }
     }
 
     fclose(fp);
-    return;
+    return file_lexeme;
 }
 
 /**
@@ -136,9 +138,14 @@ void lex_load_file( char *file, unsigned int *nlines ) {
  */
 
 int isspecial(char* c){
-    if(*c == ','|| *c == '('|| *c == ')'|| *c == ';') {
+    if(*c == ','|| *c == '('|| *c == ')'|| *c == ';' || *c == '\\' ) {
         /*  || *c == '\\' || *c == '\'')*/
         return(1);
     }
     return(0);
 } 
+
+int ishexa(char* c){
+    if (isdigit(c)|| *c=='a' || *c=='A' || *c=='b' || *c=='B' || *c=='c' || *c=='C' || *c=='d' || *c=='D'|| *c=='e'|| *c=='E' || *c=='f' || *c=='F') return 1;
+    return 0;
+}
