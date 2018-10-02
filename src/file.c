@@ -51,7 +51,14 @@ File enfiler(void* p, File f){						/*f = enfiler(pointeur vers l elem a enfiler
 }
 
 
-void* defiler(File f){ 					/*enleve le premier elem de la file et le renvoie*/
+/**
+ * @param file f
+ * @return Retourne un pointeur vers l'element defile
+ * @brief enleve le premier elem de la file et le renvoie
+ *
+ */
+
+void* defiler(File f){ 					
 	if (f->suiv == f){					/*si l elem est tout seul dans la file*/
 		void* p = (void*)f->val;
 		File f_temp = f;
@@ -70,69 +77,88 @@ void* defiler(File f){ 					/*enleve le premier elem de la file et le renvoie*/
 	return(p);
 }
 
+/**
+ * @param file f
+ * @return Ne retourne rien
+ * @brief libere l'espace en memoire alloue a la file
+ *
+ */
+
 void liberer_file(File f){
 	while(f!=NULL){
 		defiler(f);
 	}
 }
 
+/**
+ * @param file de lexeme
+ * @return Ne retourne rien
+ * @brief Parcours toute la file pour l'imprimer dans la console
+ *
+ */
+
 void afficher_file_lexeme(File f){
-	File dernier_elem = f;		/*On untilise une file qui pointe sur le dernier element, le premier est donc le suivant*/
-	f = f->suiv;
-	printf("###############\n\n");
-	char* category;
-	do{				/*Structure do-while permet de passer au moins une fois dans la boucle si la file ne contient qu'un element*/
+	if(f!=NULL){
+		File dernier_elem = f;		/*On utilise une file qui pointe sur le dernier element, le premier est donc le suivant*/
+		f = f->suiv;
+		printf("###############\n\n");
+		char* category;
+		do{				/*Structure do-while permet de passer au moins une fois dans la boucle si la file ne contient qu'un element*/
 
-		switch (((LEXEME)((f->val)))->cat) {
-			case ETIQUETTE:
-				category = "ETIQUETTE";
-				break;
-			case COMMENTAIRE:
-				category = "COMMENTAIRE";
-				break;
-			case DIRECTIVE:
-				category = "DIRECTIVE";
-				break;
-			case REGISTRE:
-				category = "REGISTRE";
-				break;
-			case VIRGULE:
-				category = "VIRGULE";
-				break;
-			case CHAINE:
-				category = "CHAINE";
-				break;
-			case PARENTHESE:
-				category = "PARENTHESE";
-				break;
-			case SAUT_LIGNE:
-				category = "SAUT_LIGNE";
-				break;
-			case DECIMAL:
-				category = "DECIMAL";
-				break;
-			case HEXA:
-				category = "HEXA";
-				break;
-			case OCTAL:
-				category = "OCTAL";
-				break;
-			case SYMBOLE:
-				category = "SYMBOLE";
-				break;
-			case ERROR:
-				category = "ERROR";
-				break;
-		}
-		int line_nb = ( (LEXEME)(f->val) )->line_nb;
-		char* chain = ( (LEXEME)(f->val) )->chain;
+			switch (((LEXEME)((f->val)))->cat) {
+				case ETIQUETTE:
+					category = "ETIQUETTE";
+					break;
+				case COMMENTAIRE:
+					category = "COMMENTAIRE";
+					break;
+				case DIRECTIVE:
+					category = "DIRECTIVE";
+					break;
+				case REGISTRE:
+					category = "REGISTRE";
+					break;
+				case VIRGULE:
+					category = "VIRGULE";
+					break;
+				case CHAINE:
+					category = "CHAINE\t";
+					break;
+				case PARENTHESE_G:
+					category = "PARENTHESE_G";
+					break;
+				case PARENTHESE_D:
+					category = "PARENTHESE_D";
+					break;
+				case SAUT_LIGNE:
+					category = "SAUT_LIGNE";
+					break;
+				case DECIMAL:
+					category = "DECIMAL";
+					break;
+				case HEXA:
+					category = "HEXA\t";
+					break;
+				case OCTAL:
+					category = "OCTAL";
+					break;
+				case SYMBOLE:
+					category = "SYMBOLE";
+					break;
+				case ERROR:
+					category = "ERROR\t";
+					break;
+			}
+			int line_nb = ( (LEXEME)(f->val) )->line_nb;
+			char* chain = ( (LEXEME)(f->val) )->chain;
 
-		printf("%s \t\t\t\t", category);
-		printf("%d\t\t\t", line_nb);
-		printf("%s\n", chain);
+			printf("%s \t\t", category);
+			printf("%d\t\t", line_nb);
+			printf("%s\n", chain);
 
-		f=f->suiv;
-	}while(f!=dernier_elem);
+			f=f->suiv;
+		}while(f!=dernier_elem->suiv);
 
-	printf("\n###############\n\n");
+		printf("\n###############\n\n");
+	}
 }

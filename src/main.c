@@ -74,12 +74,16 @@ int main ( int argc, char *argv[] ) {
 
 
     /* ---------------- do the lexical analysis -------------------*/
-    File file_lexeme = lex_load_file( file, &nlines );
-    afficher_file_lexeme(file_lexeme);
+    int cmpt_err = 0;
+    File file_lexeme = lex_load_file( file, &nlines, &cmpt_err);
+    if (file_lexeme!=NULL) afficher_file_lexeme(file_lexeme);
     
+    DEBUG_MSG("%d erreurs", cmpt_err);
     DEBUG_MSG("source code got %d lines",nlines);
 
     /* ---------------- Free memory and terminate -------------------*/
+
+    
 
     /* TODO free everything properly*/
 

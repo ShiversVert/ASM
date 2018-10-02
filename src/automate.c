@@ -6,40 +6,42 @@
  * Automate related definitions and prototypes
  */
 
-#include <automate.h>
+#include "automate.h"
 
 /**
  * @param File de lexemes a remplir
  * @param token courant
- * @param line_nb est le numéro de la ligne courante
+ * @param line_nb est le numero de la ligne courante
+ * @param cmpt_err est le compteur d'erreur, passe par adresse pour le modifier dans la boucle de l'automate
  * @return Retourne le file f avec le nouveau LEXEME ajoute
  * @brief 
  *
  */
 
-File automate(File f, char* token, int line_nb){
+File automate(File f, char* token, int line_nb, int* cmpt_err){
 
 	int j = 0;
 	STATE S=S_INIT ;  	/*Current state*/
-char c = token[0];
+	char c = token[0];
 	if (f == NULL) f = creer_file();
 	type_lexeme new_lexeme_cat = ERROR; /*On initialise le type du nouveau lexeme par ERROR */
 
-
+	if (c=='0') 			S=S_ZERO;			
+	else if(isdigit(c))     S=S_DECIMAL;
+	else if(c=='-')			S=S_DECIMAL;
+	else if(c==',') 		S=S_VIRGULE ;
+	else if(c=='#') 		S=S_COMMENTAIRE;								
+	else if(c=='.') 		S=S_DIRECTIVE;
+	else if(c=='$') 		S=S_REGISTRE;
+	else if(c=='(')			S=S_PARENTHESE_G;
+	else if(c==')')			S=S_PARENTHESE_D;
+	else if(c=='"') 		S=S_DOUBLEQUOTE;
+	else if(isalpha(c))		S=S_SYMBOLE; 									/*isalpha est connu*/
+	else 					S=S_ERROR;
+	
 	switch(S){
 		case S_INIT :
-
-			if (c=='0') 			S=S_ZERO;			
-			else if(isdigit(c))     S=S_DECIMAL;
-			else if(c=='-')			S=S_DECIMAL;
-			else if(c==',') 		S=S_VIRGULE ;
-			else if(c=='#') 		S=S_COMMENTAIRE;								
-			else if(isalpha(c))		S=S_SYMBOLE; 									/*isalpha est connu*/
-			else if(c=='.') 		S=S_DIRECTIVE;
-			else if(c=='$') 		S=S_REGISTRE;
-			else if(c=='('||c==')')	S=S_PARENTHESE;
-			else if(c=='"') 		S=S_DEBSTR;
-			else 					S = S_ERROR;
+			S = S_ERROR;
 			break;
 
 		case S_ZERO :
@@ -50,12 +52,12 @@ char c = token[0];
 
 			while (token[j]!='\0'){				/*On parcours tout le reste du chiffre*/
 				if (S == S_HEXA){
-					if (!ishexa(&token[j])) S=S_ERROR;
+					if (!isxdigit(token[j])) S=S_ERROR;
 				}
 
-				else{
+				else if (S!=S_ERROR){
 					if (isdigit(token[j])){
-						if (token[j]<8) S = S_OCTAL;
+						if (token[j] < '8') S = S_OCTAL;
 						else S = S_DECIMAL;
 					}
 
@@ -69,6 +71,7 @@ char c = token[0];
 		case S_DECIMAL:
 			while (token[j]!='\0'){
 				if (!isdigit(token[j])) S = S_ERROR; /*Si ce n'est pas un chiffre => Erreur*/
+				j++;
 			}
 
 			break;
@@ -77,6 +80,31 @@ char c = token[0];
 			while(token[j]!='\0') j++;
 			if (token[j] == ':') S = S_ETIQUETTE;
 			break;
+
+		case S_DOUBLEQUOTE:
+			j++;
+			while(token[j]!='\0' && token[j]!='"') j++;
+			if (token[j] != '"') S = S_ERROR;
+			break;
+
+		case S_VIRGULE  :
+			break;
+
+		case S_COMMENTAIRE :
+			break;
+
+		case S_DIRECTIVE :
+			break;
+
+		case S_REGISTRE :
+			break;
+
+		case S_PARENTHESE_G :
+			break;
+
+		case S_PARENTHESE_D :
+			break;
+
 
 
 		default : 
@@ -87,6 +115,7 @@ char c = token[0];
 	switch(S){
 		case S_ERROR:					
 			new_lexeme_cat = ERROR ;
+			(*cmpt_err)++;
 			break;
 
 		case S_INIT:					/*N'est pas cense arriver => error*/
@@ -97,8 +126,12 @@ char c = token[0];
 			new_lexeme_cat = DECIMAL;
 			break;
 
-		case S_PARENTHESE:
-			new_lexeme_cat = PARENTHESE;
+		case S_PARENTHESE_G:
+			new_lexeme_cat = PARENTHESE_G;
+			break;
+
+		case S_PARENTHESE_D:
+			new_lexeme_cat = PARENTHESE_D;
 			break;
 
 		case S_ETIQUETTE:
@@ -141,8 +174,8 @@ char c = token[0];
 			new_lexeme_cat = CHAINE;
 			break;
 
-		case S_DEBSTR:
-			new_lexeme_cat = SYMBOLE;
+		case S_DOUBLEQUOTE:
+			new_lexeme_cat = CHAINE;
 			break;
 	} 
 

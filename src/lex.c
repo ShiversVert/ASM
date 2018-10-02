@@ -17,7 +17,7 @@
 #include <global.h>
 #include <notify.h>
 #include <lex.h>
-#include <file.h>   
+#include <file.h>
 #include <automate.h>
 
 /**
@@ -44,13 +44,24 @@ char* getNextToken(char** token, char* current_line) {
     /* go till next blank or end*/
     end=start;
 
-    if (*start!='#'){
+    if ((*start!='#') && (*start!='"')){
         while (*end!='\0' && !isblank(*end) && !isspecial(end)) end++;
 
         if (start == end && isspecial(start)) end++; /*Si le caractere est special*/
-        if (*start == '\\') end++; /*On prend un caractère de plus si le \ sert d'echapement*/
+        if (*start == '\\') end++; /*On prend un caractere de plus si le \ sert d'echapement*/
     }
-    else {
+
+    else if (*start=='"'){
+    	if(*(end+1)!='#') end++;
+
+        while (*end!='"' && *end!='\0' && *end!='#'){
+    		if(*end =='\\'){end++;}
+    		end++;
+    	}
+        if(*end!='#') end++;    
+    }
+
+    else if (*start=='#'){
         while (*end!='\0') end++;
     }
     /*compute size : if zero there is no more token to extract*/
@@ -71,21 +82,18 @@ char* getNextToken(char** token, char* current_line) {
 /**
  * @param line String of the line of source code to be analysed.
  * @param nline the line number in the source code.
+ * @param cmpt_err est le compteur d'erreur, passe par adresse pour le modifier dans la boucle de l'automate
  * @return should return the collection of lexemes that represent the input line of source code.
  * @brief This function performs lexical analysis of one standardized line.
  *
  */
-File lex_read_line( char *line, int nline, File file_lexeme) {
+File lex_read_line( char *line, int nline, File file_lexeme, int* cmpt_err) {
     char* token = NULL;
     char* current_address=line;
 
     while( (current_address= getNextToken(&token, current_address)) != NULL){
-        /*puts(token);*/
-        file_lexeme =  automate(file_lexeme, token, nline);
-
-        /* TODO : faire l'analyse lexical de chaque token ici et les ajouter dans une collection*/
-
-
+	   DEBUG_MSG("%s\n", token);
+        file_lexeme =  automate(file_lexeme, token, nline, cmpt_err);
     }
 
     return file_lexeme;
@@ -95,10 +103,11 @@ File lex_read_line( char *line, int nline, File file_lexeme) {
  * @param file Assembly source code file name.
  * @param nlines Pointer to the number of lines in the file.
  * @return should return the collection of lexemes
+ * @param cmpt_err est le compteur d'erreur, passe par adresse pour le modifier dans la boucle de l'automate
  * @brief This function loads an assembly code from a file into memory.
  *
  */
-File lex_load_file( char *file, unsigned int *nlines) {
+File lex_load_file( char *file, unsigned int *nlines, int* cmpt_err) {
 
     FILE        *fp   = NULL;
     char         line[STRLEN]; /* original source line */
@@ -117,11 +126,11 @@ File lex_load_file( char *file, unsigned int *nlines) {
 
         /*read source code line-by-line */
         if ( NULL != fgets( line, STRLEN-1, fp ) ) {
-            line[strlen(line)-1] = '\0';  /* eat final '\n' */
+            if(line[strlen(line)-1] == '\n') line[strlen(line)-1] = '\0';  /* eat final '\n'  */
             (*nlines)++;
 
             if ( 0 != strlen(line) ) {
-                file_lexeme = lex_read_line(line,*nlines, file_lexeme);
+                file_lexeme = lex_read_line(line,*nlines, file_lexeme, cmpt_err);
             }
         }
     }
@@ -132,8 +141,8 @@ File lex_load_file( char *file, unsigned int *nlines) {
 
 /**
  * @param Charactere c
- * @return Retourne 1 si le carctère est "special", 0 sinon
- * @brief Retourne 1 si le carctère est "special" : , () , 0 sinon
+ * @return Retourne 1 si le carctere est "special", 0 sinon
+ * @brief Retourne 1 si le carctere est "special" : , () , 0 sinon
  *
  */
 
