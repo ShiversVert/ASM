@@ -14,7 +14,7 @@
  * @param line_nb est le numero de la ligne courante
  * @param cmpt_err est le compteur d'erreur, passe par adresse pour le modifier dans la boucle de l'automate
  * @return Retourne le file f avec le nouveau LEXEME ajoute
- * @brief 
+ * @brief
  *
  */
 
@@ -26,11 +26,11 @@ File automate(File f, char* token, int line_nb, int* cmpt_err){
 	if (f == NULL) f = creer_file();
 	type_lexeme new_lexeme_cat = ERROR; /*On initialise le type du nouveau lexeme par ERROR */
 
-	if (c=='0') 			S=S_ZERO;			
+	if (c=='0') 			S=S_ZERO;
 	else if(isdigit(c))     S=S_DECIMAL;
 	else if(c=='-')			S=S_DECIMAL;
 	else if(c==',') 		S=S_VIRGULE ;
-	else if(c=='#') 		S=S_COMMENTAIRE;								
+	else if(c=='#') 		S=S_COMMENTAIRE;
 	else if(c=='.') 		S=S_DIRECTIVE;
 	else if(c=='$') 		S=S_REGISTRE;
 	else if(c=='(')			S=S_PARENTHESE_G;
@@ -38,7 +38,7 @@ File automate(File f, char* token, int line_nb, int* cmpt_err){
 	else if(c=='"') 		S=S_DOUBLEQUOTE;
 	else if(isalpha(c))		S=S_SYMBOLE; 									/*isalpha est connu*/
 	else 					S=S_ERROR;
-	
+
 	switch(S){
 		case S_INIT :
 			S = S_ERROR;
@@ -47,6 +47,7 @@ File automate(File f, char* token, int line_nb, int* cmpt_err){
 		case S_ZERO :
 			if (token[j+1] == 'x' || token[j+1] == 'X'){
 				S = S_HEXA;
+				j++;
 				j++;
 			}
 
@@ -62,7 +63,7 @@ File automate(File f, char* token, int line_nb, int* cmpt_err){
 					}
 
 					else S = S_ERROR;
-				} 
+				}
 				j++;
 			}
 
@@ -70,6 +71,7 @@ File automate(File f, char* token, int line_nb, int* cmpt_err){
 
 		case S_DECIMAL:
 			while (token[j]!='\0'){
+				j++;
 				if (!isdigit(token[j])) S = S_ERROR; /*Si ce n'est pas un chiffre => Erreur*/
 				j++;
 			}
@@ -107,13 +109,13 @@ File automate(File f, char* token, int line_nb, int* cmpt_err){
 
 
 
-		default : 
+		default :
 			S=S_ERROR;
 
 	}
 
 	switch(S){
-		case S_ERROR:					
+		case S_ERROR:
 			new_lexeme_cat = ERROR ;
 			(*cmpt_err)++;
 			break;
@@ -177,18 +179,15 @@ File automate(File f, char* token, int line_nb, int* cmpt_err){
 		case S_DOUBLEQUOTE:
 			new_lexeme_cat = CHAINE;
 			break;
-	} 
+	}
 
 
 	LEXEME new_lexeme = calloc(1,sizeof(*new_lexeme));
-	
-	new_lexeme->cat = new_lexeme_cat;	
+
+	new_lexeme->cat = new_lexeme_cat;
 	new_lexeme->line_nb = line_nb;
 	new_lexeme->chain = token;
 
 	f = enfiler(new_lexeme, f);
 	return(f);
 }
-
-
-

@@ -58,7 +58,7 @@ File enfiler(void* p, File f){						/*f = enfiler(pointeur vers l elem a enfiler
  *
  */
 
-void* defiler(File f){ 					
+void* defiler(File f){
 	if (f->suiv == f){					/*si l elem est tout seul dans la file*/
 		void* p = (void*)f->val;
 		File f_temp = f;
@@ -140,7 +140,7 @@ void afficher_file_lexeme(File f){
 					category = "HEXA\t";
 					break;
 				case OCTAL:
-					category = "OCTAL";
+					category = "OCTAL\t";
 					break;
 				case SYMBOLE:
 					category = "SYMBOLE";

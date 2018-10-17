@@ -1,5 +1,7 @@
+0x18
 %
 0a "test_quotes \" ! "
+-200
 024z
 1248
 0124
@@ -12,10 +14,8 @@ $az(
 $31
 .a7
 .azertyu
-.set 
+.set
 #sebfbsjwfbjsd
 ,():-+ "pouet \"uisdfnksdknf\" " #Cette ligne ne fonctionne pas
 \t \f
 é 异 ÿ Ø ` DEL
-
-
