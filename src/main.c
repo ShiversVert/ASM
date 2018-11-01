@@ -42,13 +42,13 @@ int main ( int argc, char *argv[] ) {
 
     /* exemples d'utilisation des macros du fichier notify.h */
     /* WARNING_MSG : sera toujours affiche */
-    WARNING_MSG("Un message WARNING_MSG !");
+    /*WARNING_MSG("Un message WARNING_MSG !");*/
 
     /* macro INFO_MSG : uniquement si compile avec -DVERBOSE. Cf. Makefile*/
-    INFO_MSG("Un message INFO_MSG : Debut du programme %s", argv[0]);
+    /*INFO_MSG("Un message INFO_MSG : Debut du programme %s", argv[0]);*/
 
     /* macro DEBUG_MSG : uniquement si compile avec -DDEBUG (ie : compilation avec make debug). Cf. Makefile */
-    DEBUG_MSG("Un message DEBUG_MSG !");
+    /*DEBUG_MSG("Un message DEBUG_MSG !");*/
 
     /* La macro suivante provoquerait l'affichage du message
        puis la sortie du programme avec un code erreur non nul (EXIT_FAILURE) */
@@ -78,12 +78,17 @@ int main ( int argc, char *argv[] ) {
     File file_lexeme = lex_load_file( file, &nlines, &cmpt_err);
     if (file_lexeme!=NULL) afficher_file_lexeme(file_lexeme);
     
-    DEBUG_MSG("%d erreurs", cmpt_err);
+    if(cmpt_err>0){
+        WARNING_MSG("%d erreurs\n detectee", cmpt_err);
+        ERROR_MSG("Erreur(s) lexicale detectee(s), terminaison du programme.\n");
+        exit( EXIT_FAILURE );
+    }
+
     DEBUG_MSG("source code got %d lines",nlines);
 
     /* ---------------- Free memory and terminate -------------------*/
 
-    
+    liberer_file(file_lexeme);
 
     /* TODO free everything properly*/
 

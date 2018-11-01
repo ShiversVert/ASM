@@ -16,9 +16,24 @@
 #include <ctype.h>
 #include <global.h>
 
-typedef enum{S_ERROR, S_INIT , S_ZERO, S_PARENTHESE_G, S_PARENTHESE_D, S_ETIQUETTE, S_DIRECTIVE, S_SYMBOLE, S_REGISTRE, S_COMMENTAIRE, S_VIRGULE, S_HEXA, S_DECIMAL, S_OCTAL, S_CHAINE, S_DOUBLEQUOTE} STATE;
+typedef enum{	S_ERROR,
+				S_INIT, 
+				S_ZERO, 
+				S_PARENTHESE_G,
+				S_PARENTHESE_D, 
+				S_ETIQUETTE, 
+				S_DIRECTIVE, 
+				S_SYMBOLE, 
+				S_REGISTRE, 
+				S_COMMENTAIRE, 
+				S_VIRGULE, 
+				S_HEXA, 
+				S_DECIMAL, 
+				S_OCTAL, 
+				S_CHAINE, 
+				S_DOUBLEQUOTE} STATE;
 
-File automate(File f, char* token, int line_nb, int* cmpt_err);
+File automate_lexical(File f, char* token, int line_nb, int* cmpt_err);
 
 
 

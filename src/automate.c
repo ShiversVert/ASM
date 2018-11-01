@@ -18,7 +18,7 @@
  *
  */
 
-File automate(File f, char* token, int line_nb, int* cmpt_err){
+File automate_lexical(File f, char* token, int line_nb, int* cmpt_err){
 
 	int j = 0;
 	STATE S=S_INIT ;  	/*Current state*/
@@ -70,12 +70,13 @@ File automate(File f, char* token, int line_nb, int* cmpt_err){
 			break;
 
 		case S_DECIMAL:
-			while (token[j]!='\0'){
-				j++;
-				if (!isdigit(token[j])) S = S_ERROR; /*Si ce n'est pas un chiffre => Erreur*/
-				j++;
+			if (token[j+1]!='\0'){ /*Si le decimal ne contient pas que un chiffre*/
+				while (token[j]!='\0'){
+					j++;
+					if (!isdigit(token[j])) S = S_ERROR; /*Si ce n'est pas un chiffre => Erreur*/
+					j++;
+				}
 			}
-
 			break;
 
 		case S_SYMBOLE:

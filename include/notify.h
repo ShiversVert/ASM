@@ -67,7 +67,6 @@ extern "C" {
 	     __FILE__, __FUNCTION__, __LINE__ );			\
     SET_COLORS(FOR_ERRORS, ON(stderr));					\
     fprintf( stderr, __VA_ARGS__ );					\
-    fprintf( stderr, ".\n" );						\
     RESET_COLORS(ON(stderr));						\
     exit( EXIT_FAILURE );						\
 } while( 0 )
@@ -78,7 +77,6 @@ extern "C" {
 	     __FILE__, __FUNCTION__, __LINE__ );			\
     SET_COLORS(FOR_WARNINGS, ON(stderr));				\
     fprintf( stderr, __VA_ARGS__ );					\
-    fprintf( stderr, ".\n" );						\
     RESET_COLORS(ON(stderr));						\
 } while( 0 )
 
@@ -89,7 +87,6 @@ extern "C" {
 	     __FILE__, __FUNCTION__, __LINE__ );			\
     SET_COLORS(FOR_INFOS, ON(stderr));					\
     fprintf( stderr, __VA_ARGS__ );					\
-    fprintf( stderr, ".\n" );						\
     RESET_COLORS(ON(stderr));						\
 } while( 0 )
 #else

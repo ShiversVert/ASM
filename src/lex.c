@@ -82,7 +82,7 @@ char* getNextToken(char** token, char* current_line) {
 /**
  * @param line String of the line of source code to be analysed.
  * @param nline the line number in the source code.
- * @param cmpt_err est le compteur d'erreur, passe par adresse pour le modifier dans la boucle de l'automate
+ * @param cmpt_err est le compteur d'erreur, passe par adresse pour le modifier dans la boucle de l'automate_lexical
  * @return should return the collection of lexemes that represent the input line of source code.
  * @brief This function performs lexical analysis of one standardized line.
  *
@@ -92,8 +92,8 @@ File lex_read_line( char *line, int nline, File file_lexeme, int* cmpt_err) {
     char* current_address=line;
 
     while( (current_address= getNextToken(&token, current_address)) != NULL){
-	   DEBUG_MSG("%s\n", token);
-        file_lexeme =  automate(file_lexeme, token, nline, cmpt_err);
+        /*DEBUG_MSG("%s\n", token);*/
+        file_lexeme =  automate_lexical(file_lexeme, token, nline, cmpt_err);
     }
 
     return file_lexeme;
@@ -103,7 +103,7 @@ File lex_read_line( char *line, int nline, File file_lexeme, int* cmpt_err) {
  * @param file Assembly source code file name.
  * @param nlines Pointer to the number of lines in the file.
  * @return should return the collection of lexemes
- * @param cmpt_err est le compteur d'erreur, passe par adresse pour le modifier dans la boucle de l'automate
+ * @param cmpt_err est le compteur d'erreur, passe par adresse pour le modifier dans la boucle de l'automate_lexical
  * @brief This function loads an assembly code from a file into memory.
  *
  */

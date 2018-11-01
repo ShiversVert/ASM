@@ -58,25 +58,26 @@ File enfiler(void* p, File f){						/*f = enfiler(pointeur vers l elem a enfiler
  *
  */
 
-void* defiler(File f){
-	if (f->suiv == f){					/*si l elem est tout seul dans la file*/
-		void* p = (void*)f->val;
-		File f_temp = f;
+void* defiler(File* f){
+	if ((*f)->suiv == (*f)){			/*si l elem est tout seul dans la file*/
+		void* p = (*f)->val;
+		File f_temp = *f;
 
 		free(f_temp);
-		f = creer_file();
+		*f = creer_file();
 		return(p);
 	}
-										/*Sinon*/
-	File f_premier = f->suiv; 			/*On recupere le premier elem de la file*/
 
-	void* p = (void*) f_premier->val;			/*On recupere l element du maillon qui va etre supprime*/
-	f->suiv = f_premier->suiv; 			/*On fait le nouveau branchement*/
+	/*Sinon*/
+
+	File f_premier = (*f)->suiv;		/*On recupere le premier elem de la file*/
+	
+	void* p = f_premier->val;			/*On recupere l element du maillon qui va etre supprime*/
+	(*f)->suiv = f_premier->suiv;	/*On fait le nouveau branchement*/
 	free(f_premier);					/*On libere le premier qui n est plus utilise*/
-
+	
 	return(p);
 }
-
 /**
  * @param file f
  * @return Ne retourne rien
@@ -86,7 +87,7 @@ void* defiler(File f){
 
 void liberer_file(File f){
 	while(f!=NULL){
-		defiler(f);
+		defiler(&f);
 	}
 }
 
@@ -104,6 +105,8 @@ void afficher_file_lexeme(File f){
 		printf("###############\n\n");
 		char* category;
 		do{				/*Structure do-while permet de passer au moins une fois dans la boucle si la file ne contient qu'un element*/
+			int line_nb = ( (LEXEME)(f->val) )->line_nb;
+			char* chain = ( (LEXEME)(f->val) )->chain;
 
 			switch (((LEXEME)((f->val)))->cat) {
 				case ETIQUETTE:
@@ -147,14 +150,15 @@ void afficher_file_lexeme(File f){
 					break;
 				case ERROR:
 					category = "ERROR\t";
+					WARNING_MSG("%s \t\t%d\t\t%s\n", category, line_nb, chain);
 					break;
 			}
-			int line_nb = ( (LEXEME)(f->val) )->line_nb;
-			char* chain = ( (LEXEME)(f->val) )->chain;
-
-			printf("%s \t\t", category);
-			printf("%d\t\t", line_nb);
-			printf("%s\n", chain);
+			
+			if(((LEXEME)((f->val)))->cat != ERROR) {
+				printf("%s \t\t", category);
+				printf("%d\t\t", line_nb);
+				printf("%s\n", chain);
+			}
 
 			f=f->suiv;
 		}while(f!=dernier_elem->suiv);
