@@ -11,8 +11,11 @@ On cherche a creer un compilateur assembleur MIPS en c. Pour cela, le travail es
 
 # Utilisation
 L'utilisation du fichier se fait de la manière suivante :
+	
 	1) Compilation du code grâce à la commande "make release" à la racine du dossier
+	
 	2) Appel de l'executaable "as-mips" avec omme argument le chemin du fichier à compiler
+	
 	3) Observer
 	
 	4) (Optionnel) Générer la documentation grace à "make docu" si vous possez les packets Doxygen

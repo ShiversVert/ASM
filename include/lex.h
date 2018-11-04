@@ -11,7 +11,8 @@
 #define _LEX_H_
 
 #include <stdio.h>
-#include <file.h>
+
+#include <types.h>
 
 File 	lex_read_line( char *line, int nline, File file_lexeme, int* cmpt_err);
 File 	lex_load_file( char *file, unsigned int *nlines, int* cmpt_err);

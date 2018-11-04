@@ -19,6 +19,7 @@ lunchtime:
     .word 12
     .word menu
     .asciiz "ils disent : \"au ru!\""
+    
 .bss 
 menu:
     .space 24

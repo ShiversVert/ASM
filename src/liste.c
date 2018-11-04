@@ -8,14 +8,14 @@ int liste_vide(Liste L){
 	return(!L);
 }
 
-/*
-void visualiser(Liste L){
+
+void afficher_liste(Liste L, void (*afficher_maillon)(void*)){
 	while(L!=NULL){
-		affiche(&(L->val));
+		(*afficher_maillon)(L->val);
 		L = L->suiv;
 	}
 }
-*/
+
 
 Liste ajout_tete(void* p, Liste L){
 	Liste new_maillon = calloc(1, sizeof(*new_maillon));

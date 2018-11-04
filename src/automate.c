@@ -81,7 +81,7 @@ File automate_lexical(File f, char* token, int line_nb, int* cmpt_err){
 
 		case S_SYMBOLE:
 			while(token[j]!='\0') j++;
-			if (token[j] == ':') S = S_ETIQUETTE;
+			if (token[j-1] == ':') S = S_ETIQUETTE;
 			break;
 
 		case S_DOUBLEQUOTE:

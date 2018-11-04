@@ -8,26 +8,6 @@ int file_vide(File f){
 	return(!f);
 }
 
-/*
-void visualiser_file(File f){
-	if (file_vide(f)){
-		printf("File VIde\n");
-	}
-
-	else{
-		File f_init = f;
-		f = f->suiv;
-		while(f!=f_init){
-			affiche(&f->val);
-			printf("\n");
-			f = f->suiv;
-		}
-		affiche(&f_init->val);
-		printf("\n");
-	}
-} */
-
-
 /*@param p pointeur sur l element a enfiler
  *@param f file a laquelle on doit rajouter l element *p
  *@return retourne la nouvelle file
@@ -92,77 +72,29 @@ void liberer_file(File f){
 }
 
 /**
- * @param file de lexeme
+ * @param file a afficher
+ * @param fonction d'affichage d'un maillon
  * @return Ne retourne rien
  * @brief Parcours toute la file pour l'imprimer dans la console
  *
  */
 
-void afficher_file_lexeme(File f){
-	if(f!=NULL){
-		File dernier_elem = f;		/*On utilise une file qui pointe sur le dernier element, le premier est donc le suivant*/
+void afficher_file(File f, void (*afficher_maillon)(void*) ){
+	if (f==NULL){
+		printf("File Vide\n");
+	}
+
+	else{
+		File dernier_elem = f;
 		f = f->suiv;
 		printf("###############\n\n");
-		char* category;
-		do{				/*Structure do-while permet de passer au moins une fois dans la boucle si la file ne contient qu'un element*/
-			int line_nb = ( (LEXEME)(f->val) )->line_nb;
-			char* chain = ( (LEXEME)(f->val) )->chain;
-
-			switch (((LEXEME)((f->val)))->cat) {
-				case ETIQUETTE:
-					category = "ETIQUETTE";
-					break;
-				case COMMENTAIRE:
-					category = "COMMENTAIRE";
-					break;
-				case DIRECTIVE:
-					category = "DIRECTIVE";
-					break;
-				case REGISTRE:
-					category = "REGISTRE";
-					break;
-				case VIRGULE:
-					category = "VIRGULE";
-					break;
-				case CHAINE:
-					category = "CHAINE\t";
-					break;
-				case PARENTHESE_G:
-					category = "PARENTHESE_G";
-					break;
-				case PARENTHESE_D:
-					category = "PARENTHESE_D";
-					break;
-				case SAUT_LIGNE:
-					category = "SAUT_LIGNE";
-					break;
-				case DECIMAL:
-					category = "DECIMAL";
-					break;
-				case HEXA:
-					category = "HEXA\t";
-					break;
-				case OCTAL:
-					category = "OCTAL\t";
-					break;
-				case SYMBOLE:
-					category = "SYMBOLE";
-					break;
-				case ERROR:
-					category = "ERROR\t";
-					WARNING_MSG("%s \t\t%d\t\t%s\n", category, line_nb, chain);
-					break;
-			}
-			
-			if(((LEXEME)((f->val)))->cat != ERROR) {
-				printf("%s \t\t", category);
-				printf("%d\t\t", line_nb);
-				printf("%s\n", chain);
-			}
-
-			f=f->suiv;
+		
+		do{
+			(*afficher_maillon)(f->val);
+			f = f->suiv;
 		}while(f!=dernier_elem->suiv);
-
-		printf("\n###############\n\n");
+		
+		printf("###############\n\n");
 	}
 }
+

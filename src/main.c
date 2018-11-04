@@ -1,4 +1,3 @@
-
 /**
  * @file main.c
  * @author François Portet <francois.portet@imag.fr> from François Cayre
@@ -9,13 +8,15 @@
 #include <unistd.h>
 #include <string.h>
 
-
 #include <global.h>
 #include <notify.h>
 #include <lex.h>
 #include <types.h>
+#include <liste.h>
 #include <file.h>
+#include <fct_affichage.h>
 #include <automate.h>
+#include <automate_gramm.h>
 
 /**
  * @param exec Name of executable.
@@ -55,14 +56,14 @@ int main ( int argc, char *argv[] ) {
     /* ERROR_MSG("Erreur. Arret du programme"); */
 
 
-    if ( argc <2 ) {
+    if ( argc <2 ) {/*
         INFO_MSG("Vous ne savez pas utiliser le programme...")
         print_usage(argv[0]);
-        exit( EXIT_FAILURE );
+        exit( EXIT_FAILURE );*/
+        file = "./tests/miam_sujet.s";
     }
 
-
-    file = argv[argc-1];
+    else file = argv[argc-1];
 
 
     if ( NULL == file ) {
@@ -73,10 +74,10 @@ int main ( int argc, char *argv[] ) {
 
 
 
-    /* ---------------- do the lexical analysis -------------------*/
+    /* ---------------- Do the lexical analysis ---------------------*/
     int cmpt_err = 0;
-    File file_lexeme = lex_load_file( file, &nlines, &cmpt_err);
-    if (file_lexeme!=NULL) afficher_file_lexeme(file_lexeme);
+    File file_Lexeme = lex_load_file( file, &nlines, &cmpt_err);
+    if (file_Lexeme!=NULL) afficher_file(file_Lexeme, (*afficher_maillon_LEXEME));
     
     if(cmpt_err>0){
         WARNING_MSG("%d erreurs\n detectee", cmpt_err);
@@ -84,11 +85,27 @@ int main ( int argc, char *argv[] ) {
         exit( EXIT_FAILURE );
     }
 
-    DEBUG_MSG("source code got %d lines",nlines);
+    /* ---------------- Do the grammatical analysis -----------------*/
+    DEBUG_MSG("\n\n###############################\nDEBUT DE L'ANALYSE GRAMMATICALE\n###############################\n\n");
+
+    File file_Text = NULL;
+    File file_Bss = NULL;
+    File file_Data = NULL;
+    File file_Symb = NULL;
+
+    automate_grammatical(&file_Lexeme, &file_Text, &file_Bss, &file_Data, &file_Symb);
+
+    
+    printf("\n\n######### file_Lexeme ##########\n\n");afficher_file(file_Lexeme, (*afficher_maillon_LEXEME));
+    printf("\n\n######### file_Text ##########\n\n");afficher_file(file_Text, (*afficher_maillon_TEXT));
+    printf("\n\n######### file_Data ##########\n\n");afficher_file(file_Data, (*afficher_maillon_DATA));
+    printf("\n\n######### file_Bss ##########\n\n");afficher_file(file_Bss, (*afficher_maillon_DATA));
+    printf("\n\n######### file_Symb ##########\n\n");afficher_file(file_Symb, (*afficher_maillon_SYMB));
+    
 
     /* ---------------- Free memory and terminate -------------------*/
 
-    liberer_file(file_lexeme);
+    
 
     /* TODO free everything properly*/
 
