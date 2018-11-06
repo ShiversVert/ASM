@@ -1,0 +1,132 @@
+\hypertarget{automate__gramm_8c}{\section{/home/phelma/\-Bureau/projet\-\_\-sicom/src/automate\-\_\-gramm.c File Reference}
+\label{automate__gramm_8c}\index{/home/phelma/\-Bureau/projet\-\_\-sicom/src/automate\-\_\-gramm.\-c@{/home/phelma/\-Bureau/projet\-\_\-sicom/src/automate\-\_\-gramm.\-c}}
+}
+{\ttfamily \#include $<$automate\-\_\-gramm.\-h$>$}\\*
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \hyperlink{automate__gramm_8c_a93364c69474bf2de0b8a6ecb7724a2d6}{automate\-\_\-grammatical} (\hyperlink{file_8h_ab04aa57a6150b637aa20235ca023731e}{File} $\ast$p\-\_\-file\-\_\-\-Lexeme, \hyperlink{file_8h_ab04aa57a6150b637aa20235ca023731e}{File} $\ast$p\-\_\-file\-\_\-\-Text, \hyperlink{file_8h_ab04aa57a6150b637aa20235ca023731e}{File} $\ast$p\-\_\-file\-\_\-\-Bss, \hyperlink{file_8h_ab04aa57a6150b637aa20235ca023731e}{File} $\ast$p\-\_\-file\-\_\-\-Data, \hyperlink{file_8h_ab04aa57a6150b637aa20235ca023731e}{File} $\ast$p\-\_\-file\-\_\-\-Symb)
+\item 
+int \hyperlink{automate__gramm_8c_a73a40d7c75f64544d71790e1d65452c9}{analyse\-\_\-gramm1} (\hyperlink{file_8h_ab04aa57a6150b637aa20235ca023731e}{File} $\ast$p\-\_\-file\-\_\-\-Lexeme, \hyperlink{types_8h_a6ca35c736942240224df7734d00322aa}{S\-T\-A\-T\-E\-\_\-\-G\-R\-A\-M\-M} $\ast$S, \hyperlink{types_8h_aa6d0381b47e7652e2730a406d421e67b}{L\-E\-X\-E\-M\-E} lexeme\-\_\-courant)
+\item 
+void \hyperlink{automate__gramm_8c_a4c743a82572284efadf7701d8e5757e4}{get\-\_\-current\-\_\-\-Lexeme} (\hyperlink{file_8h_ab04aa57a6150b637aa20235ca023731e}{File} $\ast$p\-\_\-file\-\_\-\-Lexeme, \hyperlink{types_8h_aa6d0381b47e7652e2730a406d421e67b}{L\-E\-X\-E\-M\-E} $\ast$p\-\_\-lexeme\-\_\-courant)
+\item 
+int \hyperlink{automate__gramm_8c_a38130bc7bb0bd10667dff7fe6243d38a}{ajout\-\_\-maillon\-\_\-data} (\hyperlink{file_8h_ab04aa57a6150b637aa20235ca023731e}{File} $\ast$p\-\_\-file\-\_\-\-Data, \hyperlink{file_8h_ab04aa57a6150b637aa20235ca023731e}{File} $\ast$p\-\_\-file\-\_\-\-Lexeme, \hyperlink{types_8h_aa6d0381b47e7652e2730a406d421e67b}{L\-E\-X\-E\-M\-E} lexeme\-\_\-courant, \hyperlink{file_8h_ab04aa57a6150b637aa20235ca023731e}{File} $\ast$p\-\_\-file\-\_\-\-Symb)
+\item 
+int \hyperlink{automate__gramm_8c_a933a3428e0b0dcd98963887aec16434c}{ajout\-\_\-maillon\-\_\-bss} (\hyperlink{file_8h_ab04aa57a6150b637aa20235ca023731e}{File} $\ast$p\-\_\-file\-\_\-\-Bss, \hyperlink{file_8h_ab04aa57a6150b637aa20235ca023731e}{File} $\ast$p\-\_\-file\-\_\-\-Lexeme, \hyperlink{types_8h_aa6d0381b47e7652e2730a406d421e67b}{L\-E\-X\-E\-M\-E} lexeme\-\_\-courant, \hyperlink{file_8h_ab04aa57a6150b637aa20235ca023731e}{File} $\ast$p\-\_\-file\-\_\-\-Symb)
+\item 
+int \hyperlink{automate__gramm_8c_afdfc20e5b9d207c9a118825451ae604c}{ajout\-\_\-maillon\-\_\-text} (\hyperlink{file_8h_ab04aa57a6150b637aa20235ca023731e}{File} $\ast$p\-\_\-file\-\_\-\-Text, \hyperlink{file_8h_ab04aa57a6150b637aa20235ca023731e}{File} $\ast$p\-\_\-file\-\_\-\-Lexeme, \hyperlink{types_8h_aa6d0381b47e7652e2730a406d421e67b}{L\-E\-X\-E\-M\-E} lexeme\-\_\-courant, \hyperlink{file_8h_ab04aa57a6150b637aa20235ca023731e}{File} $\ast$p\-\_\-file\-\_\-\-Symb)
+\item 
+void \hyperlink{automate__gramm_8c_aa41c30f68b00266e82b1245f54c8a7ab}{calcul\-\_\-decalage\-\_\-\-Data} (\hyperlink{file_8h_ab04aa57a6150b637aa20235ca023731e}{File} $\ast$p\-\_\-file\-\_\-\-Data, \hyperlink{types_8h_a4732e8f80c01befafc1a67cd56593c33}{D\-A\-T\-A} $\ast$p\-\_\-new\-\_\-maillon)
+\item 
+void \hyperlink{automate__gramm_8c_a379e53c68627f0e898c230bf595fc98e}{calcul\-\_\-decalage\-\_\-\-Bss} (\hyperlink{file_8h_ab04aa57a6150b637aa20235ca023731e}{File} $\ast$p\-\_\-file\-\_\-\-Bss, \hyperlink{types_8h_afd7550571ea818ee6414511dffa22966}{B\-S\-S} $\ast$p\-\_\-new\-\_\-maillon)
+\end{DoxyCompactItemize}
+
+
+\subsection{Function Documentation}
+\hypertarget{automate__gramm_8c_a933a3428e0b0dcd98963887aec16434c}{\index{automate\-\_\-gramm.\-c@{automate\-\_\-gramm.\-c}!ajout\-\_\-maillon\-\_\-bss@{ajout\-\_\-maillon\-\_\-bss}}
+\index{ajout\-\_\-maillon\-\_\-bss@{ajout\-\_\-maillon\-\_\-bss}!automate_gramm.c@{automate\-\_\-gramm.\-c}}
+\subsubsection[{ajout\-\_\-maillon\-\_\-bss}]{\setlength{\rightskip}{0pt plus 5cm}int ajout\-\_\-maillon\-\_\-bss (
+\begin{DoxyParamCaption}
+\item[{{\bf File} $\ast$}]{p\-\_\-file\-\_\-\-Bss, }
+\item[{{\bf File} $\ast$}]{p\-\_\-file\-\_\-\-Lexeme, }
+\item[{{\bf L\-E\-X\-E\-M\-E}}]{lexeme\-\_\-courant, }
+\item[{{\bf File} $\ast$}]{p\-\_\-file\-\_\-\-Symb}
+\end{DoxyParamCaption}
+)}}\label{automate__gramm_8c_a933a3428e0b0dcd98963887aec16434c}
+
+
+Definition at line 234 of file automate\-\_\-gramm.\-c.
+
+\hypertarget{automate__gramm_8c_a38130bc7bb0bd10667dff7fe6243d38a}{\index{automate\-\_\-gramm.\-c@{automate\-\_\-gramm.\-c}!ajout\-\_\-maillon\-\_\-data@{ajout\-\_\-maillon\-\_\-data}}
+\index{ajout\-\_\-maillon\-\_\-data@{ajout\-\_\-maillon\-\_\-data}!automate_gramm.c@{automate\-\_\-gramm.\-c}}
+\subsubsection[{ajout\-\_\-maillon\-\_\-data}]{\setlength{\rightskip}{0pt plus 5cm}int ajout\-\_\-maillon\-\_\-data (
+\begin{DoxyParamCaption}
+\item[{{\bf File} $\ast$}]{p\-\_\-file\-\_\-\-Data, }
+\item[{{\bf File} $\ast$}]{p\-\_\-file\-\_\-\-Lexeme, }
+\item[{{\bf L\-E\-X\-E\-M\-E}}]{lexeme\-\_\-courant, }
+\item[{{\bf File} $\ast$}]{p\-\_\-file\-\_\-\-Symb}
+\end{DoxyParamCaption}
+)}}\label{automate__gramm_8c_a38130bc7bb0bd10667dff7fe6243d38a}
+
+
+Definition at line 130 of file automate\-\_\-gramm.\-c.
+
+\hypertarget{automate__gramm_8c_afdfc20e5b9d207c9a118825451ae604c}{\index{automate\-\_\-gramm.\-c@{automate\-\_\-gramm.\-c}!ajout\-\_\-maillon\-\_\-text@{ajout\-\_\-maillon\-\_\-text}}
+\index{ajout\-\_\-maillon\-\_\-text@{ajout\-\_\-maillon\-\_\-text}!automate_gramm.c@{automate\-\_\-gramm.\-c}}
+\subsubsection[{ajout\-\_\-maillon\-\_\-text}]{\setlength{\rightskip}{0pt plus 5cm}int ajout\-\_\-maillon\-\_\-text (
+\begin{DoxyParamCaption}
+\item[{{\bf File} $\ast$}]{p\-\_\-file\-\_\-\-Text, }
+\item[{{\bf File} $\ast$}]{p\-\_\-file\-\_\-\-Lexeme, }
+\item[{{\bf L\-E\-X\-E\-M\-E}}]{lexeme\-\_\-courant, }
+\item[{{\bf File} $\ast$}]{p\-\_\-file\-\_\-\-Symb}
+\end{DoxyParamCaption}
+)}}\label{automate__gramm_8c_afdfc20e5b9d207c9a118825451ae604c}
+
+
+Definition at line 338 of file automate\-\_\-gramm.\-c.
+
+\hypertarget{automate__gramm_8c_a73a40d7c75f64544d71790e1d65452c9}{\index{automate\-\_\-gramm.\-c@{automate\-\_\-gramm.\-c}!analyse\-\_\-gramm1@{analyse\-\_\-gramm1}}
+\index{analyse\-\_\-gramm1@{analyse\-\_\-gramm1}!automate_gramm.c@{automate\-\_\-gramm.\-c}}
+\subsubsection[{analyse\-\_\-gramm1}]{\setlength{\rightskip}{0pt plus 5cm}int analyse\-\_\-gramm1 (
+\begin{DoxyParamCaption}
+\item[{{\bf File} $\ast$}]{p\-\_\-file\-\_\-\-Lexeme, }
+\item[{{\bf S\-T\-A\-T\-E\-\_\-\-G\-R\-A\-M\-M} $\ast$}]{S, }
+\item[{{\bf L\-E\-X\-E\-M\-E}}]{lexeme\-\_\-courant}
+\end{DoxyParamCaption}
+)}}\label{automate__gramm_8c_a73a40d7c75f64544d71790e1d65452c9}
+
+
+Definition at line 69 of file automate\-\_\-gramm.\-c.
+
+\hypertarget{automate__gramm_8c_a93364c69474bf2de0b8a6ecb7724a2d6}{\index{automate\-\_\-gramm.\-c@{automate\-\_\-gramm.\-c}!automate\-\_\-grammatical@{automate\-\_\-grammatical}}
+\index{automate\-\_\-grammatical@{automate\-\_\-grammatical}!automate_gramm.c@{automate\-\_\-gramm.\-c}}
+\subsubsection[{automate\-\_\-grammatical}]{\setlength{\rightskip}{0pt plus 5cm}void automate\-\_\-grammatical (
+\begin{DoxyParamCaption}
+\item[{{\bf File} $\ast$}]{p\-\_\-file\-\_\-\-Lexeme, }
+\item[{{\bf File} $\ast$}]{p\-\_\-file\-\_\-\-Text, }
+\item[{{\bf File} $\ast$}]{p\-\_\-file\-\_\-\-Bss, }
+\item[{{\bf File} $\ast$}]{p\-\_\-file\-\_\-\-Data, }
+\item[{{\bf File} $\ast$}]{p\-\_\-file\-\_\-\-Symb}
+\end{DoxyParamCaption}
+)}}\label{automate__gramm_8c_a93364c69474bf2de0b8a6ecb7724a2d6}
+
+
+Definition at line 11 of file automate\-\_\-gramm.\-c.
+
+\hypertarget{automate__gramm_8c_a379e53c68627f0e898c230bf595fc98e}{\index{automate\-\_\-gramm.\-c@{automate\-\_\-gramm.\-c}!calcul\-\_\-decalage\-\_\-\-Bss@{calcul\-\_\-decalage\-\_\-\-Bss}}
+\index{calcul\-\_\-decalage\-\_\-\-Bss@{calcul\-\_\-decalage\-\_\-\-Bss}!automate_gramm.c@{automate\-\_\-gramm.\-c}}
+\subsubsection[{calcul\-\_\-decalage\-\_\-\-Bss}]{\setlength{\rightskip}{0pt plus 5cm}void calcul\-\_\-decalage\-\_\-\-Bss (
+\begin{DoxyParamCaption}
+\item[{{\bf File} $\ast$}]{p\-\_\-file\-\_\-\-Bss, }
+\item[{{\bf B\-S\-S} $\ast$}]{p\-\_\-new\-\_\-maillon}
+\end{DoxyParamCaption}
+)}}\label{automate__gramm_8c_a379e53c68627f0e898c230bf595fc98e}
+
+
+Definition at line 531 of file automate\-\_\-gramm.\-c.
+
+\hypertarget{automate__gramm_8c_aa41c30f68b00266e82b1245f54c8a7ab}{\index{automate\-\_\-gramm.\-c@{automate\-\_\-gramm.\-c}!calcul\-\_\-decalage\-\_\-\-Data@{calcul\-\_\-decalage\-\_\-\-Data}}
+\index{calcul\-\_\-decalage\-\_\-\-Data@{calcul\-\_\-decalage\-\_\-\-Data}!automate_gramm.c@{automate\-\_\-gramm.\-c}}
+\subsubsection[{calcul\-\_\-decalage\-\_\-\-Data}]{\setlength{\rightskip}{0pt plus 5cm}void calcul\-\_\-decalage\-\_\-\-Data (
+\begin{DoxyParamCaption}
+\item[{{\bf File} $\ast$}]{p\-\_\-file\-\_\-\-Data, }
+\item[{{\bf D\-A\-T\-A} $\ast$}]{p\-\_\-new\-\_\-maillon}
+\end{DoxyParamCaption}
+)}}\label{automate__gramm_8c_aa41c30f68b00266e82b1245f54c8a7ab}
+
+
+Definition at line 452 of file automate\-\_\-gramm.\-c.
+
+\hypertarget{automate__gramm_8c_a4c743a82572284efadf7701d8e5757e4}{\index{automate\-\_\-gramm.\-c@{automate\-\_\-gramm.\-c}!get\-\_\-current\-\_\-\-Lexeme@{get\-\_\-current\-\_\-\-Lexeme}}
+\index{get\-\_\-current\-\_\-\-Lexeme@{get\-\_\-current\-\_\-\-Lexeme}!automate_gramm.c@{automate\-\_\-gramm.\-c}}
+\subsubsection[{get\-\_\-current\-\_\-\-Lexeme}]{\setlength{\rightskip}{0pt plus 5cm}void get\-\_\-current\-\_\-\-Lexeme (
+\begin{DoxyParamCaption}
+\item[{{\bf File} $\ast$}]{p\-\_\-file\-\_\-\-Lexeme, }
+\item[{{\bf L\-E\-X\-E\-M\-E} $\ast$}]{p\-\_\-lexeme\-\_\-courant}
+\end{DoxyParamCaption}
+)}}\label{automate__gramm_8c_a4c743a82572284efadf7701d8e5757e4}
+
+
+Definition at line 113 of file automate\-\_\-gramm.\-c.
+

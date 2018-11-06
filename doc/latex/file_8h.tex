@@ -1,0 +1,172 @@
+\hypertarget{file_8h}{\section{/home/phelma/\-Bureau/projet\-\_\-sicom/include/file.h File Reference}
+\label{file_8h}\index{/home/phelma/\-Bureau/projet\-\_\-sicom/include/file.\-h@{/home/phelma/\-Bureau/projet\-\_\-sicom/include/file.\-h}}
+}
+{\ttfamily \#include $<$liste.\-h$>$}\\*
+{\ttfamily \#include $<$stdio.\-h$>$}\\*
+{\ttfamily \#include $<$stdlib.\-h$>$}\\*
+{\ttfamily \#include $<$notify.\-h$>$}\\*
+\subsection*{Data Structures}
+\begin{DoxyCompactItemize}
+\item 
+struct \hyperlink{struct__liste__}{\-\_\-liste\-\_\-}
+\end{DoxyCompactItemize}
+\subsection*{Typedefs}
+\begin{DoxyCompactItemize}
+\item 
+typedef struct \hyperlink{struct__liste__}{\-\_\-liste\-\_\-} $\ast$ \hyperlink{file_8h_ab04aa57a6150b637aa20235ca023731e}{File}
+\end{DoxyCompactItemize}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{file_8h_ab04aa57a6150b637aa20235ca023731e}{File} \hyperlink{file_8h_a0b9c286b7c45e3619436e06edbe3f718}{creer\-\_\-file} (void)
+\item 
+int \hyperlink{file_8h_af8e1b9aeb3cbd38a0a389073cedda9ee}{file\-\_\-vide} (\hyperlink{file_8h_ab04aa57a6150b637aa20235ca023731e}{File})
+\item 
+\hyperlink{file_8h_ab04aa57a6150b637aa20235ca023731e}{File} \hyperlink{file_8h_a54df87abe2276cd9b61d7e28ace7747b}{enfiler} (void $\ast$p, \hyperlink{file_8h_ab04aa57a6150b637aa20235ca023731e}{File})
+\item 
+void $\ast$ \hyperlink{file_8h_ae4ed1b00f174adca5f08379851a99e68}{defiler} (\hyperlink{file_8h_ab04aa57a6150b637aa20235ca023731e}{File} $\ast$f)
+\begin{DoxyCompactList}\small\item\em enleve le premier elem de la file et le renvoie \end{DoxyCompactList}\item 
+void \hyperlink{file_8h_a0969c3dcca54ce126a6b33f19d015ba8}{liberer\-\_\-file} (\hyperlink{file_8h_ab04aa57a6150b637aa20235ca023731e}{File} f)
+\begin{DoxyCompactList}\small\item\em libere l'espace en memoire alloue a la file \end{DoxyCompactList}\item 
+void \hyperlink{file_8h_a621fb4fc1851f79f373023d7954f7a27}{afficher\-\_\-file} (\hyperlink{file_8h_ab04aa57a6150b637aa20235ca023731e}{File} f, void($\ast$afficher\-\_\-maillon)(void $\ast$))
+\begin{DoxyCompactList}\small\item\em Parcours toute la file pour l'imprimer dans la console. \end{DoxyCompactList}\item 
+void \hyperlink{file_8h_ae1dcd56c434f42d5d330e3da7508812b}{afficher\-\_\-maillon\-\_\-\-L\-E\-X\-E\-M\-E} (void $\ast$maillon)
+\begin{DoxyCompactList}\small\item\em sert a afficher un maillon de L\-E\-X\-E\-M\-E \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Typedef Documentation}
+\hypertarget{file_8h_ab04aa57a6150b637aa20235ca023731e}{\index{file.\-h@{file.\-h}!File@{File}}
+\index{File@{File}!file.h@{file.\-h}}
+\subsubsection[{File}]{\setlength{\rightskip}{0pt plus 5cm}typedef struct {\bf \-\_\-liste\-\_\-}$\ast$  {\bf File}}}\label{file_8h_ab04aa57a6150b637aa20235ca023731e}
+
+
+\subsection{Function Documentation}
+\hypertarget{file_8h_a621fb4fc1851f79f373023d7954f7a27}{\index{file.\-h@{file.\-h}!afficher\-\_\-file@{afficher\-\_\-file}}
+\index{afficher\-\_\-file@{afficher\-\_\-file}!file.h@{file.\-h}}
+\subsubsection[{afficher\-\_\-file}]{\setlength{\rightskip}{0pt plus 5cm}void afficher\-\_\-file (
+\begin{DoxyParamCaption}
+\item[{{\bf File}}]{f, }
+\item[{void($\ast$)(void $\ast$)}]{afficher\-\_\-maillon}
+\end{DoxyParamCaption}
+)}}\label{file_8h_a621fb4fc1851f79f373023d7954f7a27}
+
+
+Parcours toute la file pour l'imprimer dans la console. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em file} & a afficher \\
+\hline
+{\em fonction} & d'affichage d'un maillon \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Ne retourne rien 
+\end{DoxyReturn}
+
+
+Definition at line 82 of file file.\-c.
+
+\hypertarget{file_8h_ae1dcd56c434f42d5d330e3da7508812b}{\index{file.\-h@{file.\-h}!afficher\-\_\-maillon\-\_\-\-L\-E\-X\-E\-M\-E@{afficher\-\_\-maillon\-\_\-\-L\-E\-X\-E\-M\-E}}
+\index{afficher\-\_\-maillon\-\_\-\-L\-E\-X\-E\-M\-E@{afficher\-\_\-maillon\-\_\-\-L\-E\-X\-E\-M\-E}!file.h@{file.\-h}}
+\subsubsection[{afficher\-\_\-maillon\-\_\-\-L\-E\-X\-E\-M\-E}]{\setlength{\rightskip}{0pt plus 5cm}void afficher\-\_\-maillon\-\_\-\-L\-E\-X\-E\-M\-E (
+\begin{DoxyParamCaption}
+\item[{void $\ast$}]{maillon}
+\end{DoxyParamCaption}
+)}}\label{file_8h_ae1dcd56c434f42d5d330e3da7508812b}
+
+
+sert a afficher un maillon de L\-E\-X\-E\-M\-E 
+
+
+\begin{DoxyParams}{Parameters}
+{\em maillon} & est le maillon de L\-E\-X\-E\-M\-E a afficher \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+ne retourne rien mais affiche les informations du maillon passe en argument 
+\end{DoxyReturn}
+
+
+Definition at line 10 of file fct\-\_\-affichage.\-c.
+
+\hypertarget{file_8h_a0b9c286b7c45e3619436e06edbe3f718}{\index{file.\-h@{file.\-h}!creer\-\_\-file@{creer\-\_\-file}}
+\index{creer\-\_\-file@{creer\-\_\-file}!file.h@{file.\-h}}
+\subsubsection[{creer\-\_\-file}]{\setlength{\rightskip}{0pt plus 5cm}{\bf File} creer\-\_\-file (
+\begin{DoxyParamCaption}
+\item[{void}]{}
+\end{DoxyParamCaption}
+)}}\label{file_8h_a0b9c286b7c45e3619436e06edbe3f718}
+
+
+Definition at line 3 of file file.\-c.
+
+\hypertarget{file_8h_ae4ed1b00f174adca5f08379851a99e68}{\index{file.\-h@{file.\-h}!defiler@{defiler}}
+\index{defiler@{defiler}!file.h@{file.\-h}}
+\subsubsection[{defiler}]{\setlength{\rightskip}{0pt plus 5cm}void$\ast$ defiler (
+\begin{DoxyParamCaption}
+\item[{{\bf File} $\ast$}]{f}
+\end{DoxyParamCaption}
+)}}\label{file_8h_ae4ed1b00f174adca5f08379851a99e68}
+
+
+enleve le premier elem de la file et le renvoie 
+
+
+\begin{DoxyParams}{Parameters}
+{\em file} & f \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Retourne un pointeur vers l'element defile 
+\end{DoxyReturn}
+
+
+Definition at line 41 of file file.\-c.
+
+\hypertarget{file_8h_a54df87abe2276cd9b61d7e28ace7747b}{\index{file.\-h@{file.\-h}!enfiler@{enfiler}}
+\index{enfiler@{enfiler}!file.h@{file.\-h}}
+\subsubsection[{enfiler}]{\setlength{\rightskip}{0pt plus 5cm}{\bf File} enfiler (
+\begin{DoxyParamCaption}
+\item[{void $\ast$}]{p, }
+\item[{{\bf File}}]{}
+\end{DoxyParamCaption}
+)}}\label{file_8h_a54df87abe2276cd9b61d7e28ace7747b}
+
+
+Definition at line 17 of file file.\-c.
+
+\hypertarget{file_8h_af8e1b9aeb3cbd38a0a389073cedda9ee}{\index{file.\-h@{file.\-h}!file\-\_\-vide@{file\-\_\-vide}}
+\index{file\-\_\-vide@{file\-\_\-vide}!file.h@{file.\-h}}
+\subsubsection[{file\-\_\-vide}]{\setlength{\rightskip}{0pt plus 5cm}int file\-\_\-vide (
+\begin{DoxyParamCaption}
+\item[{{\bf File}}]{}
+\end{DoxyParamCaption}
+)}}\label{file_8h_af8e1b9aeb3cbd38a0a389073cedda9ee}
+
+
+Definition at line 7 of file file.\-c.
+
+\hypertarget{file_8h_a0969c3dcca54ce126a6b33f19d015ba8}{\index{file.\-h@{file.\-h}!liberer\-\_\-file@{liberer\-\_\-file}}
+\index{liberer\-\_\-file@{liberer\-\_\-file}!file.h@{file.\-h}}
+\subsubsection[{liberer\-\_\-file}]{\setlength{\rightskip}{0pt plus 5cm}void liberer\-\_\-file (
+\begin{DoxyParamCaption}
+\item[{{\bf File}}]{f}
+\end{DoxyParamCaption}
+)}}\label{file_8h_a0969c3dcca54ce126a6b33f19d015ba8}
+
+
+libere l'espace en memoire alloue a la file 
+
+
+\begin{DoxyParams}{Parameters}
+{\em file} & f \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Ne retourne rien 
+\end{DoxyReturn}
+
+
+Definition at line 68 of file file.\-c.
+

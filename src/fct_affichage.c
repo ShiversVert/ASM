@@ -151,6 +151,7 @@ void afficher_maillon_TEXT(void* maillon){
 		case TEXT_INST:
 			type = "TEXT_INST";
 			break;
+
 		case TEXT_ERROR:
 			type = "TEXT_ERROR";
 			WARNING_MSG("%s \t\tline : %lf\t\t%s\n", type, line_nb, operateur);
@@ -202,7 +203,8 @@ void afficher_maillon_OPERANDE(void* maillon){
 			break;
 		case OPER_ERROR:
 			type = "OPER_ERROR";
-			WARNING_MSG("%s\t\t%s\n", type, chain);
+			printf("\n");
+			WARNING_MSG("%s\t\t%s", type, chain);
 			break;
 	}
 

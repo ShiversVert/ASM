@@ -173,7 +173,7 @@ int ajout_maillon_data(File* p_file_Data, File* p_file_Lexeme, LEXEME lexeme_cou
 		
 		else {
 			OPERANDE new_operande = calloc(1,sizeof(new_operande));
-			new_operande->chain = strdup(lexeme_courant->chain);
+			new_operande->chain = ( (LEXEME)((*p_file_Lexeme)->suiv->val) )-> chain;
 			switch(lexeme_courant->cat){
 				/* TODO : Ajouter la gestion des nobmres entre parentheses : base_offset*/
 
@@ -238,9 +238,9 @@ int ajout_maillon_bss(File* p_file_Bss, File* p_file_Lexeme, LEXEME lexeme_coura
 
 		new_symb->nom = lexeme_courant->chain;
 		new_symb->line_nb = lexeme_courant->line_nb;
-		new_symb->zone = ZONE_TEXT;
+		new_symb->zone = ZONE_BSS;
 		if(*p_file_Bss==NULL) new_symb->decalage = 0;
-		else new_symb->decalage = ( (BSS)((*p_file_Bss)->suiv->val) )-> decalage;
+		else new_symb->decalage = ( (BSS)((*p_file_Bss)->val) )-> decalage;
 
 		*p_file_Symb = enfiler(new_symb, *p_file_Symb); /*On enfile ce nouveau maillon a la file de symboles*/
 		defiler(p_file_Lexeme); get_current_Lexeme(p_file_Lexeme, &lexeme_courant);/*On defile le symbole de la file de lexemes*/
@@ -278,7 +278,7 @@ int ajout_maillon_bss(File* p_file_Bss, File* p_file_Lexeme, LEXEME lexeme_coura
 		
 		else {
 			OPERANDE new_operande = calloc(1,sizeof(new_operande));
-			new_operande->chain = strdup(lexeme_courant->chain);
+			new_operande->chain = ( (LEXEME)((*p_file_Lexeme)->suiv->val) )-> chain;
 			switch(lexeme_courant->cat){
 				/* TODO : Ajouter la gestion des nobmres entre parentheses : base_offset*/
 
@@ -344,7 +344,7 @@ int ajout_maillon_text(File* p_file_Text, File* p_file_Lexeme, LEXEME lexeme_cou
 		new_symb->line_nb = lexeme_courant->line_nb;
 		new_symb->zone = ZONE_TEXT;
 		if(*p_file_Text==NULL) new_symb->decalage = 0;
-		else new_symb->decalage = ( (TEXT)((*p_file_Text)->suiv->val) )-> decalage;
+		else new_symb->decalage = ( (TEXT)((*p_file_Text)->val) )-> decalage;
 
 		*p_file_Symb = enfiler(new_symb, *p_file_Symb); /*On enfile ce nouveau maillon a la file de symboles*/
 		defiler(p_file_Lexeme); get_current_Lexeme(p_file_Lexeme, &lexeme_courant);/*On defile le symbole de la file de lexemes*/
@@ -385,7 +385,7 @@ int ajout_maillon_text(File* p_file_Text, File* p_file_Lexeme, LEXEME lexeme_cou
 		
 		else {
 			OPERANDE new_operande = calloc(1,sizeof(new_operande));
-			new_operande->chain = strdup(lexeme_courant->chain);
+			new_operande->chain = ( (LEXEME)((*p_file_Lexeme)->suiv->val) )-> chain;
 			switch(lexeme_courant->cat){
 				/* TODO : Ajouter la gestion des nobmres entre parentheses : base_offset*/
 
