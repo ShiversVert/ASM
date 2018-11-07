@@ -58,7 +58,7 @@ char* getNextToken(char** token, char* current_line) {
     		if(*end =='\\'){end++;}
     		end++;
     	}
-        if(*end!='#') end++;    
+        if(*end!='#') end++;
     }
 
     else if (*start=='#'){
@@ -152,7 +152,7 @@ int isspecial(char* c){
         return(1);
     }
     return(0);
-} 
+}
 
 int ishexa(char* c){
     if (isdigit(c)|| *c=='a' || *c=='A' || *c=='b' || *c=='B' || *c=='c' || *c=='C' || *c=='d' || *c=='D'|| *c=='e'|| *c=='E' || *c=='f' || *c=='F') return 1;
