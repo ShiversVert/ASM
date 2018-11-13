@@ -1,3 +1,5 @@
+#include <dictionnaire_instruction.h>
+
 /**
  * @file dictionnaire_instruction.c
  * @author
@@ -11,7 +13,7 @@
    fp = fopen( fichier, "r" );
    if ( NULL == fp ) {
        /*macro ERROR_MSG : message d'erreur puis fin de programme ! */
-       ERROR_MSG("Error while trying to open %s file --- Aborts",file);
+       ERROR_MSG("Error while trying to open %s file --- Aborts",fichier);
    }
 
    File file_Dictionnaire = NULL;
@@ -32,19 +34,25 @@
 
 File dic_read_line(char* line, File file_Dictionnaire){
   DIC new_maillon = calloc(1,sizeof(*new_maillon));
-
+  new_maillon->chain = calloc(3,sizeof(char));
   new_maillon->nb_op = 0;
   int i = 0;
 
-  while(line[i]!=' '){
-    (new_maillon->chain)[i]=line[i];
-    i++;
+
+  while(line[i]!=' ' && line[i]!='\n'){
+    if (line[i] != '\n') {
+      (new_maillon->chain)[i]=line[i];
+      i++;
+    }
+  }
+
+  if (line[i] == '\n'){
+    return(enfiler(new_maillon, file_Dictionnaire));
   }
   i++;
 
-
   while (line[i]!='\n') {
-    if (line[i]!=" "){
+    if (line[i]!=' '){
       (new_maillon->type_op)[(new_maillon->nb_op)] = line[i];
       (new_maillon->nb_op)++;
     }

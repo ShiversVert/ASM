@@ -15,19 +15,19 @@
 /*########## RELATIFS AUX LEXEMES ##########*/
 
 typedef enum {
-	ETIQUETTE, 
-	COMMENTAIRE, 
-	DIRECTIVE, 
-	REGISTRE, 
-	VIRGULE, 
-	CHAINE, 
-	PARENTHESE_G, 
+	ETIQUETTE,
+	COMMENTAIRE,
+	DIRECTIVE,
+	REGISTRE,
+	VIRGULE,
+	CHAINE,
+	PARENTHESE_G,
 	PARENTHESE_D,
-	SAUT_LIGNE, 
-	DECIMAL, 
-	HEXA, 
-	OCTAL, 
-	SYMBOLE, 
+	SAUT_LIGNE,
+	DECIMAL,
+	HEXA,
+	OCTAL,
+	SYMBOLE,
 	ERROR
 }type_lexeme;
 /*Lexeme*/
@@ -41,16 +41,16 @@ typedef struct _lexeme_ {
 /*####### RELATIFS A .TEXT .DATA .BSS #######*/
 
 typedef enum{
-	S_GRAMM_INIT, 
+	S_GRAMM_INIT,
 	S_GRAMM_DATA,
 	S_GRAMM_BSS,
 	S_GRAMM_TEXT,
 } STATE_GRAMM;
 
 typedef enum{
-	OPER_REG, 
-	OPER_BASE_OFFSET, 
-	OPER_DECIMAL, 
+	OPER_REG,
+	OPER_BASE_OFFSET,
+	OPER_DECIMAL,
 	OPER_HEXA,
 	OPER_OCTAL,
 	OPER_CHAINE,
@@ -61,7 +61,7 @@ typedef enum{
 typedef struct _operande_{
 	char*			chain;
 	type_operande 	type;
-}*OPERANDE;	
+}*OPERANDE;
 
 
 typedef enum{
@@ -113,7 +113,7 @@ typedef struct _data_{
 typedef enum{
 	ZONE_DATA,
 	ZONE_TEXT,
-	ZONE_BSS	
+	ZONE_BSS
 }zone_symb;
 
 typedef struct _symb_{
@@ -122,6 +122,20 @@ typedef struct _symb_{
 	double 		line_nb;
 	double 		decalage;
 }*SYMB;
+
+typedef struct _dic_ {
+  char*     chain;        /*Chaine de caractere de l'instruction*/
+  int       nb_op;        /*Nombre d'opérandes de l'instruction*/
+  char      type_op[3];   /*Tableau de 3 char contenant le type de l'opperande i*/
+  /*
+  R => REGISTRE
+  O => offset
+  B => offset(base)
+  T => target
+  I => valeur immediate
+  S => sa ?
+  */
+}* DIC;
 
 #include <fct_affichage.h> /*Oblige de le mettre apres la definition du type file*/
 

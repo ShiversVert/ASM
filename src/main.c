@@ -15,6 +15,7 @@
 #include <liste.h>
 #include <file.h>
 #include <fct_affichage.h>
+#include <dictionnaire_instruction.h>
 #include <automate.h>
 #include <automate_gramm.h>
 
@@ -78,7 +79,7 @@ int main ( int argc, char *argv[] ) {
     int cmpt_err = 0;
     File file_Lexeme = lex_load_file( file, &nlines, &cmpt_err);
     if (file_Lexeme!=NULL) afficher_file(file_Lexeme, (*afficher_maillon_LEXEME));
-    
+
     if(cmpt_err>0){
         WARNING_MSG("%d erreurs\n detectee", cmpt_err);
         ERROR_MSG("Erreur(s) lexicale detectee(s), terminaison du programme.\n");
@@ -86,26 +87,31 @@ int main ( int argc, char *argv[] ) {
     }
 
     /* ---------------- Do the grammatical analysis -----------------*/
-    DEBUG_MSG("\n\n###############################\nDEBUT DE L'ANALYSE GRAMMATICALE\n###############################\n\n");
-
+    File file_Dic = NULL;
     File file_Text = NULL;
     File file_Bss = NULL;
     File file_Data = NULL;
     File file_Symb = NULL;
 
+    DEBUG_MSG("\n\n###############################\nCHARGEMENT DU DICTIONNAIRE\n###############################\n\n");
+
+    file_Dic = import_dictionnaire("./dictionnaires/dictionnaire_instructions.txt");
+    printf("\n\n######### file_Dic ##########\n\n");afficher_file(file_Dic, (*afficher_maillon_DIC));
+
+    DEBUG_MSG("\n\n###############################\nDEBUT DE L'ANALYSE GRAMMATICALE\n###############################\n\n");
+
     automate_grammatical(&file_Lexeme, &file_Text, &file_Bss, &file_Data, &file_Symb);
 
-    
     printf("\n\n######### file_Lexeme ##########\n\n");afficher_file(file_Lexeme, (*afficher_maillon_LEXEME));
     printf("\n\n######### file_Text ##########\n\n");afficher_file(file_Text, (*afficher_maillon_TEXT));
     printf("\n\n######### file_Data ##########\n\n");afficher_file(file_Data, (*afficher_maillon_DATA));
     printf("\n\n######### file_Bss ##########\n\n");afficher_file(file_Bss, (*afficher_maillon_DATA));
     printf("\n\n######### file_Symb ##########\n\n");afficher_file(file_Symb, (*afficher_maillon_SYMB));
-    
+
 
     /* ---------------- Free memory and terminate -------------------*/
 
-    
+
 
     /* TODO free everything properly*/
 

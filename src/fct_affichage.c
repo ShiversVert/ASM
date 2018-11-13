@@ -56,7 +56,7 @@ void afficher_maillon_LEXEME(void* maillon){
 			WARNING_MSG("%s \t\tline : %d\t\t%s\n", category, line_nb, chain);
 			break;
 	}
-	
+
 	if(((LEXEME)(maillon))->cat != ERROR) {
 		printf("%s \t\t", category);
 		printf("%d\t\t", line_nb);
@@ -87,7 +87,7 @@ void afficher_maillon_DATA(void* maillon){
 			WARNING_MSG("%s \t\t%lf\t\t%s\n", type, line_nb, operateur);
 			break;
 	}
-			
+
 	if(((DATA)(maillon))->type != DATA_ERROR) {
 		printf("%s\t\t", type);
 		printf("%s\t\t", operateur);
@@ -122,7 +122,7 @@ void afficher_maillon_BSS(void* maillon){
 			WARNING_MSG("%s \t\tline : %lf\t\t%s\n", type, line_nb, operateur);
 			break;
 	}
-			
+
 	if(((BSS)(maillon))->type != BSS_ERROR) {
 		printf("%s\t\t", type);
 		printf("%s\t\t", operateur);
@@ -157,7 +157,7 @@ void afficher_maillon_TEXT(void* maillon){
 			WARNING_MSG("%s \t\tline : %lf\t\t%s\n", type, line_nb, operateur);
 			break;
 	}
-			
+
 	if(((TEXT)(maillon))->type != TEXT_ERROR) {
 		printf("%s\t\t", type);
 		printf("%s\t\t", operateur);
@@ -235,5 +235,18 @@ void afficher_maillon_SYMB(void* maillon){
 	printf("%s\t", nom);
 	printf("line:%lf\t", line_nb);
 	printf("decalage:%lf\n", decalage);
-	
+
+}
+
+void afficher_maillon_DIC(void* maillon){
+	char* operateur = ((DIC)(maillon))->chain;
+	int nb_op = ((DIC)(maillon))->nb_op;
+	char* type_op = ((DIC)(maillon))->type_op;
+	int i;
+
+	printf("%s\t%d\t",operateur, nb_op);
+	for (i=0; i<nb_op; i++){
+		printf("%c ", type_op[i]);
+	}
+	printf("\n");
 }
