@@ -126,12 +126,12 @@ typedef struct _symb_{
 
 typedef struct _dic_ {
   char*     chain;        /*Chaine de caractere de l'instruction*/
-  int       nb_op;        /*Nombre d'opérandes de l'instruction*/
+  int       nb_op;        /*Nombre d'operandes de l'instruction*/
   char      type_op[3];   /*Tableau de 3 char contenant le type de l'opperande i*/
   /*
   R => registre
   O => offset
-  B => offset(base)
+  B => base   (On a donc O B pour un base_offset)
   T => target
   I => valeur immediate
   S => shift amount

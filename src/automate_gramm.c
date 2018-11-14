@@ -8,7 +8,7 @@
  *@brief
  */
 
-void automate_grammatical(File* p_file_Lexeme, File* p_file_Text, File* p_file_Bss, File* p_file_Data, File* p_file_Symb){
+void automate_grammatical(File* p_file_Lexeme, File* p_file_Text, File* p_file_Bss, File* p_file_Data, File* p_file_Symb, File file_Dic){
 
 	/*if (*p_file_Lexeme != NULL)	*p_file_Lexeme = (*p_file_Lexeme)->suiv;*/ /*Si la file de lexeme n'est pas cide, on va chercher le premier lexeme de la file*/
 
@@ -20,7 +20,7 @@ void automate_grammatical(File* p_file_Lexeme, File* p_file_Text, File* p_file_B
 
 	get_current_Lexeme(p_file_Lexeme, &lexeme_courant);
 
-		switch (S){
+		switch(S){
 
 			case S_GRAMM_INIT :
 				analyse_gramm1(p_file_Lexeme, &S, lexeme_courant); /*Cas speciaux .bss .text .data & commentaire*/
@@ -34,7 +34,7 @@ void automate_grammatical(File* p_file_Lexeme, File* p_file_Text, File* p_file_B
 
 			case S_GRAMM_TEXT:
 				if(analyse_gramm1(p_file_Lexeme, &S, lexeme_courant) != 1){ /*Cas speciaux .bss .text .data & commentaire*/
-					ajout_maillon_text(p_file_Text, p_file_Lexeme, lexeme_courant, p_file_Symb, &offset_text);
+					ajout_maillon_text(p_file_Text, p_file_Lexeme, lexeme_courant, p_file_Symb, &offset_text, file_Dic);
 				}
 				break;
 
@@ -333,7 +333,7 @@ int ajout_maillon_bss(File* p_file_Bss, File* p_file_Lexeme, LEXEME lexeme_coura
  *@brief Permet de creer un maillon Text en lisant la file de Lexeme et d'ajouter ce dernier a la file Data
  */
 
-int ajout_maillon_text(File* p_file_Text, File* p_file_Lexeme, LEXEME lexeme_courant, File* p_file_Symb, double* p_offset_text){
+int ajout_maillon_text(File* p_file_Text, File* p_file_Lexeme, LEXEME lexeme_courant, File* p_file_Symb, double* p_offset_text, File file_Dic){
 	/*Si le lexeme est une etiquette, on doit creer un maillon symb et l'ajouter la la collection de symboles*/
 	if(lexeme_courant->cat==ETIQUETTE){
 		SYMB new_symb = calloc(1,sizeof(*new_symb));
@@ -453,6 +453,8 @@ int ajout_maillon_text(File* p_file_Text, File* p_file_Lexeme, LEXEME lexeme_cou
 
 	calcul_decalage_Text(p_file_Text, &new_maillon, p_offset_text);
 
+	/*Verification de l'existence de l'operateur et des argument*/
+	is_in_dic(&new_maillon, file_Dic);
 	/*Ajout du nouveau maillon a la file de Text*/
 	*p_file_Text = enfiler(new_maillon, *p_file_Text);
 	return(0);
@@ -547,7 +549,7 @@ void calcul_decalage_Text(File* p_file_Text, TEXT* p_new_maillon, double* p_offs
  *@return Ne retourne rien mais ecrit la valeure du decalage dans le nouveau maillon
  *@brief Fonction a appeler la de la creation d'un maillon data pour calculer (et ecrire) la valeur du decalage
  */
- void calcul_decalage_Bss(File* p_file_Bss, BSS* p_new_maillon, double* p_offset_bss){
+void calcul_decalage_Bss(File* p_file_Bss, BSS* p_new_maillon, double* p_offset_bss){
  	(*p_new_maillon)->decalage = (*p_offset_bss);
 
  	int cmpt_operande=1;
@@ -583,3 +585,93 @@ void calcul_decalage_Text(File* p_file_Text, TEXT* p_new_maillon, double* p_offs
 
  	free(op_temp);
  }
+
+ /*@param maillon Pointeur sur le maillon en cours d'analyse
+  *@param p_file_Dic pointeur sur le nouveau maillon (en cours de creation) pour acceder a ses infos et y ecrire le decalage
+  *@return Ne retourne rien mais ecrit la valeure du decalage dans le nouveau maillon
+  *@brief Fonction a appeler la de la creation d'un maillon TEXT pour verifier 1) l'existence de l'operation 2) Son nb d'operande 3)Le type des operandes
+  */
+
+int is_in_dic(TEXT* p_maillon, File file_Dic){
+	int i;
+	OPERANDE operande_courante = calloc(1, sizeof(operande_courante));
+	Liste l_operande = (*p_maillon)->l_operande;
+	
+	File dernier_elem = file_Dic;
+	file_Dic = file_Dic->suiv;
+	/*On parcours le dictionnaire*/
+	do{
+		if(strcasecmp((*p_maillon)->operateur, ((DIC)((file_Dic)->val))->chain)==0){
+			/*On a trouve notre operateur dans le dictionnaire*/
+			if ((*p_maillon)->nb_op == ((DIC)((file_Dic)->val))->nb_op){
+				/*Si le nombre d'operateur est le bon*/
+				char* type_op = ((DIC)((file_Dic)->val))->type_op;
+				for(i=1; i<=(*p_maillon)->nb_op; i++){
+					operande_courante->chain = ((OPERANDE)(l_operande->val))->chain;
+					operande_courante->type = ((OPERANDE)(l_operande->val))->type;
+
+					switch (type_op[i]) {
+						case 'R':
+							if (operande_courante->type != OPER_REG){
+								(*p_maillon)->type = TEXT_ERROR;
+								WARNING_MSG("Erreur ligne %lf, l'opperande n° %d doit etre un Registre\n", (*p_maillon)->line_nb, i);
+							}
+							break;
+
+						case 'O':
+							if (operande_courante->type != OPER_OFFSET){
+								(*p_maillon)->type = TEXT_ERROR;
+								WARNING_MSG("Erreur ligne %lf, l'opperande n° %d doit etre un offset\n", (*p_maillon)->line_nb, i);
+							}
+							break;
+
+						case 'B':
+							if (operande_courante->type != OPER_BASE){
+								(*p_maillon)->type = TEXT_ERROR;
+								WARNING_MSG("Erreur ligne %lf, l'opperande n° %d doit etre une base\n", (*p_maillon)->line_nb, i);
+							}
+							break;
+
+						case 'T':
+							if (operande_courante->type != OPER_DECIMAL && operande_courante->type != OPER_HEXA && operande_courante->type != OPER_DECIMAL && operande_courante->type != OPER_REG){
+								(*p_maillon)->type = TEXT_ERROR;
+								WARNING_MSG("Erreur ligne %lf, l'opperande n° %d doit etre une cible\n", (*p_maillon)->line_nb, i);
+							}
+							break;
+
+						case 'I':
+							if (operande_courante->type != OPER_DECIMAL && operande_courante->type != OPER_HEXA){
+								(*p_maillon)->type = TEXT_ERROR;
+								WARNING_MSG("Erreur ligne %lf, l'opperande n° %d doit etre une valeure immediate\n", (*p_maillon)->line_nb, i);
+							}
+							break;
+
+						case 'S':
+							if (operande_courante->type != OPER_DECIMAL && operande_courante->type != OPER_HEXA){
+								(*p_maillon)->type = TEXT_ERROR;
+								WARNING_MSG("Erreur ligne %lf, l'opperande n° %d doit etre un nombre de decalage\n", (*p_maillon)->line_nb, i);
+							}
+							break;
+
+					}
+					l_operande = l_operande->suiv;
+				}
+			}
+
+			else{
+				(*p_maillon)->type = TEXT_ERROR;
+				WARNING_MSG("Erreur ligne %lf, le nombre d'operateur de \"%s\" est %d au lieu de %d\n", (*p_maillon)->line_nb, (*p_maillon)->operateur, (*p_maillon)->nb_op, ((DIC)((file_Dic)->val))->nb_op );
+				free(operande_courante);
+				return(1);
+			}
+		}
+
+		file_Dic = file_Dic->suiv;
+	}while(file_Dic!=dernier_elem->suiv); /*Tant qu'on ne revient pas au 1er elem*/
+
+	/*On a parcouru tout le dic sans trouver l'instruction*/
+	(*p_maillon)->type = TEXT_ERROR;
+	WARNING_MSG("Instruction \"%s\" ligne: %lf inconnue\n", (*p_maillon)->operateur, (*p_maillon)->line_nb);
+	free(operande_courante);
+	return(1);
+}

@@ -100,7 +100,7 @@ int main ( int argc, char *argv[] ) {
 
     DEBUG_MSG("\n\n###############################\nDEBUT DE L'ANALYSE GRAMMATICALE\n###############################\n\n");
 
-    automate_grammatical(&file_Lexeme, &file_Text, &file_Bss, &file_Data, &file_Symb);
+    automate_grammatical(&file_Lexeme, &file_Text, &file_Bss, &file_Data, &file_Symb, file_Dic);
 
     printf("\n\n######### file_Lexeme ##########\n\n");afficher_file(file_Lexeme, (*afficher_maillon_LEXEME));
     printf("\n\n######### file_Text ##########\n\n");afficher_file(file_Text, (*afficher_maillon_TEXT));
