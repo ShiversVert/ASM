@@ -18,8 +18,11 @@ byebye:
 lunchtime:
     .word 12
     .word menu
+lunchtime_bis:
     .asciiz "ils disent : \"au ru!\""
 
 .bss
 menu:
     .space 24
+menu_bis:
+    .space 12

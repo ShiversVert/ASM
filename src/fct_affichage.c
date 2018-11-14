@@ -183,8 +183,11 @@ void afficher_maillon_OPERANDE(void* maillon){
 		case OPER_REG:
 			type = "OPER_REG";
 			break;
-		case OPER_BASE_OFFSET:
-			type = "OPER_BASE_OFFSET";
+		case OPER_BASE:
+			type = "OPER_BASE";
+			break;
+		case OPER_OFFSET:
+			type = "OPER_OFFSET";
 			break;
 		case OPER_DECIMAL:
 			type = "OPER_DECIMAL";

@@ -49,7 +49,8 @@ typedef enum{
 
 typedef enum{
 	OPER_REG,
-	OPER_BASE_OFFSET,
+	OPER_BASE,
+	OPER_OFFSET,
 	OPER_DECIMAL,
 	OPER_HEXA,
 	OPER_OCTAL,
@@ -128,12 +129,12 @@ typedef struct _dic_ {
   int       nb_op;        /*Nombre d'opérandes de l'instruction*/
   char      type_op[3];   /*Tableau de 3 char contenant le type de l'opperande i*/
   /*
-  R => REGISTRE
+  R => registre
   O => offset
   B => offset(base)
   T => target
   I => valeur immediate
-  S => sa ?
+  S => shift amount
   */
 }* DIC;
 

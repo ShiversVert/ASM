@@ -11,6 +11,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <strings.h>
 #include <ctype.h>
 #include <global.h>
 #include <string.h>
@@ -25,10 +26,12 @@ void automate_grammatical(File* p_file_Lexeme, File* p_file_Text, File* p_file_B
 int analyse_gramm1(File* p_file_Lexeme, STATE_GRAMM* S, LEXEME lexeme_courant);
 void get_current_Lexeme(File* p_file_Lexeme, LEXEME* p_lexeme_courant);
 
-int ajout_maillon_data(File* p_file_Data, File* p_file_Lexeme, LEXEME lexeme_courant, File* p_file_Symb);
-int ajout_maillon_bss(File* p_file_Bss, File* p_file_Lexeme, LEXEME lexeme_courant, File* p_file_Symb);
-int ajout_maillon_text(File* p_file_Text, File* p_file_Lexeme, LEXEME lexeme_courant, File* p_file_Symb);
+int ajout_maillon_data(File* p_file_Data, File* p_file_Lexeme, LEXEME lexeme_courant, File* p_file_Symb, double* p_offset_data);
+int ajout_maillon_bss(File* p_file_Bss, File* p_file_Lexeme, LEXEME lexeme_courant, File* p_file_Symb, double* p_offset_bss);
+int ajout_maillon_text(File* p_file_Text, File* p_file_Lexeme, LEXEME lexeme_courant, File* p_file_Symb, double* p_offset_text);
 
-void calcul_decalage_Data(File* p_file_Data, DATA* p_new_maillon);
-void calcul_decalage_Bss(File* p_file_Bss, BSS* p_new_maillon);
+
+void calcul_decalage_Data(File* p_file_Data, DATA* p_new_maillon,double* p_offset_data);
+void calcul_decalage_Text(File* p_file_Text, TEXT* p_new_maillon, double* p_offset_text);
+void calcul_decalage_Bss(File* p_file_Bss, BSS* p_new_maillon, double* p_offset_bss);
 #endif /*_AUTOMATE_GRAMM_H_*/
