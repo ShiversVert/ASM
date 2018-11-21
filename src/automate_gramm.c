@@ -591,12 +591,12 @@ void calcul_decalage_Bss(File* p_file_Bss, BSS* p_new_maillon, double* p_offset_
   *@return Ne retourne rien mais ecrit la valeure du decalage dans le nouveau maillon
   *@brief Fonction a appeler la de la creation d'un maillon TEXT pour verifier 1) l'existence de l'operation 2) Son nb d'operande 3)Le type des operandes
   */
-
+ 
 int is_in_dic(TEXT* p_maillon, File file_Dic){
 	int i;
 	OPERANDE operande_courante = calloc(1, sizeof(operande_courante));
 	Liste l_operande = (*p_maillon)->l_operande;
-	
+
 	File dernier_elem = file_Dic;
 	file_Dic = file_Dic->suiv;
 	/*On parcours le dictionnaire*/
@@ -606,7 +606,7 @@ int is_in_dic(TEXT* p_maillon, File file_Dic){
 			if ((*p_maillon)->nb_op == ((DIC)((file_Dic)->val))->nb_op){
 				/*Si le nombre d'operateur est le bon*/
 				char* type_op = ((DIC)((file_Dic)->val))->type_op;
-				for(i=1; i<=(*p_maillon)->nb_op; i++){
+				for(i=0; i<(*p_maillon)->nb_op; i++){
 					operande_courante->chain = ((OPERANDE)(l_operande->val))->chain;
 					operande_courante->type = ((OPERANDE)(l_operande->val))->type;
 
@@ -614,28 +614,28 @@ int is_in_dic(TEXT* p_maillon, File file_Dic){
 						case 'R':
 							if (operande_courante->type != OPER_REG){
 								(*p_maillon)->type = TEXT_ERROR;
-								WARNING_MSG("Erreur ligne %lf, l'opperande n° %d doit etre un Registre\n", (*p_maillon)->line_nb, i);
+								WARNING_MSG("Erreur ligne %lf, l'opperande n° %d de \"%s\" doit etre un offset\n", (*p_maillon)->line_nb, i, (*p_maillon)->operateur);
 							}
 							break;
 
 						case 'O':
 							if (operande_courante->type != OPER_OFFSET){
 								(*p_maillon)->type = TEXT_ERROR;
-								WARNING_MSG("Erreur ligne %lf, l'opperande n° %d doit etre un offset\n", (*p_maillon)->line_nb, i);
+								WARNING_MSG("Erreur ligne %lf, l'opperande n° %d de \"%s\" doit etre un offset\n", (*p_maillon)->line_nb, i, (*p_maillon)->operateur);
 							}
 							break;
 
 						case 'B':
 							if (operande_courante->type != OPER_BASE){
 								(*p_maillon)->type = TEXT_ERROR;
-								WARNING_MSG("Erreur ligne %lf, l'opperande n° %d doit etre une base\n", (*p_maillon)->line_nb, i);
+								WARNING_MSG("Erreur ligne %lf, l'opperande n° %d de \"%s\" doit etre un offset\n", (*p_maillon)->line_nb, i, (*p_maillon)->operateur);
 							}
 							break;
 
 						case 'T':
 							if (operande_courante->type != OPER_DECIMAL && operande_courante->type != OPER_HEXA && operande_courante->type != OPER_DECIMAL && operande_courante->type != OPER_REG){
 								(*p_maillon)->type = TEXT_ERROR;
-								WARNING_MSG("Erreur ligne %lf, l'opperande n° %d doit etre une cible\n", (*p_maillon)->line_nb, i);
+								WARNING_MSG("Erreur ligne %lf, l'opperande n° %d de \"%s\" doit etre un offset\n", (*p_maillon)->line_nb, i, (*p_maillon)->operateur);
 							}
 							break;
 
@@ -656,6 +656,8 @@ int is_in_dic(TEXT* p_maillon, File file_Dic){
 					}
 					l_operande = l_operande->suiv;
 				}
+				free(operande_courante);
+				return(0);
 			}
 
 			else{
@@ -668,6 +670,7 @@ int is_in_dic(TEXT* p_maillon, File file_Dic){
 
 		file_Dic = file_Dic->suiv;
 	}while(file_Dic!=dernier_elem->suiv); /*Tant qu'on ne revient pas au 1er elem*/
+	file_Dic = dernier_elem;
 
 	/*On a parcouru tout le dic sans trouver l'instruction*/
 	(*p_maillon)->type = TEXT_ERROR;

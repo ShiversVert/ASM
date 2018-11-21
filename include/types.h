@@ -131,7 +131,7 @@ typedef struct _dic_ {
   /*
   R => registre
   O => offset
-  B => base   (On a donc O B pour un base_offset)
+  B => base (On a donc O B pour un base_offset)
   T => target
   I => valeur immediate
   S => shift amount
