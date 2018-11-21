@@ -204,6 +204,9 @@ void afficher_maillon_OPERANDE(void* maillon){
 		case OPER_SYMBOLE:
 			type = "OPER_SYMBOLE";
 			break;
+		case OPER_TARGET:
+			type = "OPER_TARGET";
+			break;
 		case OPER_ERROR:
 			type = "OPER_ERROR";
 			printf("\n");

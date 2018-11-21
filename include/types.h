@@ -56,6 +56,7 @@ typedef enum{
 	OPER_OCTAL,
 	OPER_CHAINE,
 	OPER_SYMBOLE,
+	OPER_TARGET,
 	OPER_ERROR
 }type_operande;
 

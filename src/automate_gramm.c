@@ -53,16 +53,18 @@ void automate_grammatical(File* p_file_Lexeme, File* p_file_Text, File* p_file_B
 	}
 
 	free(lexeme_courant);
+	replace_in_Text(p_file_Text, p_file_Symb);
 }
 
-/*@param p_file_Lexeme pointeur sur la file de Lexeme a traiter
- *@param S Etat de la machine a etat, passe par adresse
- *@return Retourne 1 si des lexemes ont etes defiles, 0 sinon
- *@brief Permet de verifier si le lexeme courant est une instruction :
-	.set noreorder et la defile
-	.bss et associe l'etat S_GRAMM_BSS
-	.data et associe l'etat S_GRAMM_DATA
-	.text et associe l'etat S_GRAMM_TEXT
+/**
+ * @param p_file_Lexeme pointeur sur la file de Lexeme a traiter
+ * @param S Etat de la machine a etat, passe par adresse
+ * @return Retourne 1 si des lexemes ont etes defiles, 0 sinon
+ * @brief Permet de verifier si le lexeme courant est une instruction :
+ * .set noreorder et la defile
+ *	.bss et associe l'etat S_GRAMM_BSS
+ *	.data et associe l'etat S_GRAMM_DATA
+ *	.text et associe l'etat S_GRAMM_TEXT
  */
 
 int analyse_gramm1(File* p_file_Lexeme, STATE_GRAMM* S, LEXEME lexeme_courant){
@@ -326,7 +328,7 @@ int ajout_maillon_bss(File* p_file_Bss, File* p_file_Lexeme, LEXEME lexeme_coura
 	return(0);
 }
 
-/*@param p_file_Text pointeur sur la file Text a completer
+/**@param p_file_Text pointeur sur la file Text a completer
  *@param p_file_Lexeme pointeur sur la file de LEXEMEs
  *@param lexeme_courant Lexeme temporaire qui facilite l'acces au donnees du lexeme courant
  *@return Retourne 0 si tout ce passe correctement, 1 s'il y a une erreur
@@ -549,6 +551,7 @@ void calcul_decalage_Text(File* p_file_Text, TEXT* p_new_maillon, double* p_offs
  *@return Ne retourne rien mais ecrit la valeure du decalage dans le nouveau maillon
  *@brief Fonction a appeler la de la creation d'un maillon data pour calculer (et ecrire) la valeur du decalage
  */
+
 void calcul_decalage_Bss(File* p_file_Bss, BSS* p_new_maillon, double* p_offset_bss){
  	(*p_new_maillon)->decalage = (*p_offset_bss);
 
@@ -614,42 +617,42 @@ int is_in_dic(TEXT* p_maillon, File file_Dic){
 						case 'R':
 							if (operande_courante->type != OPER_REG){
 								(*p_maillon)->type = TEXT_ERROR;
-								WARNING_MSG("Erreur ligne %lf, l'opperande n° %d de \"%s\" doit etre un offset\n", (*p_maillon)->line_nb, i, (*p_maillon)->operateur);
+								WARNING_MSG("Erreur ligne %lf, l'opperande no %d de \"%s\" doit etre un offset\n", (*p_maillon)->line_nb, i, (*p_maillon)->operateur);
 							}
 							break;
 
 						case 'O':
-							if (operande_courante->type != OPER_OFFSET){
+							/*if (operande_courante->type != OPER_OFFSET && operande_courante->type!=OPER_TARGET){
 								(*p_maillon)->type = TEXT_ERROR;
-								WARNING_MSG("Erreur ligne %lf, l'opperande n° %d de \"%s\" doit etre un offset\n", (*p_maillon)->line_nb, i, (*p_maillon)->operateur);
-							}
+								WARNING_MSG("Erreur ligne %lf, l'opperande no %d de \"%s\" doit etre un offset\n", (*p_maillon)->line_nb, i, (*p_maillon)->operateur);
+							}*/
 							break;
 
 						case 'B':
 							if (operande_courante->type != OPER_BASE){
 								(*p_maillon)->type = TEXT_ERROR;
-								WARNING_MSG("Erreur ligne %lf, l'opperande n° %d de \"%s\" doit etre un offset\n", (*p_maillon)->line_nb, i, (*p_maillon)->operateur);
+								WARNING_MSG("Erreur ligne %lf, l'opperande no %d de \"%s\" doit etre une base\n", (*p_maillon)->line_nb, i, (*p_maillon)->operateur);
 							}
 							break;
 
 						case 'T':
 							if (operande_courante->type != OPER_DECIMAL && operande_courante->type != OPER_HEXA && operande_courante->type != OPER_DECIMAL && operande_courante->type != OPER_REG){
 								(*p_maillon)->type = TEXT_ERROR;
-								WARNING_MSG("Erreur ligne %lf, l'opperande n° %d de \"%s\" doit etre un offset\n", (*p_maillon)->line_nb, i, (*p_maillon)->operateur);
+								WARNING_MSG("Erreur ligne %lf, l'opperande no %d de \"%s\" doit etre un offset\n", (*p_maillon)->line_nb, i, (*p_maillon)->operateur);
 							}
 							break;
 
 						case 'I':
 							if (operande_courante->type != OPER_DECIMAL && operande_courante->type != OPER_HEXA){
 								(*p_maillon)->type = TEXT_ERROR;
-								WARNING_MSG("Erreur ligne %lf, l'opperande n° %d doit etre une valeure immediate\n", (*p_maillon)->line_nb, i);
+								WARNING_MSG("Erreur ligne %lf, l'opperande no %d doit etre une valeure immediate\n", (*p_maillon)->line_nb, i);
 							}
 							break;
 
 						case 'S':
 							if (operande_courante->type != OPER_DECIMAL && operande_courante->type != OPER_HEXA){
 								(*p_maillon)->type = TEXT_ERROR;
-								WARNING_MSG("Erreur ligne %lf, l'opperande n° %d doit etre un nombre de decalage\n", (*p_maillon)->line_nb, i);
+								WARNING_MSG("Erreur ligne %lf, l'opperande no %d doit etre un nombre de decalage\n", (*p_maillon)->line_nb, i);
 							}
 							break;
 
@@ -677,4 +680,61 @@ int is_in_dic(TEXT* p_maillon, File file_Dic){
 	WARNING_MSG("Instruction \"%s\" ligne: %lf inconnue\n", (*p_maillon)->operateur, (*p_maillon)->line_nb);
 	free(operande_courante);
 	return(1);
+}
+
+/**
+ * Permet de trouver et de remplacer les Symboles par la valeur de decalage associee
+ *
+ * @param p_file_Text File de text a parcourir
+ * @param p_file_Symb Symboles ayant ete definis
+ */
+void replace_in_Text(File* p_file_Text, File* p_file_Symb){
+	File dernier_elem = *p_file_Text;
+	File file_TEXT_temp = (*p_file_Text)->suiv;
+
+	do /*On parcours toute la liste de Text*/
+	{
+		/*Remplacement des Symboles par leurs adresses*/
+		
+		Liste l_op = ((TEXT)((*p_file_Text)->val))->l_operande;
+		while(l_op != NULL){
+			/*Si l'operande est un Symbole*/
+			if (((OPERANDE)(l_op->val))->type == OPER_SYMBOLE){
+				/*On le compare a la file de symbole*/
+				replace_SYMB( ((OPERANDE)(l_op->val)) , p_file_Symb);
+			}
+
+			l_op =l_op->suiv;
+		}
+		
+
+		file_TEXT_temp = file_TEXT_temp->suiv;
+	} while (file_TEXT_temp!=dernier_elem->suiv);
+
+}
+
+/**
+ * remplace le symbole en tant qu'operande par la valeur du decalage associee
+ *
+ * @param  op          Operande a modifier
+ * @param  p_file_Symb file de symbole pour verifier son existence
+ */
+void replace_SYMB(OPERANDE* op, File* p_file_Symb){
+	File dernier_elem = *p_file_Symb;
+	File file_SYMB_temp = (*p_file_Symb)->suiv;
+	char* chaine_op = op->chain;
+
+	do
+	{
+		/*Si on trouve le symbole dans la liste de symboles*/
+		if (!strcasecmp(chaine_op, ((SYMB)(file_SYMB_temp->val))->nom)){
+
+			/*op->chain = (((SYMB)(file_SYMB_temp->val))->decalage) ; TODO*/
+			sprintf(op->chain, "%lf", (((SYMB)(file_SYMB_temp->val))->decalage));
+			op->type = OPER_TARGET;
+		}
+
+		file_SYMB_temp = file_SYMB_temp->suiv;
+	} while (file_SYMB_temp!=dernier_elem->suiv);
+
 }
