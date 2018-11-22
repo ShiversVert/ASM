@@ -148,7 +148,7 @@ int ajout_maillon_data(File* p_file_Data, File* p_file_Lexeme, LEXEME lexeme_cou
 	new_maillon->line_nb = lexeme_courant->line_nb;
 
 	if(lexeme_courant->cat!=DIRECTIVE){	/*Si le lexeme n'est pas une directive (une eventuelle etiquette a deja ete enlevee)*/
-		WARNING_MSG("Erreur ligne %lf, .data peut contienir que des directives\n", lexeme_courant->line_nb);
+		WARNING_MSG("Erreur ligne %.0lf, .data peut contienir que des directives\n", lexeme_courant->line_nb);
 		new_maillon->type = DATA_ERROR;
 
 		do{ /*On saute la ligne du fichier*/
@@ -176,7 +176,6 @@ int ajout_maillon_data(File* p_file_Data, File* p_file_Lexeme, LEXEME lexeme_cou
 			OPERANDE new_operande = calloc(1,sizeof(new_operande));
 			new_operande->chain = ( (LEXEME)((*p_file_Lexeme)->suiv->val) )-> chain;
 			switch(lexeme_courant->cat){
-				/* TODO : Ajouter la gestion des nobmres entre parentheses : base_offset*/
 
 				case CHAINE:
 					new_operande->type = OPER_CHAINE;
@@ -251,7 +250,7 @@ int ajout_maillon_bss(File* p_file_Bss, File* p_file_Lexeme, LEXEME lexeme_coura
 	new_maillon->line_nb = lexeme_courant->line_nb;
 
 	if(lexeme_courant->cat!=DIRECTIVE){	/*Si le lexeme n'est pas une directive*/
-		WARNING_MSG("Erreur ligne %lf, .bss peut contienir que des directives\n", lexeme_courant->line_nb);
+		WARNING_MSG("Erreur ligne %.0lf, .bss peut contienir que des directives\n", lexeme_courant->line_nb);
 		new_maillon->type = BSS_ERROR;
 
 		do{ /*On saute la ligne du fichier*/
@@ -280,7 +279,6 @@ int ajout_maillon_bss(File* p_file_Bss, File* p_file_Lexeme, LEXEME lexeme_coura
 			OPERANDE new_operande = calloc(1,sizeof(new_operande));
 			new_operande->chain = ( (LEXEME)((*p_file_Lexeme)->suiv->val) )-> chain;
 			switch(lexeme_courant->cat){
-				/* TODO : Ajouter la gestion des nobmres entre parentheses : base_offset*/
 
 				case CHAINE:
 					new_operande->type = OPER_CHAINE;
@@ -359,7 +357,7 @@ int ajout_maillon_text(File* p_file_Text, File* p_file_Lexeme, LEXEME lexeme_cou
 	new_maillon->line_nb = lexeme_courant->line_nb;
 
 	if(lexeme_courant->cat!=SYMBOLE){	/*Si le lexeme n'est pas une chaine*/
-		WARNING_MSG("Erreur ligne %lf, \"%s\" n'est pas une instruction\n", lexeme_courant->line_nb, lexeme_courant->chain);
+		WARNING_MSG("Erreur ligne %.0lf, \"%s\" n'est pas une instruction\n", lexeme_courant->line_nb, lexeme_courant->chain);
 		new_maillon->type = TEXT_ERROR;
 
 		do{ /*On saute la ligne du fichier*/
@@ -401,7 +399,7 @@ int ajout_maillon_text(File* p_file_Text, File* p_file_Lexeme, LEXEME lexeme_cou
 						if (( (LEXEME)((*p_file_Lexeme)->suiv->suiv->suiv->val) )->cat  == REGISTRE) { /*Encore suivant*/
 							if (( (LEXEME)((*p_file_Lexeme)->suiv->suiv->suiv->suiv->val) )->cat  == PARENTHESE_D) { /*Encore encore suivant*/
 								new_operande->type = OPER_OFFSET; /*Le premier opperande est l'offset*/
-								nb_op ++;
+								nb_op += 2;
 								liste_operande = ajout_queue(new_operande, liste_operande); /*On l'ajoute a la liste d'OPERANDE*/
 								defiler(p_file_Lexeme); /*On l'enleve de la file de LEXEME*/
 								defiler(p_file_Lexeme); /*On enleve la '('*/
@@ -485,13 +483,13 @@ void calcul_decalage_Data(File* p_file_Data, DATA* p_new_maillon, double* p_offs
 		}
 
 		else if(strcmp( (*p_new_maillon)->operateur , ".space")==0){
-			/*TODO : gerer les nombre hexa et octal (notamment atoll)*/
+			/*TODO : gerer les nombre hexa et octal (notamment atof)*/
 			if (op_temp->type==OPER_DECIMAL){ /*Si l'opperande est bien un nombre*/
-				(*p_offset_data) += (double) atol(op_temp->chain);
+				(*p_offset_data) += atof(op_temp->chain);
 			}
 			else{
 				(*p_new_maillon)->type = DATA_ERROR;
-				WARNING_MSG("Erreur ligne %lf, l'operande %d n'est pas un nombre\n", (*p_new_maillon)->line_nb, cmpt_operande);
+				WARNING_MSG("Erreur ligne %.0lf, l'operande %d n'est pas un nombre\n", (*p_new_maillon)->line_nb, cmpt_operande);
 			}
 		}
 
@@ -502,7 +500,7 @@ void calcul_decalage_Data(File* p_file_Data, DATA* p_new_maillon, double* p_offs
 			}
 			else{
 				(*p_new_maillon)->type = DATA_ERROR;
-				WARNING_MSG("Erreur ligne %lf, l'operande %d n'est pas une chaine de caractere\n", (*p_new_maillon)->line_nb, cmpt_operande);
+				WARNING_MSG("Erreur ligne %.0lf, l'operande %d n'est pas une chaine de caractere\n", (*p_new_maillon)->line_nb, cmpt_operande);
 			}
 		}
 
@@ -566,14 +564,14 @@ void calcul_decalage_Bss(File* p_file_Bss, BSS* p_new_maillon, double* p_offset_
  		op_temp->type = (((OPERANDE)((p_operande_courante)->val))->type);
 
  		if(strcmp((*p_new_maillon)->operateur, ".space")==0){
- 			/*TODO : gerer les nombre hexa et octal (notamment atol)*/
+ 			/*TODO : gerer les nombre hexa et octal (notamment atof)*/
 
  			if (op_temp->type==OPER_DECIMAL){ /*Si l'opperande est bien un nombre*/
- 				(*p_offset_bss) += (double) atol(op_temp->chain);
+ 				(*p_offset_bss) += atof(op_temp->chain);
  			}
  			else{
  				(*p_new_maillon)->type = DATA_ERROR;
- 				WARNING_MSG("Erreur ligne %lf, l'operande %d n'est pas un nombre", (*p_new_maillon)->line_nb, cmpt_operande);
+ 				WARNING_MSG("Erreur ligne %.0lf, l'operande %d n'est pas un nombre", (*p_new_maillon)->line_nb, cmpt_operande);
  			}
  		}
 
@@ -594,7 +592,7 @@ void calcul_decalage_Bss(File* p_file_Bss, BSS* p_new_maillon, double* p_offset_
   *@return Ne retourne rien mais ecrit la valeure du decalage dans le nouveau maillon
   *@brief Fonction a appeler la de la creation d'un maillon TEXT pour verifier 1) l'existence de l'operation 2) Son nb d'operande 3)Le type des operandes
   */
- 
+
 int is_in_dic(TEXT* p_maillon, File file_Dic){
 	int i;
 	OPERANDE operande_courante = calloc(1, sizeof(operande_courante));
@@ -602,6 +600,16 @@ int is_in_dic(TEXT* p_maillon, File file_Dic){
 
 	File dernier_elem = file_Dic;
 	file_Dic = file_Dic->suiv;
+
+
+	/*CAS PARTICULIER DES PSEUDOS INSTRUCTIONS*/
+
+	if(!strcasecmp((*p_maillon)->operateur,"LW")){
+
+	}
+
+
+	/*CAS GENERAL*/
 	/*On parcours le dictionnaire*/
 	do{
 		if(strcasecmp((*p_maillon)->operateur, ((DIC)((file_Dic)->val))->chain)==0){
@@ -617,42 +625,42 @@ int is_in_dic(TEXT* p_maillon, File file_Dic){
 						case 'R':
 							if (operande_courante->type != OPER_REG){
 								(*p_maillon)->type = TEXT_ERROR;
-								WARNING_MSG("Erreur ligne %lf, l'opperande no %d de \"%s\" doit etre un offset\n", (*p_maillon)->line_nb, i, (*p_maillon)->operateur);
+								WARNING_MSG("Erreur ligne %.0lf, l'opperande no %d de \"%s\" doit etre un offset\n", (*p_maillon)->line_nb, i, (*p_maillon)->operateur);
 							}
 							break;
 
 						case 'O':
-							/*if (operande_courante->type != OPER_OFFSET && operande_courante->type!=OPER_TARGET){
+							if (operande_courante->type != OPER_OFFSET && operande_courante->type!=OPER_TARGET){
 								(*p_maillon)->type = TEXT_ERROR;
-								WARNING_MSG("Erreur ligne %lf, l'opperande no %d de \"%s\" doit etre un offset\n", (*p_maillon)->line_nb, i, (*p_maillon)->operateur);
-							}*/
+								WARNING_MSG("Erreur ligne %.0lf, l'opperande no %d de \"%s\" doit etre un offset\n", (*p_maillon)->line_nb, i, (*p_maillon)->operateur);
+							}
 							break;
 
 						case 'B':
 							if (operande_courante->type != OPER_BASE){
 								(*p_maillon)->type = TEXT_ERROR;
-								WARNING_MSG("Erreur ligne %lf, l'opperande no %d de \"%s\" doit etre une base\n", (*p_maillon)->line_nb, i, (*p_maillon)->operateur);
+								WARNING_MSG("Erreur ligne %.0lf, l'opperande no %d de \"%s\" doit etre une base\n", (*p_maillon)->line_nb, i, (*p_maillon)->operateur);
 							}
 							break;
 
 						case 'T':
 							if (operande_courante->type != OPER_DECIMAL && operande_courante->type != OPER_HEXA && operande_courante->type != OPER_DECIMAL && operande_courante->type != OPER_REG){
 								(*p_maillon)->type = TEXT_ERROR;
-								WARNING_MSG("Erreur ligne %lf, l'opperande no %d de \"%s\" doit etre un offset\n", (*p_maillon)->line_nb, i, (*p_maillon)->operateur);
+								WARNING_MSG("Erreur ligne %.0lf, l'opperande no %d de \"%s\" doit etre un offset\n", (*p_maillon)->line_nb, i, (*p_maillon)->operateur);
 							}
 							break;
 
 						case 'I':
 							if (operande_courante->type != OPER_DECIMAL && operande_courante->type != OPER_HEXA){
 								(*p_maillon)->type = TEXT_ERROR;
-								WARNING_MSG("Erreur ligne %lf, l'opperande no %d doit etre une valeure immediate\n", (*p_maillon)->line_nb, i);
+								WARNING_MSG("Erreur ligne %.0lf, l'opperande no %d doit etre une valeure immediate\n", (*p_maillon)->line_nb, i);
 							}
 							break;
 
 						case 'S':
 							if (operande_courante->type != OPER_DECIMAL && operande_courante->type != OPER_HEXA){
 								(*p_maillon)->type = TEXT_ERROR;
-								WARNING_MSG("Erreur ligne %lf, l'opperande no %d doit etre un nombre de decalage\n", (*p_maillon)->line_nb, i);
+								WARNING_MSG("Erreur ligne %.0lf, l'opperande no %d doit etre un nombre de decalage\n", (*p_maillon)->line_nb, i);
 							}
 							break;
 
@@ -665,7 +673,7 @@ int is_in_dic(TEXT* p_maillon, File file_Dic){
 
 			else{
 				(*p_maillon)->type = TEXT_ERROR;
-				WARNING_MSG("Erreur ligne %lf, le nombre d'operateur de \"%s\" est %d au lieu de %d\n", (*p_maillon)->line_nb, (*p_maillon)->operateur, (*p_maillon)->nb_op, ((DIC)((file_Dic)->val))->nb_op );
+				WARNING_MSG("Erreur ligne %.0lf, le nombre d'operateur de \"%s\" est %d au lieu de %d\n", (*p_maillon)->line_nb, (*p_maillon)->operateur, (*p_maillon)->nb_op, ((DIC)((file_Dic)->val))->nb_op );
 				free(operande_courante);
 				return(1);
 			}
@@ -677,7 +685,7 @@ int is_in_dic(TEXT* p_maillon, File file_Dic){
 
 	/*On a parcouru tout le dic sans trouver l'instruction*/
 	(*p_maillon)->type = TEXT_ERROR;
-	WARNING_MSG("Instruction \"%s\" ligne: %lf inconnue\n", (*p_maillon)->operateur, (*p_maillon)->line_nb);
+	WARNING_MSG("Instruction \"%s\" ligne: %.0lf inconnue\n", (*p_maillon)->operateur, (*p_maillon)->line_nb);
 	free(operande_courante);
 	return(1);
 }
@@ -695,18 +703,18 @@ void replace_in_Text(File* p_file_Text, File* p_file_Symb){
 	do /*On parcours toute la liste de Text*/
 	{
 		/*Remplacement des Symboles par leurs adresses*/
-		
+
 		Liste l_op = ((TEXT)((*p_file_Text)->val))->l_operande;
 		while(l_op != NULL){
 			/*Si l'operande est un Symbole*/
 			if (((OPERANDE)(l_op->val))->type == OPER_SYMBOLE){
 				/*On le compare a la file de symbole*/
-				replace_SYMB( ((OPERANDE)(l_op->val)) , p_file_Symb);
+				replace_SYMB( (OPERANDE*)(&(l_op->val)) , p_file_Symb);
 			}
 
 			l_op =l_op->suiv;
 		}
-		
+
 
 		file_TEXT_temp = file_TEXT_temp->suiv;
 	} while (file_TEXT_temp!=dernier_elem->suiv);
@@ -716,22 +724,22 @@ void replace_in_Text(File* p_file_Text, File* p_file_Symb){
 /**
  * remplace le symbole en tant qu'operande par la valeur du decalage associee
  *
- * @param  op          Operande a modifier
+ * @param  *op          Operande a modifier
  * @param  p_file_Symb file de symbole pour verifier son existence
  */
+
 void replace_SYMB(OPERANDE* op, File* p_file_Symb){
 	File dernier_elem = *p_file_Symb;
 	File file_SYMB_temp = (*p_file_Symb)->suiv;
-	char* chaine_op = op->chain;
+	char* chaine_op = (*op)->chain;
 
 	do
 	{
 		/*Si on trouve le symbole dans la liste de symboles*/
 		if (!strcasecmp(chaine_op, ((SYMB)(file_SYMB_temp->val))->nom)){
 
-			/*op->chain = (((SYMB)(file_SYMB_temp->val))->decalage) ; TODO*/
-			sprintf(op->chain, "%lf", (((SYMB)(file_SYMB_temp->val))->decalage));
-			op->type = OPER_TARGET;
+			sprintf((*op)->chain, "%.0lf", (((SYMB)(file_SYMB_temp->val))->decalage));
+			(*op)->type = OPER_TARGET;
 		}
 
 		file_SYMB_temp = file_SYMB_temp->suiv;

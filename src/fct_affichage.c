@@ -84,15 +84,15 @@ void afficher_maillon_DATA(void* maillon){
 			break;
 		case DATA_ERROR:
 			type = "DATA_ERROR";
-			WARNING_MSG("%s \t\t%lf\t\t%s\n", type, line_nb, operateur);
+			WARNING_MSG("%s \t\t%.0lf\t\t%s\n", type, line_nb, operateur);
 			break;
 	}
 
 	if(((DATA)(maillon))->type != DATA_ERROR) {
 		printf("%s\t\t", type);
 		printf("%s\t\t", operateur);
-		printf("line : %lf\t\t", line_nb);
-		printf("dec : %lf\t\t", decalage);
+		printf("line : %.0lf\t\t", line_nb);
+		printf("dec : %.0lf\t\t", decalage);
 		printf("nb_op : %d\t\t", nb_op);
 		afficher_liste(( (DATA)(maillon))->l_operande , (*afficher_maillon_OPERANDE));
 		printf("\n");
@@ -119,15 +119,15 @@ void afficher_maillon_BSS(void* maillon){
 			break;
 		case BSS_ERROR:
 			type = "BSS_ERROR";
-			WARNING_MSG("%s \t\tline : %lf\t\t%s\n", type, line_nb, operateur);
+			WARNING_MSG("%s \t\tline : %.0lf\t\t%s\n", type, line_nb, operateur);
 			break;
 	}
 
 	if(((BSS)(maillon))->type != BSS_ERROR) {
 		printf("%s\t\t", type);
 		printf("%s\t\t", operateur);
-		printf("line : %lf\t\t", line_nb);
-		printf("dec : %lf\t\t", decalage);
+		printf("line : %.0lf\t\t", line_nb);
+		printf("dec : %.0lf\t\t", decalage);
 		printf("nb_op : %d\t\t", nb_op);
 		afficher_liste(( (BSS)(maillon))->l_operande , (*afficher_maillon_OPERANDE));
 		printf("\n");
@@ -154,15 +154,15 @@ void afficher_maillon_TEXT(void* maillon){
 
 		case TEXT_ERROR:
 			type = "TEXT_ERROR";
-			WARNING_MSG("%s \t\tline : %lf\t\t%s\n", type, line_nb, operateur);
+			WARNING_MSG("%s \t\tline : %.0lf\t\t%s\n", type, line_nb, operateur);
 			break;
 	}
 
 	if(((TEXT)(maillon))->type != TEXT_ERROR) {
 		printf("%s\t\t", type);
 		printf("%s\t\t", operateur);
-		printf("line : %lf\t\t", line_nb);
-		printf("dec : %lf\t\t", decalage);
+		printf("line : %.0lf\t\t", line_nb);
+		printf("dec : %.0lf\t\t", decalage);
 		printf("nb_op : %d\t\t", nb_op);
 		afficher_liste( ( ((TEXT)(maillon))->l_operande) , (*afficher_maillon_OPERANDE));
 		printf("\n");
@@ -239,8 +239,8 @@ void afficher_maillon_SYMB(void* maillon){
 
 	printf("%s\t", zone);
 	printf("%s\t", nom);
-	printf("line:%lf\t", line_nb);
-	printf("decalage:%lf\n", decalage);
+	printf("line:%.0lf\t", line_nb);
+	printf("decalage:%.0lf\n", decalage);
 
 }
 
