@@ -35,8 +35,8 @@ void calcul_decalage_Text(File* p_file_Text, TEXT* p_new_maillon, double* p_offs
 void calcul_decalage_Bss(File* p_file_Bss, BSS* p_new_maillon, double* p_offset_bss);
 
 int is_in_dic(TEXT* p_maillon, File file_Dic);
-void replace_in_Text(File* p_file_Text, File* p_file_Symb);
-void replace_SYMB(OPERANDE* op, File* p_file_Symb);
+void replace_in_Text(File* p_file_Text, File* p_file_Symb, File file_Dic);
+int replace_SYMB(OPERANDE* op, File* p_file_Symb);
 
 
 #endif /*_AUTOMATE_GRAMM_H_*/

@@ -53,7 +53,7 @@ void automate_grammatical(File* p_file_Lexeme, File* p_file_Text, File* p_file_B
 	}
 
 	free(lexeme_courant);
-	replace_in_Text(p_file_Text, p_file_Symb);
+	replace_in_Text(p_file_Text, p_file_Symb, file_Dic);
 }
 
 /**
@@ -454,7 +454,7 @@ int ajout_maillon_text(File* p_file_Text, File* p_file_Lexeme, LEXEME lexeme_cou
 	calcul_decalage_Text(p_file_Text, &new_maillon, p_offset_text);
 
 	/*Verification de l'existence de l'operateur et des argument*/
-	is_in_dic(&new_maillon, file_Dic);
+	/*is_in_dic(&new_maillon, file_Dic);*/
 	/*Ajout du nouveau maillon a la file de Text*/
 	*p_file_Text = enfiler(new_maillon, *p_file_Text);
 	return(0);
@@ -594,6 +594,7 @@ void calcul_decalage_Bss(File* p_file_Bss, BSS* p_new_maillon, double* p_offset_
   */
 
 int is_in_dic(TEXT* p_maillon, File file_Dic){
+	/*TODO modifier le moment d'utilisation de is_in_dic et le mettre apres/pendant replace_in_Text*/
 	int i;
 	OPERANDE operande_courante = calloc(1, sizeof(operande_courante));
 	Liste l_operande = (*p_maillon)->l_operande;
@@ -605,12 +606,71 @@ int is_in_dic(TEXT* p_maillon, File file_Dic){
 	/*CAS PARTICULIER DES PSEUDOS INSTRUCTIONS*/
 
 	if(!strcasecmp((*p_maillon)->operateur,"LW")){
+		/*TODO*/
+		if( (*p_maillon)->nb_op==2 ){
+			if ( ((OPERANDE)(((*p_maillon)->l_operande)->val))->type ==  OPER_REG && ((OPERANDE)(((*p_maillon)->l_operande)->suiv->val))->type ==  OPER_SYMBOLE)
+			{
+				/*Si on trouve une instruction
+					LW $R, etiquette
+				On la remplace par
+					LUI $at, etiquette_poidsfort>>16
+					LW $t1, etiquette_poidsfaible($at)
+				*/
+				INFO_MSG("BITE");
+				/*------------------------------------------*/
+				/*--------Modification du maillon LW--------*/
+				/*------------------------------------------*/
+				char* lui = "lui";
+				(*p_maillon)->operateur = lui;
 
+				((OPERANDE)(((*p_maillon)->l_operande)->val))->chain = "$at";
+
+				/*TODO : TROUVER LE BON TYPE POUR etiquette_poidsfort>>16 */
+				/*TODO : TROUVER COMMENT FAIRE etiquette_poidsfort>>16*/
+				((OPERANDE)(((*p_maillon)->l_operande)->suiv->val))->type = OPER_DECIMAL; 
+				((OPERANDE)(((*p_maillon)->l_operande)->suiv->val))->chain = "etiquette_poidsfort>>16"; 
+
+				/*------------------------------------------*/
+				/*Creation et remplissage du nouveau maillon*/
+				/*------------------------------------------*/
+				TEXT new_maillon_text = calloc(1,sizeof(*new_maillon_text));
+				
+				char* operateur = "LW";
+				new_maillon_text->operateur = operateur;
+				new_maillon_text->type = TEXT_INST;
+				new_maillon_text->nb_op = 3;
+				new_maillon_text->line_nb = -1;
+				new_maillon_text->decalage = (*p_maillon)->decalage+4;
+
+				/*Creation et remplissage de la liste d'operandes*/
+
+				OPERANDE op1 = calloc(1,sizeof(*op1));
+				op1->type = OPER_REG;
+				op1->chain = "$t1";
+				OPERANDE op2 = calloc(1,sizeof(*op2));
+				op2->type = OPER_OFFSET;
+				op2->chain = "etiquette_poidsfaible";  /*TODO : POIDS FORTS DE L'ETIQUETTE*/
+				OPERANDE op3 = calloc(1,sizeof(*op3));
+				op3->type = OPER_BASE;
+				op3->chain = "$at";
+
+				Liste new_l_op = calloc(1, sizeof(*new_l_op));
+				new_l_op=ajout_tete((&op3), new_l_op);
+				new_l_op=ajout_tete((&op2), new_l_op);
+				new_l_op=ajout_tete((&op1), new_l_op);
+								
+				new_maillon_text->l_operande = new_l_op;
+
+				/*TODO : REFAIRE LES BRANCHEMENTS DE LA FILE DE TEXT*/
+				return(1);
+			}
+		}
 	}
 
 
 	/*CAS GENERAL*/
 	/*On parcours le dictionnaire*/
+
 	do{
 		if(strcasecmp((*p_maillon)->operateur, ((DIC)((file_Dic)->val))->chain)==0){
 			/*On a trouve notre operateur dans le dictionnaire*/
@@ -618,48 +678,48 @@ int is_in_dic(TEXT* p_maillon, File file_Dic){
 				/*Si le nombre d'operateur est le bon*/
 				char* type_op = ((DIC)((file_Dic)->val))->type_op;
 				for(i=0; i<(*p_maillon)->nb_op; i++){
-					operande_courante->chain = ((OPERANDE)(l_operande->val))->chain;
-					operande_courante->type = ((OPERANDE)(l_operande->val))->type;
+					type_operande type_op_courrante = ((OPERANDE)(l_operande->val))->type;
 
 					switch (type_op[i]) {
+						/*TODO Remplacer l'erreur -> operande et pas operateur*/
 						case 'R':
-							if (operande_courante->type != OPER_REG){
-								(*p_maillon)->type = TEXT_ERROR;
+							if (type_op_courrante != OPER_REG){
+								((OPERANDE)(l_operande->val))->type = OPER_ERROR;
 								WARNING_MSG("Erreur ligne %.0lf, l'opperande no %d de \"%s\" doit etre un offset\n", (*p_maillon)->line_nb, i, (*p_maillon)->operateur);
 							}
 							break;
 
 						case 'O':
-							if (operande_courante->type != OPER_OFFSET && operande_courante->type!=OPER_TARGET){
-								(*p_maillon)->type = TEXT_ERROR;
+							if (type_op_courrante != OPER_OFFSET && type_op_courrante!=OPER_TARGET){
+								((OPERANDE)(l_operande->val))->type = OPER_ERROR;
 								WARNING_MSG("Erreur ligne %.0lf, l'opperande no %d de \"%s\" doit etre un offset\n", (*p_maillon)->line_nb, i, (*p_maillon)->operateur);
 							}
 							break;
 
 						case 'B':
-							if (operande_courante->type != OPER_BASE){
-								(*p_maillon)->type = TEXT_ERROR;
+							if (type_op_courrante != OPER_BASE){
+								((OPERANDE)(l_operande->val))->type = OPER_ERROR;
 								WARNING_MSG("Erreur ligne %.0lf, l'opperande no %d de \"%s\" doit etre une base\n", (*p_maillon)->line_nb, i, (*p_maillon)->operateur);
 							}
 							break;
 
 						case 'T':
-							if (operande_courante->type != OPER_DECIMAL && operande_courante->type != OPER_HEXA && operande_courante->type != OPER_DECIMAL && operande_courante->type != OPER_REG){
-								(*p_maillon)->type = TEXT_ERROR;
+							if (type_op_courrante != OPER_DECIMAL && type_op_courrante != OPER_HEXA && type_op_courrante != OPER_DECIMAL && type_op_courrante != OPER_REG && type_op_courrante != OPER_TARGET){
+								((OPERANDE)(l_operande->val))->type = OPER_ERROR;
 								WARNING_MSG("Erreur ligne %.0lf, l'opperande no %d de \"%s\" doit etre un offset\n", (*p_maillon)->line_nb, i, (*p_maillon)->operateur);
 							}
 							break;
 
 						case 'I':
-							if (operande_courante->type != OPER_DECIMAL && operande_courante->type != OPER_HEXA){
-								(*p_maillon)->type = TEXT_ERROR;
+							if (type_op_courrante != OPER_DECIMAL && type_op_courrante != OPER_HEXA){
+								((OPERANDE)(l_operande->val))->type = OPER_ERROR;
 								WARNING_MSG("Erreur ligne %.0lf, l'opperande no %d doit etre une valeure immediate\n", (*p_maillon)->line_nb, i);
 							}
 							break;
 
 						case 'S':
-							if (operande_courante->type != OPER_DECIMAL && operande_courante->type != OPER_HEXA){
-								(*p_maillon)->type = TEXT_ERROR;
+							if (type_op_courrante != OPER_DECIMAL && type_op_courrante != OPER_HEXA){
+								((OPERANDE)(l_operande->val))->type = OPER_ERROR;
 								WARNING_MSG("Erreur ligne %.0lf, l'opperande no %d doit etre un nombre de decalage\n", (*p_maillon)->line_nb, i);
 							}
 							break;
@@ -696,7 +756,7 @@ int is_in_dic(TEXT* p_maillon, File file_Dic){
  * @param p_file_Text File de text a parcourir
  * @param p_file_Symb Symboles ayant ete definis
  */
-void replace_in_Text(File* p_file_Text, File* p_file_Symb){
+void replace_in_Text(File* p_file_Text, File* p_file_Symb, File file_Dic){
 	File dernier_elem = *p_file_Text;
 	File file_TEXT_temp = (*p_file_Text)->suiv;
 
@@ -704,7 +764,7 @@ void replace_in_Text(File* p_file_Text, File* p_file_Symb){
 	{
 		/*Remplacement des Symboles par leurs adresses*/
 
-		Liste l_op = ((TEXT)((*p_file_Text)->val))->l_operande;
+		Liste l_op = ((TEXT)(file_TEXT_temp->val))->l_operande;
 		while(l_op != NULL){
 			/*Si l'operande est un Symbole*/
 			if (((OPERANDE)(l_op->val))->type == OPER_SYMBOLE){
@@ -715,7 +775,7 @@ void replace_in_Text(File* p_file_Text, File* p_file_Symb){
 			l_op =l_op->suiv;
 		}
 
-
+		is_in_dic( (TEXT*)(&(file_TEXT_temp->val)), file_Dic);
 		file_TEXT_temp = file_TEXT_temp->suiv;
 	} while (file_TEXT_temp!=dernier_elem->suiv);
 
@@ -728,21 +788,25 @@ void replace_in_Text(File* p_file_Text, File* p_file_Symb){
  * @param  p_file_Symb file de symbole pour verifier son existence
  */
 
-void replace_SYMB(OPERANDE* op, File* p_file_Symb){
+int replace_SYMB(OPERANDE* op, File* p_file_Symb){
 	File dernier_elem = *p_file_Symb;
 	File file_SYMB_temp = (*p_file_Symb)->suiv;
 	char* chaine_op = (*op)->chain;
 
 	do
-	{
+	{/*On parcours la liste de symboles*/
+
 		/*Si on trouve le symbole dans la liste de symboles*/
 		if (!strcasecmp(chaine_op, ((SYMB)(file_SYMB_temp->val))->nom)){
 
 			sprintf((*op)->chain, "%.0lf", (((SYMB)(file_SYMB_temp->val))->decalage));
 			(*op)->type = OPER_TARGET;
+			return(1);
 		}
 
 		file_SYMB_temp = file_SYMB_temp->suiv;
 	} while (file_SYMB_temp!=dernier_elem->suiv);
 
+	WARNING_MSG("L'etiquette \"%s\" n'est jamais definie\n", (*op)->chain);
+	return(0);
 }

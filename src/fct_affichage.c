@@ -162,11 +162,12 @@ void afficher_maillon_TEXT(void* maillon){
 		printf("%s\t\t", type);
 		printf("%s\t\t", operateur);
 		printf("line : %.0lf\t\t", line_nb);
+	}
 		printf("dec : %.0lf\t\t", decalage);
 		printf("nb_op : %d\t\t", nb_op);
 		afficher_liste( ( ((TEXT)(maillon))->l_operande) , (*afficher_maillon_OPERANDE));
 		printf("\n");
-	}
+	
 }
 
 /**
