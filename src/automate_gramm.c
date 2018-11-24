@@ -593,8 +593,10 @@ void calcul_decalage_Bss(File* p_file_Bss, BSS* p_new_maillon, double* p_offset_
   *@brief Fonction a appeler la de la creation d'un maillon TEXT pour verifier 1) l'existence de l'operation 2) Son nb d'operande 3)Le type des operandes
   */
 
-int is_in_dic(TEXT* p_maillon, File file_Dic){
-	/*TODO modifier le moment d'utilisation de is_in_dic et le mettre apres/pendant replace_in_Text*/
+int is_in_dic(File file_Dic, File* p_file_Text_maillon_courant){
+	/*TODO DONE?modifier le moment d'utilisation de is_in_dic et le mettre apres/pendant replace_in_Text*/
+	TEXT* p_maillon = (TEXT*)(&((*p_file_Text_maillon_courant)->val));
+
 	int i;
 	OPERANDE operande_courante = calloc(1, sizeof(operande_courante));
 	Liste l_operande = (*p_maillon)->l_operande;
@@ -606,9 +608,8 @@ int is_in_dic(TEXT* p_maillon, File file_Dic){
 	/*CAS PARTICULIER DES PSEUDOS INSTRUCTIONS*/
 
 	if(!strcasecmp((*p_maillon)->operateur,"LW")){
-		/*TODO*/
 		if( (*p_maillon)->nb_op==2 ){
-			if ( ((OPERANDE)(((*p_maillon)->l_operande)->val))->type ==  OPER_REG && ((OPERANDE)(((*p_maillon)->l_operande)->suiv->val))->type ==  OPER_SYMBOLE)
+			if ( ((OPERANDE)(((*p_maillon)->l_operande)->val))->type ==  OPER_REG && ((OPERANDE)(((*p_maillon)->l_operande)->suiv->val))->type ==  OPER_TARGET)
 			{
 				/*Si on trouve une instruction
 					LW $R, etiquette
@@ -616,7 +617,8 @@ int is_in_dic(TEXT* p_maillon, File file_Dic){
 					LUI $at, etiquette_poidsfort>>16
 					LW $t1, etiquette_poidsfaible($at)
 				*/
-				INFO_MSG("BITE");
+				INFO_MSG("TEST");
+
 				/*------------------------------------------*/
 				/*--------Modification du maillon LW--------*/
 				/*------------------------------------------*/
@@ -654,14 +656,22 @@ int is_in_dic(TEXT* p_maillon, File file_Dic){
 				op3->type = OPER_BASE;
 				op3->chain = "$at";
 
-				Liste new_l_op = calloc(1, sizeof(*new_l_op));
-				new_l_op=ajout_tete((&op3), new_l_op);
-				new_l_op=ajout_tete((&op2), new_l_op);
-				new_l_op=ajout_tete((&op1), new_l_op);
+				Liste new_l_op = NULL;
+				new_l_op=ajout_tete((op3), new_l_op);
+				new_l_op=ajout_tete((op2), new_l_op);
+				new_l_op=ajout_tete((op1), new_l_op);
 								
 				new_maillon_text->l_operande = new_l_op;
 
-				/*TODO : REFAIRE LES BRANCHEMENTS DE LA FILE DE TEXT*/
+				/*------------------------------------------*/
+				/*----------NOUVEAUX  BRANCHEMENTS----------*/
+				/*------------------------------------------*/
+				File new_maillon_file = calloc(1, sizeof(*new_maillon_file));
+				new_maillon_file->val = new_maillon_text;
+				new_maillon_file->suiv = (*p_file_Text_maillon_courant)->suiv;
+
+				(*p_file_Text_maillon_courant)->suiv = new_maillon_file;
+				
 				return(1);
 			}
 		}
@@ -681,12 +691,13 @@ int is_in_dic(TEXT* p_maillon, File file_Dic){
 					type_operande type_op_courrante = ((OPERANDE)(l_operande->val))->type;
 
 					switch (type_op[i]) {
-						/*TODO Remplacer l'erreur -> operande et pas operateur*/
+
 						case 'R':
 							if (type_op_courrante != OPER_REG){
 								((OPERANDE)(l_operande->val))->type = OPER_ERROR;
 								WARNING_MSG("Erreur ligne %.0lf, l'opperande no %d de \"%s\" doit etre un offset\n", (*p_maillon)->line_nb, i, (*p_maillon)->operateur);
 							}
+							else is_registre((OPERANDE*)(&(l_operande->val)), (*p_maillon)->line_nb);
 							break;
 
 						case 'O':
@@ -701,6 +712,7 @@ int is_in_dic(TEXT* p_maillon, File file_Dic){
 								((OPERANDE)(l_operande->val))->type = OPER_ERROR;
 								WARNING_MSG("Erreur ligne %.0lf, l'opperande no %d de \"%s\" doit etre une base\n", (*p_maillon)->line_nb, i, (*p_maillon)->operateur);
 							}
+							else is_registre((OPERANDE*)(&(l_operande->val)), (*p_maillon)->line_nb);
 							break;
 
 						case 'T':
@@ -735,6 +747,7 @@ int is_in_dic(TEXT* p_maillon, File file_Dic){
 				(*p_maillon)->type = TEXT_ERROR;
 				WARNING_MSG("Erreur ligne %.0lf, le nombre d'operateur de \"%s\" est %d au lieu de %d\n", (*p_maillon)->line_nb, (*p_maillon)->operateur, (*p_maillon)->nb_op, ((DIC)((file_Dic)->val))->nb_op );
 				free(operande_courante);
+				free(p_maillon);
 				return(1);
 			}
 		}
@@ -775,7 +788,7 @@ void replace_in_Text(File* p_file_Text, File* p_file_Symb, File file_Dic){
 			l_op =l_op->suiv;
 		}
 
-		is_in_dic( (TEXT*)(&(file_TEXT_temp->val)), file_Dic);
+		is_in_dic(file_Dic, &file_TEXT_temp);
 		file_TEXT_temp = file_TEXT_temp->suiv;
 	} while (file_TEXT_temp!=dernier_elem->suiv);
 
@@ -809,4 +822,93 @@ int replace_SYMB(OPERANDE* op, File* p_file_Symb){
 
 	WARNING_MSG("L'etiquette \"%s\" n'est jamais definie\n", (*op)->chain);
 	return(0);
+}
+
+
+int is_registre(OPERANDE* p_op, double line_nb){
+	char* registre = (*p_op)->chain; char reg[3];
+	int reg_int;
+
+	if(!strcasecmp(registre, "$zero")){return(1);}
+	if((!strcasecmp(registre, "$at") || !strcasecmp(registre, "$1")) && line_nb!=-1 ){
+		(*p_op)->type = OPER_ERROR;
+		WARNING_MSG("Erreur ligne %.0lf : le registre \"%s\" est reserve au systeme\n", line_nb, registre);	return(0);
+	}
+	if(strlen(registre)>3){
+		(*p_op)->type = OPER_ERROR;
+		WARNING_MSG("Erreur ligne %.0lf : le registre \"%s\" n'existe pas\n", line_nb, registre); return(0);
+	}
+
+	if(isdigit(registre[1])){/*Si le premier caractere du registre est un chiffre => Registre*/
+		if (registre[2]=='\0'){
+			return(1); /*Le registre ne contient qu'un carac qui est un chiffre*/
+		}
+		else if(isdigit(registre[2])){ /*Le registre contient deux carac qui ne sont que des chiffres*/
+			reg[0] = registre[1];reg[0] = registre[2];
+			reg_int= strtol(reg, (char **)NULL, 10);
+			if (reg_int>=0 && reg_int<=31){
+				if(reg_int == 26 || reg_int==27){
+					(*p_op)->type = OPER_ERROR;
+					WARNING_MSG("Erreur ligne %.0lf : le registre \"%s\" est reserve au kernel\n", line_nb, registre); return(0);
+				}
+				return(1);
+			}
+		}
+		else{ /*Le deuxieme carac du registre est une lettre IMPOSSIBLE*/
+			(*p_op)->type = OPER_ERROR;
+			WARNING_MSG("Erreur ligne %.0lf : le registre \"%s\" n'existe pas\n", line_nb, registre); return(0);
+		}
+	}
+
+	else{ /*Sinon (1er carac n'est pas un chiffre) => Mnemonique*/
+		if(registre[1]=='a'){
+			if(registre[2]=='t'){return 1;}
+			if(isdigit(registre[2])){
+				if (atoi(&registre[2])<=3){return 1;}
+			}
+			(*p_op)->type = OPER_ERROR;
+			WARNING_MSG("Erreur ligne %.0lf : le registre \"%s\" n'existe pas\n", line_nb, registre);return(0);
+		}
+
+		if(registre[1]=='v'){
+			if(isdigit(registre[2])){
+				if (atoi(&registre[2])<=1){return 1;}
+			}
+			(*p_op)->type = OPER_ERROR;
+			WARNING_MSG("Erreur ligne %.0lf : le registre \"%s\" n'existe pas\n", line_nb, registre);return(0);
+		}
+
+		if(registre[1]=='t'){
+			if(isdigit(registre[2])){return 1;}
+			(*p_op)->type = OPER_ERROR;
+			WARNING_MSG("Erreur ligne %.0lf : le registre \"%s\" n'existe pas\n", line_nb, registre);return(0);
+		}
+
+		if(registre[1]=='s'){
+			if(registre[2]=='p'){return 1;}
+			if(isdigit(registre[2])){
+				if (atoi(&registre[2])<=7){return 1;}
+			}
+			(*p_op)->type = OPER_ERROR;
+			WARNING_MSG("Erreur ligne %.0lf : le registre \"%s\" n'existe pas\n", line_nb, registre);return(0);
+		}
+
+		if(registre[1]=='k'){
+			if(isdigit(registre[2])){
+				if (atoi(&registre[2])<=1){
+					(*p_op)->type = OPER_ERROR;
+					WARNING_MSG("Erreur ligne %.0lf : le registre \"%s\" est reserve au kernel\n", line_nb, registre); return(0);
+				}
+			}
+			(*p_op)->type = OPER_ERROR;
+			WARNING_MSG("Erreur ligne %.0lf : le registre \"%s\" n'existe pas\n", line_nb, registre);return(0);
+		}
+		if(registre[1]=='g' && registre[2]=='p'){return 1;}
+		if(registre[1]=='f' && registre[2]=='p'){return 1;}
+		if(registre[1]=='r' && registre[2]=='a'){return 1;}
+
+		(*p_op)->type = OPER_ERROR;
+		WARNING_MSG("Erreur ligne %.0lf : le registre \"%s\" n'existe pas\n", line_nb, registre);return(0);
+	}
+	return 0;
 }

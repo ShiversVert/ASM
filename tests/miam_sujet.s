@@ -3,12 +3,12 @@
 .set noreorder
 .text
     Lw $t0 , lunchtime          #0
-    LW $6, -200($7)             #8
-    ADDI $t1,$zero,8            #12
+    LW $6, -200($k0)             #8
+    ADDI $t1,$at,8            #12
 boucle:                         #16
-    BEQ $t0 , $t1 , byebye      #16
+    BEQ $t0 , $t12 , byebye      #16
     NOP                         #20
-    addi $t1 , $t1 , 1          #24
+    addi $t1 , $32 , 1          #24
     J boucle                    #26
     NOP
 byebye:
