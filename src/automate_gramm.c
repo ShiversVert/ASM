@@ -601,9 +601,80 @@ void calcul_decalage_Bss(File* p_file_Bss, BSS* p_new_maillon, double* p_offset_
   *@brief Fonction a appeler la de la creation d'un maillon TEXT pour verifier 1) l'existence de l'operation 2) Son nb d'operande 3)Le type des operandes
   */
 
+/**
+ * Permet de trouver et de remplacer les Symboles par la valeur de decalage associee
+ *
+ * @param p_file_Text File de text a parcourir
+ * @param p_file_Symb Symboles ayant ete definis
+ */
+void replace_in_Text(File* p_file_Text, File* p_file_Symb, File file_Dic){
+	File dernier_elem = *p_file_Text;
+	File file_TEXT_temp = (*p_file_Text)->suiv;
+
+	do /*On parcours toute la liste de Text*/
+	{
+		/*Remplacement des Symboles par leurs adresses*/
+
+		Liste l_op = ((TEXT)(file_TEXT_temp->val))->l_operande;
+		while(l_op != NULL){
+			/*Si l'operande est un Symbole*/
+			if (((OPERANDE)(l_op->val))->type == OPER_SYMBOLE){
+				/*On le compare a la file de symbole*/
+				replace_SYMB( (OPERANDE*)(&(l_op->val)) , p_file_Symb);
+			}
+
+			l_op =l_op->suiv;
+		}
+
+		is_in_dic(file_Dic, &file_TEXT_temp);
+		file_TEXT_temp = file_TEXT_temp->suiv;
+	} while (file_TEXT_temp!=dernier_elem->suiv);
+
+}
+
+/**
+ * Remplace le symbole donne en parametre 1 par la valeur de son decalage si il le trouve dans la file de symbole donnee en param 2
+ *
+ * @param  op          OPerenade courante contenant un symbole
+ * @param  p_file_Symb file des symboles connus
+ *
+ * @return         retourne 1 si tout se passe bien, 0 sinon
+ */
+
+int replace_SYMB(OPERANDE* op, File* p_file_Symb){
+	File dernier_elem = *p_file_Symb;
+	File file_SYMB_temp = (*p_file_Symb)->suiv;
+	char* chaine_op = (*op)->chain;
+
+	do
+	{/*On parcours la liste de symboles*/
+
+		/*Si on trouve le symbole dans la liste de symboles*/
+		if (!strcasecmp(chaine_op, ((SYMB)(file_SYMB_temp->val))->nom)){
+
+			sprintf((*op)->chain, "%.0lf", (((SYMB)(file_SYMB_temp->val))->decalage));
+			(*op)->type = OPER_TARGET;
+			return(1);
+		}
+
+		file_SYMB_temp = file_SYMB_temp->suiv;
+	} while (file_SYMB_temp!=dernier_elem->suiv);
+
+	WARNING_MSG("L'etiquette \"%s\" n'est jamais definie\n", (*op)->chain);
+	return(0);
+}
+
+/**
+ * Verifie l'existence d'une instruction et ses operandes.
+ *
+ * @param  file_Dic                    File de dictionnaire
+ * @param  p_file_Text_maillon_courant pointeur sur le maillon courant de la file de texte, permet d'inserer des instruction si on rencontre une peusdo instruction
+ *
+ * @return         retourne 1 si tout se passe bien, 0 sinon
+ */
 int is_in_dic(File file_Dic, File* p_file_Text_maillon_courant){
-	/*TODO DONE?modifier le moment d'utilisation de is_in_dic et le mettre apres/pendant replace_in_Text*/
-	TEXT* p_maillon = (TEXT*)(&((*p_file_Text_maillon_courant)->val));
+
+	TEXT* p_maillon = (TEXT*)(&((*p_file_Text_maillon_courant)->val)); /*Utile si on veut rajouter un maillon*/
 
 	int i;
 	OPERANDE operande_courante = calloc(1, sizeof(operande_courante));
@@ -771,67 +842,13 @@ int is_in_dic(File file_Dic, File* p_file_Text_maillon_courant){
 }
 
 /**
- * Permet de trouver et de remplacer les Symboles par la valeur de decalage associee
+ * Verifie que l'opperande courrante (qui est un registre) est un registre existant
  *
- * @param p_file_Text File de text a parcourir
- * @param p_file_Symb Symboles ayant ete definis
- */
-void replace_in_Text(File* p_file_Text, File* p_file_Symb, File file_Dic){
-	File dernier_elem = *p_file_Text;
-	File file_TEXT_temp = (*p_file_Text)->suiv;
-
-	do /*On parcours toute la liste de Text*/
-	{
-		/*Remplacement des Symboles par leurs adresses*/
-
-		Liste l_op = ((TEXT)(file_TEXT_temp->val))->l_operande;
-		while(l_op != NULL){
-			/*Si l'operande est un Symbole*/
-			if (((OPERANDE)(l_op->val))->type == OPER_SYMBOLE){
-				/*On le compare a la file de symbole*/
-				replace_SYMB( (OPERANDE*)(&(l_op->val)) , p_file_Symb);
-			}
-
-			l_op =l_op->suiv;
-		}
-
-		is_in_dic(file_Dic, &file_TEXT_temp);
-		file_TEXT_temp = file_TEXT_temp->suiv;
-	} while (file_TEXT_temp!=dernier_elem->suiv);
-
-}
-
-/**
- * remplace le symbole en tant qu'operande par la valeur du decalage associee
+ * @param  p_op    operande courante contenant un regisre
+ * @param  line_nb numero de ligne de l'operande pour afficher une erreur si besoin
  *
- * @param  *op          Operande a modifier
- * @param  p_file_Symb file de symbole pour verifier son existence
+ * @return         retourne 1 si tout se passe bien, 0 sinon
  */
-
-int replace_SYMB(OPERANDE* op, File* p_file_Symb){
-	File dernier_elem = *p_file_Symb;
-	File file_SYMB_temp = (*p_file_Symb)->suiv;
-	char* chaine_op = (*op)->chain;
-
-	do
-	{/*On parcours la liste de symboles*/
-
-		/*Si on trouve le symbole dans la liste de symboles*/
-		if (!strcasecmp(chaine_op, ((SYMB)(file_SYMB_temp->val))->nom)){
-
-			sprintf((*op)->chain, "%.0lf", (((SYMB)(file_SYMB_temp->val))->decalage));
-			(*op)->type = OPER_TARGET;
-			return(1);
-		}
-
-		file_SYMB_temp = file_SYMB_temp->suiv;
-	} while (file_SYMB_temp!=dernier_elem->suiv);
-
-	WARNING_MSG("L'etiquette \"%s\" n'est jamais definie\n", (*op)->chain);
-	return(0);
-}
-
-
 int is_registre(OPERANDE* p_op, double line_nb){
 	char* registre = (*p_op)->chain; char reg[3];
 	int reg_int;
