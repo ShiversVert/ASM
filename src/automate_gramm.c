@@ -1,11 +1,14 @@
 #include <automate_gramm.h>
 
-/*@param p_file_Lexeme pointeur sur la file de Lexeme a traiter
- *@param p_file_Text pointeur sur la file d'element .Text a remplir
- *@param p_file_Bss pointeur sur la file d'element .Bss a remplir
- *@param p_file_Data pointeur sur la file d'element .Data a remplir
- *@return
- *@brief
+/**
+ * Fonction principale de l'automate grammatical
+ *
+ * @param p_file_Lexeme pointeur sur la file de Lexeme a traiter
+ * @param p_file_Text   pointeur sur la file d'element .Text a remplir
+ * @param p_file_Bss    pointeur sur la file d'element .Bss a remplir
+ * @param p_file_Data   pointeur sur la file d'element .Data a remplir
+ * @param p_file_Symb   pointeur sur la file d'element de Symb a remplir
+ * @param file_Dic      file de Dictionnaire
  */
 
 void automate_grammatical(File* p_file_Lexeme, File* p_file_Text, File* p_file_Bss, File* p_file_Data, File* p_file_Symb, File file_Dic){
@@ -56,15 +59,19 @@ void automate_grammatical(File* p_file_Lexeme, File* p_file_Text, File* p_file_B
 	replace_in_Text(p_file_Text, p_file_Symb, file_Dic);
 }
 
+
 /**
- * @param p_file_Lexeme pointeur sur la file de Lexeme a traiter
- * @param S Etat de la machine a etat, passe par adresse
- * @return Retourne 1 si des lexemes ont etes defiles, 0 sinon
- * @brief Permet de verifier si le lexeme courant est une instruction :
- * .set noreorder et la defile
+ * Permet de verifier si le lexeme courant est une instruction :
+ * 	.set noreorder et la defile
  *	.bss et associe l'etat S_GRAMM_BSS
  *	.data et associe l'etat S_GRAMM_DATA
  *	.text et associe l'etat S_GRAMM_TEXT
+ *
+ * @param  p_file_Lexeme  pointeur sur la file de Lexeme a traiter
+ * @param  S              Etat grammatical courant
+ * @param  lexeme_courant lexeme courrant (facilite l'acces a ses valeurs)
+ *
+ * @return                Retourne 1 si des lexemes ont etes defiles, 0 sinon
  */
 
 int analyse_gramm1(File* p_file_Lexeme, STATE_GRAMM* S, LEXEME lexeme_courant){
@@ -105,10 +112,11 @@ int analyse_gramm1(File* p_file_Lexeme, STATE_GRAMM* S, LEXEME lexeme_courant){
 	return(0);
 }
 
-/*@param p_file_Lexeme pointeur sur la file de Lexeme a traiter
- *@param p_lexeme_courant pointeur sur le Lexeme_courant que l'on modifie
- *@return Ne retourne rien car le Lexeme_courrant est passe par adresse
- *@brief Permet de recuperer les informations du Lexeme_courrant (et facilite donc l'ecriture des fonctions)
+/**
+ * Permet de recuperer les informations du Lexeme_courrant (et facilite donc l'ecriture des fonctions)
+ *
+ * @param p_file_Lexeme    pointeur sur la file de Lexeme a traiter
+ * @param p_lexeme_courant pointeur sur le Lexeme_courant que l'on modifie
  */
 
 void get_current_Lexeme(File* p_file_Lexeme, LEXEME* p_lexeme_courant){
@@ -121,11 +129,16 @@ void get_current_Lexeme(File* p_file_Lexeme, LEXEME* p_lexeme_courant){
 	}
 }
 
-/*@param p_file_Data pointeur sur la file Data a completer
- *@param p_file_Lexeme pointeur sur la file de LEXEMEs
- *@param lexeme_courant Lexeme temporaire qui facilite l'acces au donnees du lexeme courant
- *@return Retourne 0 si tout ce passe correctement, 1 s'il y a une erreur
- *@brief Permet de creer un maillon data en lisant la file de Lexeme et d'ajouter ce dernier a la file Data
+/**
+ * Permet de creer un maillon data en lisant la file de Lexeme et d'ajouter ce dernier a la file Data
+ *
+ * @param  p_file_Data    pointeur sur la file Data a completer
+ * @param  p_file_Lexeme  pointeur sur la file de LEXEMEs a traiter
+ * @param  lexeme_courant Lexeme temporaire qui facilite l'acces au donnees du lexeme courant
+ * @param  p_file_Symb    pointeur sur la file Symb a completer
+ * @param  p_offset_data  pointeur vers le dernier offset calcule
+ *
+ * @return                Retourne 0 si tout ce passe correctement, 1 s'il y a une erreur
  */
 
 int ajout_maillon_data(File* p_file_Data, File* p_file_Lexeme, LEXEME lexeme_courant, File* p_file_Symb, double* p_offset_data){
@@ -230,11 +243,16 @@ int ajout_maillon_data(File* p_file_Data, File* p_file_Lexeme, LEXEME lexeme_cou
 	return(0);
 }
 
-/*@param p_file_Bss pointeur sur la file Bss a completer
- *@param p_file_Lexeme pointeur sur la file de LEXEMEs
- *@param lexeme_courant Lexeme temporaire qui facilite l'acces au donnees du lexeme courant
- *@return Retourne 0 si tout ce passe correctement, 1 s'il y a une erreur
- *@brief Permet de creer un maillon Bss en lisant la file de Lexeme et d'ajouter ce dernier a la file Data
+/**
+ * Permet de creer un maillon Bss en lisant la file de Lexeme et d'ajouter ce dernier a la file Data
+ *
+ * @param  p_file_Bss     pointeur sur la file Bss a completer
+ * @param  p_file_Lexeme  pointeur sur la file de LEXEMEs a traiter
+ * @param  lexeme_courant Lexeme temporaire qui facilite l'acces au donnees du lexeme courant
+ * @param  p_file_Symb    pointeur sur la file Symb a completer
+ * @param  p_offset_bss   pointeur vers le dernier offset calcule
+ *
+ * @return                Retourne 0 si tout ce passe correctement, 1 s'il y a une erreur
  */
 
 int ajout_maillon_bss(File* p_file_Bss, File* p_file_Lexeme, LEXEME lexeme_courant, File* p_file_Symb, double* p_offset_bss){
@@ -333,13 +351,19 @@ int ajout_maillon_bss(File* p_file_Bss, File* p_file_Lexeme, LEXEME lexeme_coura
 	return(0);
 }
 
-/**@param p_file_Text pointeur sur la file Text a completer
- *@param p_file_Lexeme pointeur sur la file de LEXEMEs
- *@param lexeme_courant Lexeme temporaire qui facilite l'acces au donnees du lexeme courant
- *@return Retourne 0 si tout ce passe correctement, 1 s'il y a une erreur
- *@brief Permet de creer un maillon Text en lisant la file de Lexeme et d'ajouter ce dernier a la file Data
- */
-
+ /**
+  * Permet de creer un maillon Text en lisant la file de Lexeme et d'ajouter ce dernier a la file Data
+  *
+  * @param  p_file_Text    pointeur sur la file Text a completer
+  * @param  p_file_Lexeme  pointeur sur la file de LEXEMEs a traiter
+  * @param  lexeme_courant Lexeme temporaire qui facilite l'acces au donnees du lexeme courant
+  * @param  p_file_Symb    pointeur sur la file Symb a completer
+  * @param  p_offset_text  pointeur vers le dernier offset calcule
+  * @param  file_Dic       Dictionnaire d'instructions. La verification du dictionnaire n'est cependant plus geree ici.
+  *
+  * @return                Retourne 0 si tout ce passe correctement, 1 s'il y a une erreur
+  */
+ 
 int ajout_maillon_text(File* p_file_Text, File* p_file_Lexeme, LEXEME lexeme_courant, File* p_file_Symb, double* p_offset_text, File file_Dic){
 	/*Si le lexeme est une etiquette, on doit creer un maillon symb et l'ajouter la la collection de symboles*/
 	if(lexeme_courant->cat==ETIQUETTE){
@@ -467,10 +491,12 @@ int ajout_maillon_text(File* p_file_Text, File* p_file_Lexeme, LEXEME lexeme_cou
 	return(0);
 }
 
-/*@param p_file_Data Pointeur sur la file Data
- *@param p_new_maillon pointeur sur le nouveau maillon (en cours de creation) pour acceder a ses infos et y ecrire le decalage
- *@return Ne retourne rien mais ecrit la valeure du decalage dans le nouveau maillon
- *@brief Fonction a appeler la de la creation d'un maillon data pour calculer (et ecrire) la valeur du decalage
+/**
+ * Fonction a appeler lors de la creation d'un maillon data pour calculer (et ecrire) la valeur du decalage
+ *
+ * @param p_file_Data   pointeur sur la file Data
+ * @param p_new_maillon pointeur sur le nouveau maillon (en cours de creation) pour acceder a ses infos et y ecrire le decalage
+ * @param p_offset_data dernier offset calcule
  */
 void calcul_decalage_Data(File* p_file_Data, DATA* p_new_maillon, double* p_offset_data){
 	(*p_new_maillon)->decalage = (*p_offset_data);
@@ -534,10 +560,13 @@ void calcul_decalage_Data(File* p_file_Data, DATA* p_new_maillon, double* p_offs
 	free(op_temp);
 }
 
-/*@param p_file_Text Pointeur sur la file Text
- *@param p_new_maillon pointeur sur le nouveau maillon (en cours de creation) pour acceder a ses infos et y ecrire le decalage
- *@return Ne retourne rien mais ecrit la valeure du decalage dans le nouveau maillon
- *@brief Fonction a appeler la de la creation d'un maillon data pour calculer (et ecrire) la valeur du decalage
+
+/**
+ * Fonction a appeler lors de la creation d'un maillon Text pour calculer (et ecrire) la valeur du decalage
+ *
+ * @param p_file_Text   pointeur sur la file Text
+ * @param p_new_maillon pointeur sur le nouveau maillon (en cours de creation) pour acceder a ses infos et y ecrire le decalage
+ * @param p_offset_text dernier offset calcule
  */
 void calcul_decalage_Text(File* p_file_Text, TEXT* p_new_maillon, double* p_offset_text){
 	(*p_new_maillon)->decalage = (*p_offset_text);
@@ -552,10 +581,12 @@ void calcul_decalage_Text(File* p_file_Text, TEXT* p_new_maillon, double* p_offs
 	else *p_offset_text += 4;
 }
 
-/*@param p_file_Data Pointeur sur la file Bss
- *@param p_new_maillon pointeur sur le nouveau maillon (en cours de creation) pour acceder a ses infos et y ecrire le decalage
- *@return Ne retourne rien mais ecrit la valeure du decalage dans le nouveau maillon
- *@brief Fonction a appeler la de la creation d'un maillon data pour calculer (et ecrire) la valeur du decalage
+/**
+ * Fonction a appeler lors de la creation d'un maillon Bss pour calculer (et ecrire) la valeur du decalage
+ *
+ * @param p_file_Bss    pointeur sur la file Bss
+ * @param p_new_maillon pointeur sur le nouveau maillon (en cours de creation) pour acceder a ses infos et y ecrire le decalage
+ * @param p_offset_bss  dernier offset calcule
  */
 
 void calcul_decalage_Bss(File* p_file_Bss, BSS* p_new_maillon, double* p_offset_bss){
@@ -606,6 +637,7 @@ void calcul_decalage_Bss(File* p_file_Bss, BSS* p_new_maillon, double* p_offset_
  *
  * @param p_file_Text File de text a parcourir
  * @param p_file_Symb Symboles ayant ete definis
+ * @param file_Dic 	  File de Dictionnaire
  */
 void replace_in_Text(File* p_file_Text, File* p_file_Symb, File file_Dic){
 	File dernier_elem = *p_file_Text;

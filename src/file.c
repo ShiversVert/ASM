@@ -32,9 +32,9 @@ File enfiler(void* p, File f){						/*f = enfiler(pointeur vers l elem a enfiler
 
 
 /**
- * @param file f
- * @return Retourne un pointeur vers l'element defile
- * @brief enleve le premier elem de la file et le renvoie
+ * @param f 	file f
+ * @return 		Retourne un pointeur vers l'element defile
+ * @brief 		enleve le premier elem de la file et le renvoie
  *
  */
 
@@ -59,9 +59,9 @@ void* defiler(File* f){
 	return(p);
 }
 /**
- * @param file f
- * @return Ne retourne rien
- * @brief libere l'espace en memoire alloue a la file
+ * @param f 	file f
+ * @return 		Ne retourne rien
+ * @brief 		libere l'espace en memoire alloue a la file
  *
  */
 
@@ -72,9 +72,8 @@ void liberer_file(File f){
 }
 
 /**
- * @param file a afficher
- * @param fonction d'affichage d'un maillon
- * @return Ne retourne rien
+ * @param f 				file a afficher
+ * @param afficher_maillon 	fonction d'affichage d'un maillon
  * @brief Parcours toute la file pour l'imprimer dans la console
  *
  */

@@ -9,11 +9,11 @@
 #include "automate.h"
 
 /**
- * @param File de lexemes a remplir
- * @param token courant
- * @param line_nb est le numero de la ligne courante
- * @param cmpt_err est le compteur d'erreur, passe par adresse pour le modifier dans la boucle de l'automate
- * @return Retourne le file f avec le nouveau LEXEME ajoute
+ * @param f 		File de lexemes a remplir
+ * @param token 	courant
+ * @param line_nb 	est le numero de la ligne courante
+ * @param cmpt_err 	est le compteur d'erreur, passe par adresse pour le modifier dans la boucle de l'automate
+ * @return 			Retourne lae file f avec le nouveau LEXEME ajoute
  * @brief
  *
  */

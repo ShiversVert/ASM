@@ -1,10 +1,9 @@
 #include <fct_affichage.h>
 
 /**
- * @param maillon est le maillon de LEXEME a afficher
- * @return ne retourne rien mais affiche les informations du maillon passe en argument
- * @brief sert a afficher un maillon de LEXEME
+ * sert a afficher un maillon de LEXEME
  *
+ * @param maillon est le maillon de LEXEME a afficher
  */
 
 void afficher_maillon_LEXEME(void* maillon){

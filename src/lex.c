@@ -80,11 +80,12 @@ char* getNextToken(char** token, char* current_line) {
 
 
 /**
- * @param line String of the line of source code to be analysed.
- * @param nline the line number in the source code.
- * @param cmpt_err est le compteur d'erreur, passe par adresse pour le modifier dans la boucle de l'automate_lexical
- * @return should return the collection of lexemes that represent the input line of source code.
- * @brief This function performs lexical analysis of one standardized line.
+ * @param line          String of the line of source code to be analysed.
+ * @param nline         the line number in the source code.
+ * @param file_lexeme   File de lexemes a remplir
+ * @param cmpt_err      est le compteur d'erreur, passe par adresse pour le modifier dans la boucle de l'automate_lexical
+ * @return              should return the collection of lexemes that represent the input line of source code.
+ * @brief               This function performs lexical analysis of one standardized line.
  *
  */
 File lex_read_line( char *line, int nline, File file_lexeme, int* cmpt_err) {
@@ -140,7 +141,7 @@ File lex_load_file( char *file, unsigned int *nlines, int* cmpt_err) {
 }
 
 /**
- * @param Charactere c
+ * @param c Char
  * @return Retourne 1 si le carctere est "special", 0 sinon
  * @brief Retourne 1 si le carctere est "special" : , () , 0 sinon
  *
