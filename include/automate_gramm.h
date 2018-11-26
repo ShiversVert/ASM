@@ -17,7 +17,6 @@
 #include <string.h>
 
 #include <types.h>
-/*#include <lex.h>*/
 #include <liste.h>
 #include <file.h>
 #include <notify.h>

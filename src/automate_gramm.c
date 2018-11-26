@@ -137,7 +137,14 @@ int ajout_maillon_data(File* p_file_Data, File* p_file_Lexeme, LEXEME lexeme_cou
 		new_symb->line_nb = lexeme_courant->line_nb;
 		new_symb->zone = ZONE_DATA;
 		if(*p_file_Data==NULL) new_symb->decalage = 0;
-		else new_symb->decalage = *p_offset_data;
+		else {
+			if ( !strcasecmp(((LEXEME)((*p_file_Lexeme)->suiv->suiv->val))->chain, ".word")){ /*Si le lexeme suivant est un .word, on doit realigner*/
+				new_symb->decalage = (*p_offset_data) + 4 - (int)(*p_offset_data)%4;
+			}
+			else{
+				new_symb->decalage = *p_offset_data; /*Cas general*/
+			}
+		}
 
 		*p_file_Symb = enfiler(new_symb, *p_file_Symb); /*On enfile ce nouveau maillon a la file de symboles*/
 		defiler(p_file_Lexeme); get_current_Lexeme(p_file_Lexeme, &lexeme_courant);/*On defile le symbole de la file de lexemes*/
@@ -511,8 +518,9 @@ void calcul_decalage_Data(File* p_file_Data, DATA* p_new_maillon, double* p_offs
 			}
 			/*On aligne les .word modulo 4*/
 			else{
-				(*p_offset_data) += (*p_offset_data) + 4 + (int)(*p_offset_data)%4;
+				(*p_offset_data) +=  4 - (int)(*p_offset_data)%4;
 			}
+			(*p_new_maillon)->decalage = (*p_offset_data); /*On overrite la valeur dans le cas d'un .word*/
 		}
 
 		else{
@@ -617,7 +625,6 @@ int is_in_dic(File file_Dic, File* p_file_Text_maillon_courant){
 					LUI $at, etiquette_poidsfort>>16
 					LW $t1, etiquette_poidsfaible($at)
 				*/
-				INFO_MSG("TEST");
 
 				/*------------------------------------------*/
 				/*--------Modification du maillon LW--------*/
@@ -641,7 +648,7 @@ int is_in_dic(File file_Dic, File* p_file_Text_maillon_courant){
 				new_maillon_text->operateur = operateur;
 				new_maillon_text->type = TEXT_INST;
 				new_maillon_text->nb_op = 3;
-				new_maillon_text->line_nb = -1;
+				new_maillon_text->line_nb = - ((*p_maillon)->line_nb) ;
 				new_maillon_text->decalage = (*p_maillon)->decalage+4;
 
 				/*Creation et remplissage de la liste d'operandes*/
