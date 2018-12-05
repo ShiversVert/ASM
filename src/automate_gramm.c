@@ -11,7 +11,7 @@
  * @param file_Dic      file de Dictionnaire
  */
 
-void automate_grammatical(File* p_file_Lexeme, File* p_file_Text, File* p_file_Bss, File* p_file_Data, File* p_file_Symb, File file_Dic, File* p_file_realoc ){
+void automate_grammatical(File* p_file_Lexeme, File* p_file_Text, File* p_file_Bss, File* p_file_Data, File* p_file_Symb, File file_Dic, File* p_file_realoc){
 
 	/*if (*p_file_Lexeme != NULL)	*p_file_Lexeme = (*p_file_Lexeme)->suiv;*/ /*Si la file de lexeme n'est pas cide, on va chercher le premier lexeme de la file*/
 
@@ -32,7 +32,7 @@ void automate_grammatical(File* p_file_Lexeme, File* p_file_Text, File* p_file_B
 
 			case S_GRAMM_DATA:
 				if(analyse_gramm1(p_file_Lexeme, &S, lexeme_courant) != 1){ /*Cas speciaux .bss .text .data & commentaire*/
-					ajout_maillon_data(p_file_Data, p_file_Lexeme, lexeme_courant, p_file_Symb, &offset_data);
+					ajout_maillon_data(p_file_Data, p_file_Lexeme, lexeme_courant, p_file_Symb, &offset_data, p_file_realoc);
 				}
 				break;
 
@@ -57,6 +57,7 @@ void automate_grammatical(File* p_file_Lexeme, File* p_file_Text, File* p_file_B
 	}
 
 	free(lexeme_courant);
+	reallocation_offset(&file_realoc_offset, p_file_Symb);
 	/*replace_in_Text(p_file_Text, p_file_Symb, file_Dic);*/
 }
 
@@ -142,7 +143,7 @@ void get_current_Lexeme(File* p_file_Lexeme, LEXEME* p_lexeme_courant){
  * @return                Retourne 0 si tout ce passe correctement, 1 s'il y a une erreur
  */
 
-int ajout_maillon_data(File* p_file_Data, File* p_file_Lexeme, LEXEME lexeme_courant, File* p_file_Symb, double* p_offset_data){
+int ajout_maillon_data(File* p_file_Data, File* p_file_Lexeme, LEXEME lexeme_courant, File* p_file_Symb, double* p_offset_data, File* p_file_realoc){
 	/*Si le lexeme est une etiquette, on doit creer un maillon symb et l'ajouter la la collection de symboles*/
 	if(lexeme_courant->cat==ETIQUETTE){
 		SYMB new_symb = calloc(1,sizeof(*new_symb));
@@ -202,21 +203,17 @@ int ajout_maillon_data(File* p_file_Data, File* p_file_Lexeme, LEXEME lexeme_cou
 					new_operande->type = OPER_CHAINE;
 					break;
 
-
 				case DECIMAL:
 					new_operande->type = OPER_DECIMAL;
 					break;
-
 
 				case HEXA:
 					new_operande->type = OPER_HEXA;
 					break;
 
-
 				case OCTAL:
 					new_operande->type = OPER_OCTAL;
 					break;
-
 
 				case SYMBOLE:
 					new_operande->type = OPER_SYMBOLE;
@@ -238,7 +235,13 @@ int ajout_maillon_data(File* p_file_Data, File* p_file_Lexeme, LEXEME lexeme_cou
 	new_maillon->l_operande=liste_operande;
 
 	calcul_decalage_Data(p_file_Data, &new_maillon, p_offset_data);
-
+	Liste l_op_temp = new_maillon->l_operande;
+	while(l_op_temp!=NULL){
+			if (((OPERANDE)(l_op_temp->val))->type == OPER_SYMBOLE) {
+				ajout_maillon_realoc((OPERANDE*)&(l_op_temp->val), p_file_realoc, R_MIPS_32, ZONE_DATA, new_maillon->decalage);
+			}
+			l_op_temp = l_op_temp->suiv;
+	}
 	/*Ajout du nouveau maillon a la file de Data*/
 	*p_file_Data = enfiler(new_maillon, *p_file_Data);
 	return(0);
@@ -364,7 +367,7 @@ int ajout_maillon_bss(File* p_file_Bss, File* p_file_Lexeme, LEXEME lexeme_coura
   *
   * @return                Retourne 0 si tout ce passe correctement, 1 s'il y a une erreur
   */
- 
+
 int ajout_maillon_text(File* p_file_Text, File* p_file_Lexeme, LEXEME lexeme_courant, File* p_file_Symb, double* p_offset_text, File file_Dic, File* p_file_realoc, File* p_file_realoc_offset){
 	/*Si le lexeme est une etiquette, on doit creer un maillon symb et l'ajouter la la collection de symboles*/
 	if(lexeme_courant->cat==ETIQUETTE){
@@ -707,7 +710,7 @@ int replace_SYMB(OPERANDE* op, File* p_file_Symb){
  * @param  p_file_Text_maillon_courant Pointeur sur le maillon courant de la file de texte, permet d'inserer des instruction si on rencontre une peusdo instruction
  * @param  p_file_realoc 			   Table de realoc a completer si l'operande est une etiquette
  * @param  p_file_realoc_offset 	   Table a completer si l'operande est une etiquette et de type O
- * 
+ *
  * @return         retourne 1 si tout se passe bien, 0 sinon
  */
 
@@ -748,16 +751,16 @@ int is_in_dic(File file_Dic, File* p_file_Text_maillon_courant, File* p_file_rea
 
 				/*TODO : TROUVER LE BON TYPE POUR etiquette_poidsfort>>16 */
 				/*TODO : TROUVER COMMENT FAIRE etiquette_poidsfort>>16*/
-				((OPERANDE)(((*p_maillon)->l_operande)->suiv->val))->type = OPER_SYMBOLE; 
+				((OPERANDE)(((*p_maillon)->l_operande)->suiv->val))->type = OPER_SYMBOLE;
 				/*On ne change pas la chaine
-				((OPERANDE)(((*p_maillon)->l_operande)->suiv->val))->chain = "etiquette_poidsfort>>16"; 
+				((OPERANDE)(((*p_maillon)->l_operande)->suiv->val))->chain = "etiquette_poidsfort>>16";
 				Mais on ajoute l'operande a laa table de realoc*/
 				ajout_maillon_realoc((OPERANDE*)&(((*p_maillon)->l_operande)->suiv->val), p_file_realoc, R_MIPS_HI16, ZONE_TEXT, (*p_maillon)->decalage);
 				/*------------------------------------------*/
 				/*Creation et remplissage du nouveau maillon*/
 				/*------------------------------------------*/
 				TEXT new_maillon_text = calloc(1,sizeof(*new_maillon_text));
-				
+
 				char* operateur = "lw";
 				new_maillon_text->operateur = operateur;
 				new_maillon_text->type = TEXT_INST;
@@ -775,11 +778,11 @@ int is_in_dic(File file_Dic, File* p_file_Text_maillon_courant, File* p_file_rea
 				op2->type = OPER_SYMBOLE;
 				/*TODO : POIDS FORTS DE L'ETIQUETTE*/
 				/*On ne change pas la chaine
-				op2->chain = "etiquette_poidsfaible"; 
+				op2->chain = "etiquette_poidsfaible";
 				Mais on ajoute l'operande a laa table de realoc*/
-				op2->chain = ((OPERANDE)(((*p_maillon)->l_operande)->suiv->val))->chain; 
+				op2->chain = ((OPERANDE)(((*p_maillon)->l_operande)->suiv->val))->chain;
 				ajout_maillon_realoc(&op2, p_file_realoc, R_MIPS_LO16, ZONE_TEXT, new_maillon_text->decalage);
-				
+
 				OPERANDE op3 = calloc(1,sizeof(*op3));
 				op3->type = OPER_BASE;
 				op3->chain = "1";	/*$at*/
@@ -788,7 +791,7 @@ int is_in_dic(File file_Dic, File* p_file_Text_maillon_courant, File* p_file_rea
 				new_l_op=ajout_tete((op3), new_l_op);
 				new_l_op=ajout_tete((op2), new_l_op);
 				new_l_op=ajout_tete((op1), new_l_op);
-								
+
 				new_maillon_text->l_operande = new_l_op;
 
 				/*------------------------------------------*/
@@ -801,7 +804,7 @@ int is_in_dic(File file_Dic, File* p_file_Text_maillon_courant, File* p_file_rea
 
 				(*p_file_Text_maillon_courant)->suiv = new_maillon_file;
 				*/
-			
+
 				return(1);
 			}
 		}

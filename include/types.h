@@ -115,7 +115,8 @@ typedef struct _data_{
 typedef enum{
 	ZONE_DATA,
 	ZONE_TEXT,
-	ZONE_BSS
+	ZONE_BSS,
+	ZONE_UNKW
 }zone_symb;
 
 typedef struct _symb_{
@@ -137,10 +138,17 @@ typedef struct _dic_ {
   I => valeur immediate
   S => shift amount
   */
+ /*
+ char* nom
+ char type_instr
+ int nb_op
+ File file_op
+ File queue_bin
+  */
 }* DIC;
 
 typedef enum{
-	R_MIPS_32, 
+	R_MIPS_32,
 	R_MIPS_26,
 	R_MIPS_HI16,
 	R_MIPS_LO16,
@@ -151,7 +159,7 @@ typedef struct _realoc_ {
 	zone_symb	zone;		/*Zone (ou est situe l'operande) de la realoc*/
 	double 		decalage;	/*Decalage de l'instruction ou la realoc doit etre faite*/
 	type_realoc	type;		/*Type de realoc a faire*/
-	/*OPERANDE*	op;			Pointeur vers l'operande a realouer... Utilitee?*/
+	OPERANDE*	p_op;			/*Pointeur vers l'operande a realouer... Utilitee?*/
 	/*SYMB* 	symb;		Pointeur vers l'operande dans la table des symboles*/
 } * REALOC;
 

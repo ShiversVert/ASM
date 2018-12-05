@@ -11,6 +11,7 @@ boucle:
     NOP
     addi $t1 , $32 , 1
     J boucle
+    BNE $5, $10, toto
     NOP
 byebye:
     JAL viteviteauru
@@ -19,7 +20,7 @@ byebye:
 lunchtime:
     .word 12
     .word menu
-    .space 13   
+    .space 13
 lunchtime_bis:
     .word test
     .asciiz "ils disent : \"au ru!\""

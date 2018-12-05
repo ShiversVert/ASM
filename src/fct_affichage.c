@@ -166,7 +166,7 @@ void afficher_maillon_TEXT(void* maillon){
 		printf("nb_op : %d\t\t", nb_op);
 		afficher_liste( ( ((TEXT)(maillon))->l_operande) , (*afficher_maillon_OPERANDE));
 		printf("\n");
-	
+
 }
 
 /**
@@ -235,11 +235,14 @@ void afficher_maillon_SYMB(void* maillon){
 		case ZONE_BSS:
 			zone = "ZONE_BSS";
 			break;
+		case ZONE_UNKW:
+			zone = "ZONE_UNKW";
+			break;
 	}
-
+	/**int tab = (int)round((strlen(nom))/5); int i;*/
 	printf("%s\t", zone);
-	printf("%s\t", nom);
-	printf("line:%.0lf\t", line_nb);
+	printf("%s\t\t", nom);/*for(i = tab; i==0; i--) printf("\t");*/
+	printf("\tline:%.0lf\t", line_nb);
 	printf("decalage:%.0lf\n", decalage);
 
 }
@@ -264,6 +267,6 @@ void afficher_maillon_REALOC(void* maillon){
 	zone_symb	zone = ((REALOC)(maillon))-> zone;
 	double 		decalage = ((REALOC)(maillon))-> decalage;
 	type_realoc	type = ((REALOC)(maillon))-> type;
-	
-	printf("ZONE : %s \t\t DECALAGE : %.0lf\t\t TYPE : \t\t %s\n", zone_txt[zone], decalage, type_realoc_txt[type]);
+
+	printf("ZONE : %s \tDECALAGE : %.0lf\t\tTYPE : %s\n", zone_txt[zone], decalage, type_realoc_txt[type]);
 }

@@ -26,7 +26,7 @@ void automate_grammatical(File* p_file_Lexeme, File* p_file_Text, File* p_file_B
 int analyse_gramm1(File* p_file_Lexeme, STATE_GRAMM* S, LEXEME lexeme_courant);
 void get_current_Lexeme(File* p_file_Lexeme, LEXEME* p_lexeme_courant);
 
-int ajout_maillon_data(File* p_file_Data, File* p_file_Lexeme, LEXEME lexeme_courant, File* p_file_Symb, double* p_offset_data);
+int ajout_maillon_data(File* p_file_Data, File* p_file_Lexeme, LEXEME lexeme_courant, File* p_file_Symb, double* p_offset_data, File* p_file_realoc);
 int ajout_maillon_bss(File* p_file_Bss, File* p_file_Lexeme, LEXEME lexeme_courant, File* p_file_Symb, double* p_offset_bss);
 int ajout_maillon_text(File* p_file_Text, File* p_file_Lexeme, LEXEME lexeme_courant, File* p_file_Symb, double* p_offset_text, File file_Dic, File* p_file_realoc, File* p_file_realoc_offset);
 

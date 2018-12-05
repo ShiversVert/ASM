@@ -23,6 +23,7 @@
 
 void ajout_maillon_realoc(OPERANDE* p_op, File* p_file_realoc, type_realoc type, zone_symb zone, double decalage);
 void reallocation_offset(File* p_file_realoc_offset, File* p_file_Symb);
+int remplace_realoc_offset(File* p_file_Symb, OPERANDE* p_op);
 
 
 #endif /*_REALOC_H_*/
