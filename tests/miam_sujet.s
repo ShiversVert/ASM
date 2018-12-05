@@ -2,14 +2,15 @@
 # allons au ru
 .set noreorder
 .text
-    Lw $t0 , lunchtime          #0
-    LW $6, -200($k0)            #8
-    ADDI $t1,$at,8              #12
-boucle:                         #16
-    BEQ $t0 , $t1 , byebye     #16
-    NOP                         #20
-    addi $t1 , $32 , 1          #24
-    J boucle                    #26
+    Lw $t1 , lunchtime
+    LW $zero, -200($k0)
+    ADDI $t1,$at,8
+    ADDI $a3, $a0, 8
+boucle:
+    BEQ $t0 , $t1 , byebye
+    NOP
+    addi $t1 , $32 , 1
+    J boucle
     NOP
 byebye:
     JAL viteviteauru

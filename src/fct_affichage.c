@@ -256,3 +256,14 @@ void afficher_maillon_DIC(void* maillon){
 	}
 	printf("\n");
 }
+
+void afficher_maillon_REALOC(void* maillon){
+	char* zone_txt[3] = {"ZONE_DATA","ZONE_TEXT","ZONE_BSS"};
+	char* type_realoc_txt[5] = {"R_MIPS_32","R_MIPS_26","R_MIPS_HI16","R_MIPS_LO16","R_OFFSET"};
+
+	zone_symb	zone = ((REALOC)(maillon))-> zone;
+	double 		decalage = ((REALOC)(maillon))-> decalage;
+	type_realoc	type = ((REALOC)(maillon))-> type;
+	
+	printf("ZONE : %s \t\t DECALAGE : %.0lf\t\t TYPE : \t\t %s\n", zone_txt[zone], decalage, type_realoc_txt[type]);
+}

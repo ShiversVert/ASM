@@ -11,13 +11,14 @@
  * @param file_Dic      file de Dictionnaire
  */
 
-void automate_grammatical(File* p_file_Lexeme, File* p_file_Text, File* p_file_Bss, File* p_file_Data, File* p_file_Symb, File file_Dic){
+void automate_grammatical(File* p_file_Lexeme, File* p_file_Text, File* p_file_Bss, File* p_file_Data, File* p_file_Symb, File file_Dic, File* p_file_realoc ){
 
 	/*if (*p_file_Lexeme != NULL)	*p_file_Lexeme = (*p_file_Lexeme)->suiv;*/ /*Si la file de lexeme n'est pas cide, on va chercher le premier lexeme de la file*/
 
 	double offset_data=0; double offset_bss=0;double offset_text=0;;
 	STATE_GRAMM S = S_GRAMM_INIT;		/*Etat initial de l'automate*/
 	LEXEME lexeme_courant = calloc(1,sizeof(*lexeme_courant));
+	File file_realoc_offset = NULL;
 
 	while (*p_file_Lexeme != NULL){ /*Tant que la file de lexeme n'est pas vide*/
 
@@ -37,7 +38,7 @@ void automate_grammatical(File* p_file_Lexeme, File* p_file_Text, File* p_file_B
 
 			case S_GRAMM_TEXT:
 				if(analyse_gramm1(p_file_Lexeme, &S, lexeme_courant) != 1){ /*Cas speciaux .bss .text .data & commentaire*/
-					ajout_maillon_text(p_file_Text, p_file_Lexeme, lexeme_courant, p_file_Symb, &offset_text, file_Dic);
+					ajout_maillon_text(p_file_Text, p_file_Lexeme, lexeme_courant, p_file_Symb, &offset_text, file_Dic, p_file_realoc, &file_realoc_offset);
 				}
 				break;
 
@@ -56,7 +57,7 @@ void automate_grammatical(File* p_file_Lexeme, File* p_file_Text, File* p_file_B
 	}
 
 	free(lexeme_courant);
-	replace_in_Text(p_file_Text, p_file_Symb, file_Dic);
+	/*replace_in_Text(p_file_Text, p_file_Symb, file_Dic);*/
 }
 
 
@@ -364,7 +365,7 @@ int ajout_maillon_bss(File* p_file_Bss, File* p_file_Lexeme, LEXEME lexeme_coura
   * @return                Retourne 0 si tout ce passe correctement, 1 s'il y a une erreur
   */
  
-int ajout_maillon_text(File* p_file_Text, File* p_file_Lexeme, LEXEME lexeme_courant, File* p_file_Symb, double* p_offset_text, File file_Dic){
+int ajout_maillon_text(File* p_file_Text, File* p_file_Lexeme, LEXEME lexeme_courant, File* p_file_Symb, double* p_offset_text, File file_Dic, File* p_file_realoc, File* p_file_realoc_offset){
 	/*Si le lexeme est une etiquette, on doit creer un maillon symb et l'ajouter la la collection de symboles*/
 	if(lexeme_courant->cat==ETIQUETTE){
 		SYMB new_symb = calloc(1,sizeof(*new_symb));
@@ -488,6 +489,8 @@ int ajout_maillon_text(File* p_file_Text, File* p_file_Lexeme, LEXEME lexeme_cou
 	/*is_in_dic(&new_maillon, file_Dic);*/
 	/*Ajout du nouveau maillon a la file de Text*/
 	*p_file_Text = enfiler(new_maillon, *p_file_Text);
+
+	is_in_dic(file_Dic, p_file_Text, p_file_realoc, p_file_realoc_offset);
 	return(0);
 }
 
@@ -639,6 +642,7 @@ void calcul_decalage_Bss(File* p_file_Bss, BSS* p_new_maillon, double* p_offset_
  * @param p_file_Symb Symboles ayant ete definis
  * @param file_Dic 	  File de Dictionnaire
  */
+
 void replace_in_Text(File* p_file_Text, File* p_file_Symb, File file_Dic){
 	File dernier_elem = *p_file_Text;
 	File file_TEXT_temp = (*p_file_Text)->suiv;
@@ -658,7 +662,7 @@ void replace_in_Text(File* p_file_Text, File* p_file_Symb, File file_Dic){
 			l_op =l_op->suiv;
 		}
 
-		is_in_dic(file_Dic, &file_TEXT_temp);
+		/*is_in_dic(file_Dic, &file_TEXT_temp, p_file_realoc, p_file_realoc_offset);*/
 		file_TEXT_temp = file_TEXT_temp->suiv;
 	} while (file_TEXT_temp!=dernier_elem->suiv);
 
@@ -697,14 +701,17 @@ int replace_SYMB(OPERANDE* op, File* p_file_Symb){
 }
 
 /**
- * Verifie l'existence d'une instruction et ses operandes.
+ * Verifie l'existence d'une instruction et ses operandes. Remplace les pseudos instruction en leur(s) instructions
  *
  * @param  file_Dic                    File de dictionnaire
- * @param  p_file_Text_maillon_courant pointeur sur le maillon courant de la file de texte, permet d'inserer des instruction si on rencontre une peusdo instruction
- *
+ * @param  p_file_Text_maillon_courant Pointeur sur le maillon courant de la file de texte, permet d'inserer des instruction si on rencontre une peusdo instruction
+ * @param  p_file_realoc 			   Table de realoc a completer si l'operande est une etiquette
+ * @param  p_file_realoc_offset 	   Table a completer si l'operande est une etiquette et de type O
+ * 
  * @return         retourne 1 si tout se passe bien, 0 sinon
  */
-int is_in_dic(File file_Dic, File* p_file_Text_maillon_courant){
+
+int is_in_dic(File file_Dic, File* p_file_Text_maillon_courant, File* p_file_realoc, File* p_file_realoc_offset){
 
 	TEXT* p_maillon = (TEXT*)(&((*p_file_Text_maillon_courant)->val)); /*Utile si on veut rajouter un maillon*/
 
@@ -720,7 +727,7 @@ int is_in_dic(File file_Dic, File* p_file_Text_maillon_courant){
 
 	if(!strcasecmp((*p_maillon)->operateur,"LW")){
 		if( (*p_maillon)->nb_op==2 ){
-			if ( ((OPERANDE)(((*p_maillon)->l_operande)->val))->type ==  OPER_REG && ((OPERANDE)(((*p_maillon)->l_operande)->suiv->val))->type ==  OPER_TARGET)
+			if ( ((OPERANDE)(((*p_maillon)->l_operande)->val))->type ==  OPER_REG && ((OPERANDE)(((*p_maillon)->l_operande)->suiv->val))->type ==  OPER_SYMBOLE)
 			{
 				/*Si on trouve une instruction
 					LW $R, etiquette
@@ -728,26 +735,30 @@ int is_in_dic(File file_Dic, File* p_file_Text_maillon_courant){
 					LUI $at, etiquette_poidsfort>>16
 					LW $t1, etiquette_poidsfaible($at)
 				*/
-
+				is_registre(((OPERANDE*)&(((*p_maillon)->l_operande)->val)), (*p_maillon)->line_nb);
+				type_operande type_op = ((OPERANDE)(((*p_maillon)->l_operande)->val))-> type;
+				char* registre = calloc(1,sizeof(char*)); registre = ((OPERANDE)(((*p_maillon)->l_operande)->val))-> chain;
 				/*------------------------------------------*/
 				/*--------Modification du maillon LW--------*/
 				/*------------------------------------------*/
 				char* lui = "lui";
 				(*p_maillon)->operateur = lui;
 
-				((OPERANDE)(((*p_maillon)->l_operande)->val))->chain = "$at";
+				((OPERANDE)(((*p_maillon)->l_operande)->val))->chain = "1";	/*$at*/
 
 				/*TODO : TROUVER LE BON TYPE POUR etiquette_poidsfort>>16 */
 				/*TODO : TROUVER COMMENT FAIRE etiquette_poidsfort>>16*/
-				((OPERANDE)(((*p_maillon)->l_operande)->suiv->val))->type = OPER_DECIMAL; 
+				((OPERANDE)(((*p_maillon)->l_operande)->suiv->val))->type = OPER_SYMBOLE; 
+				/*On ne change pas la chaine
 				((OPERANDE)(((*p_maillon)->l_operande)->suiv->val))->chain = "etiquette_poidsfort>>16"; 
-
+				Mais on ajoute l'operande a laa table de realoc*/
+				ajout_maillon_realoc((OPERANDE*)&(((*p_maillon)->l_operande)->suiv->val), p_file_realoc, R_MIPS_HI16, ZONE_TEXT, (*p_maillon)->decalage);
 				/*------------------------------------------*/
 				/*Creation et remplissage du nouveau maillon*/
 				/*------------------------------------------*/
 				TEXT new_maillon_text = calloc(1,sizeof(*new_maillon_text));
 				
-				char* operateur = "LW";
+				char* operateur = "lw";
 				new_maillon_text->operateur = operateur;
 				new_maillon_text->type = TEXT_INST;
 				new_maillon_text->nb_op = 3;
@@ -757,14 +768,21 @@ int is_in_dic(File file_Dic, File* p_file_Text_maillon_courant){
 				/*Creation et remplissage de la liste d'operandes*/
 
 				OPERANDE op1 = calloc(1,sizeof(*op1));
-				op1->type = OPER_REG;
-				op1->chain = "$t1";
+				op1->type = type_op;
+				op1->chain = registre;
+
 				OPERANDE op2 = calloc(1,sizeof(*op2));
-				op2->type = OPER_OFFSET;
-				op2->chain = "etiquette_poidsfaible";  /*TODO : POIDS FORTS DE L'ETIQUETTE*/
+				op2->type = OPER_SYMBOLE;
+				/*TODO : POIDS FORTS DE L'ETIQUETTE*/
+				/*On ne change pas la chaine
+				op2->chain = "etiquette_poidsfaible"; 
+				Mais on ajoute l'operande a laa table de realoc*/
+				op2->chain = ((OPERANDE)(((*p_maillon)->l_operande)->suiv->val))->chain; 
+				ajout_maillon_realoc(&op2, p_file_realoc, R_MIPS_LO16, ZONE_TEXT, new_maillon_text->decalage);
+				
 				OPERANDE op3 = calloc(1,sizeof(*op3));
 				op3->type = OPER_BASE;
-				op3->chain = "$at";
+				op3->chain = "1";	/*$at*/
 
 				Liste new_l_op = NULL;
 				new_l_op=ajout_tete((op3), new_l_op);
@@ -776,12 +794,14 @@ int is_in_dic(File file_Dic, File* p_file_Text_maillon_courant){
 				/*------------------------------------------*/
 				/*----------NOUVEAUX  BRANCHEMENTS----------*/
 				/*------------------------------------------*/
-				File new_maillon_file = calloc(1, sizeof(*new_maillon_file));
+				(*p_file_Text_maillon_courant) = enfiler(new_maillon_text, *p_file_Text_maillon_courant);
+				/*File new_maillon_file = calloc(1, sizeof(*new_maillon_file));
 				new_maillon_file->val = new_maillon_text;
 				new_maillon_file->suiv = (*p_file_Text_maillon_courant)->suiv;
 
 				(*p_file_Text_maillon_courant)->suiv = new_maillon_file;
-				
+				*/
+			
 				return(1);
 			}
 		}
@@ -799,7 +819,6 @@ int is_in_dic(File file_Dic, File* p_file_Text_maillon_courant){
 				char* type_op = ((DIC)((file_Dic)->val))->type_op;
 				for(i=0; i<(*p_maillon)->nb_op; i++){
 					type_operande type_op_courrante = ((OPERANDE)(l_operande->val))->type;
-
 					switch (type_op[i]) {
 
 						case 'R':
@@ -811,7 +830,10 @@ int is_in_dic(File file_Dic, File* p_file_Text_maillon_courant){
 							break;
 
 						case 'O':
-							if (type_op_courrante != OPER_OFFSET && type_op_courrante!=OPER_TARGET){
+							if (type_op_courrante == OPER_SYMBOLE){
+								ajout_maillon_realoc((OPERANDE*)&(l_operande->val), p_file_realoc_offset, R_OFFSET, ZONE_TEXT, (*p_maillon)->decalage);
+							}
+							else if (type_op_courrante != OPER_OFFSET){
 								((OPERANDE)(l_operande->val))->type = OPER_ERROR;
 								WARNING_MSG("Erreur ligne %.0lf, l'opperande no %d de \"%s\" doit etre un offset\n", (*p_maillon)->line_nb, i, (*p_maillon)->operateur);
 							}
@@ -826,14 +848,21 @@ int is_in_dic(File file_Dic, File* p_file_Text_maillon_courant){
 							break;
 
 						case 'T':
-							if (type_op_courrante != OPER_DECIMAL && type_op_courrante != OPER_HEXA && type_op_courrante != OPER_DECIMAL && type_op_courrante != OPER_REG && type_op_courrante != OPER_TARGET){
+							if (type_op_courrante == OPER_SYMBOLE){
+								ajout_maillon_realoc((OPERANDE*)&(l_operande->val), p_file_realoc, R_MIPS_26, ZONE_TEXT, (*p_maillon)->decalage);
+							}
+							else if (type_op_courrante != OPER_DECIMAL && type_op_courrante != OPER_HEXA && type_op_courrante != OPER_REG){
 								((OPERANDE)(l_operande->val))->type = OPER_ERROR;
 								WARNING_MSG("Erreur ligne %.0lf, l'opperande no %d de \"%s\" doit etre un offset\n", (*p_maillon)->line_nb, i, (*p_maillon)->operateur);
 							}
+
 							break;
 
 						case 'I':
-							if (type_op_courrante != OPER_DECIMAL && type_op_courrante != OPER_HEXA){
+							if (type_op_courrante == OPER_SYMBOLE){
+								ajout_maillon_realoc((OPERANDE*)&(l_operande->val), p_file_realoc, R_MIPS_LO16, ZONE_TEXT, (*p_maillon)->decalage);
+							}
+							else if (type_op_courrante != OPER_DECIMAL && type_op_courrante != OPER_HEXA){
 								((OPERANDE)(l_operande->val))->type = OPER_ERROR;
 								WARNING_MSG("Erreur ligne %.0lf, l'opperande no %d doit etre une valeure immediate\n", (*p_maillon)->line_nb, i);
 							}
@@ -885,10 +914,9 @@ int is_registre(OPERANDE* p_op, double line_nb){
 	char* registre = (*p_op)->chain; char reg[3];
 	int reg_int;
 
-	if(!strcasecmp(registre, "$zero")){return(1);}
-	if((!strcasecmp(registre, "$at") || !strcasecmp(registre, "$1")) && line_nb!=-1 ){
-		(*p_op)->type = OPER_ERROR;
-		WARNING_MSG("Erreur ligne %.0lf : le registre \"%s\" est reserve au systeme\n", line_nb, registre);	return(0);
+	if(!strcasecmp(registre, "$zero")){(*p_op)->chain = "0"; return(1);}
+	if((!strcasecmp(registre, "$at") || !strcasecmp(registre, "$1"))){
+		(*p_op)->chain = "1"; return(1);
 	}
 	if(strlen(registre)>3){
 		(*p_op)->type = OPER_ERROR;
@@ -897,16 +925,19 @@ int is_registre(OPERANDE* p_op, double line_nb){
 
 	if(isdigit(registre[1])){/*Si le premier caractere du registre est un chiffre => Registre*/
 		if (registre[2]=='\0'){
+			(*p_op)->chain = (*p_op)->chain + 1; /*On enleve le dollar*/
 			return(1); /*Le registre ne contient qu'un carac qui est un chiffre*/
 		}
 		else if(isdigit(registre[2])){ /*Le registre contient deux carac qui ne sont que des chiffres*/
 			reg[0] = registre[1];reg[0] = registre[2];
 			reg_int= strtol(reg, (char **)NULL, 10);
 			if (reg_int>=0 && reg_int<=31){
+				/* PAS NECESSAIRE
 				if(reg_int == 26 || reg_int==27){
 					(*p_op)->type = OPER_ERROR;
 					WARNING_MSG("Erreur ligne %.0lf : le registre \"%s\" est reserve au kernel\n", line_nb, registre); return(0);
-				}
+				}*/
+				(*p_op)->chain = (*p_op)->chain + 1; /*On enleve le dollar*/
 				return(1);
 			}
 		}
@@ -918,9 +949,9 @@ int is_registre(OPERANDE* p_op, double line_nb){
 
 	else{ /*Sinon (1er carac n'est pas un chiffre) => Mnemonique*/
 		if(registre[1]=='a'){
-			if(registre[2]=='t'){return 1;}
+			if(registre[2]=='t'){(*p_op)->chain = "1"; return(1);}
 			if(isdigit(registre[2])){
-				if (atoi(&registre[2])<=3){return 1;}
+				if (atoi(&registre[2])<=3){sprintf((*p_op)->chain, "%d", atoi(&registre[2]) + 4); return 1;}
 			}
 			(*p_op)->type = OPER_ERROR;
 			WARNING_MSG("Erreur ligne %.0lf : le registre \"%s\" n'existe pas\n", line_nb, registre);return(0);
@@ -928,22 +959,26 @@ int is_registre(OPERANDE* p_op, double line_nb){
 
 		if(registre[1]=='v'){
 			if(isdigit(registre[2])){
-				if (atoi(&registre[2])<=1){return 1;}
+				if (atoi(&registre[2])<=1){sprintf((*p_op)->chain, "%d", atoi(&registre[2]) + 2);return 1;}
 			}
 			(*p_op)->type = OPER_ERROR;
 			WARNING_MSG("Erreur ligne %.0lf : le registre \"%s\" n'existe pas\n", line_nb, registre);return(0);
 		}
 
 		if(registre[1]=='t'){
-			if(isdigit(registre[2])){return 1;}
+			if(isdigit(registre[2])){
+				if (atoi(&registre[2])<=7) sprintf((*p_op)->chain, "%d", atoi(&registre[2]) + 8);
+				else sprintf((*p_op)->chain, "%d", atoi(&registre[2]) + 16);
+				return 1;
+			}
 			(*p_op)->type = OPER_ERROR;
 			WARNING_MSG("Erreur ligne %.0lf : le registre \"%s\" n'existe pas\n", line_nb, registre);return(0);
 		}
 
 		if(registre[1]=='s'){
-			if(registre[2]=='p'){return 1;}
+			if(registre[2]=='p'){(*p_op)->chain = "29"; return 1;}
 			if(isdigit(registre[2])){
-				if (atoi(&registre[2])<=7){return 1;}
+				if (atoi(&registre[2])<=7){sprintf((*p_op)->chain, "%d", atoi(&registre[2]) + 16); return 1;}
 			}
 			(*p_op)->type = OPER_ERROR;
 			WARNING_MSG("Erreur ligne %.0lf : le registre \"%s\" n'existe pas\n", line_nb, registre);return(0);
@@ -952,16 +987,19 @@ int is_registre(OPERANDE* p_op, double line_nb){
 		if(registre[1]=='k'){
 			if(isdigit(registre[2])){
 				if (atoi(&registre[2])<=1){
+					/*PAS NECESSAIRE
 					(*p_op)->type = OPER_ERROR;
 					WARNING_MSG("Erreur ligne %.0lf : le registre \"%s\" est reserve au kernel\n", line_nb, registre); return(0);
+					*/
+					sprintf((*p_op)->chain, "%d", atoi(&registre[2]) + 26);return 1;
 				}
 			}
 			(*p_op)->type = OPER_ERROR;
 			WARNING_MSG("Erreur ligne %.0lf : le registre \"%s\" n'existe pas\n", line_nb, registre);return(0);
 		}
-		if(registre[1]=='g' && registre[2]=='p'){return 1;}
-		if(registre[1]=='f' && registre[2]=='p'){return 1;}
-		if(registre[1]=='r' && registre[2]=='a'){return 1;}
+		if(registre[1]=='g' && registre[2]=='p'){(*p_op)->chain = "28"; return 1;}
+		if(registre[1]=='f' && registre[2]=='p'){(*p_op)->chain = "30"; return 1;}
+		if(registre[1]=='r' && registre[2]=='a'){(*p_op)->chain = "31"; return 1;}
 
 		(*p_op)->type = OPER_ERROR;
 		WARNING_MSG("Erreur ligne %.0lf : le registre \"%s\" n'existe pas\n", line_nb, registre);return(0);

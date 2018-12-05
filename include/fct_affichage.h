@@ -21,5 +21,6 @@ void afficher_maillon_TEXT(void* maillon);
 void afficher_maillon_OPERANDE(void* maillon);
 void afficher_maillon_SYMB(void* maillon);
 void afficher_maillon_DIC(void* maillon);
+void afficher_maillon_REALOC(void* maillon);
 
 #endif /*FCT_AFFICHAGE_H*/

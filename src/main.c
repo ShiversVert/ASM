@@ -92,28 +92,33 @@ int main ( int argc, char *argv[] ) {
     File file_Bss = NULL;
     File file_Data = NULL;
     File file_Symb = NULL;
-
+    File file_Realoc = NULL;
     DEBUG_MSG("\n\n###############################\nCHARGEMENT DU DICTIONNAIRE\n###############################\n\n");
 
     file_Dic = import_dictionnaire("./dictionnaires/dictionnaire_instructions.txt");
-    printf("\n\n######### file_Dic ##########\n\n");afficher_file(file_Dic, (*afficher_maillon_DIC));
+    DEBUG_MSG("\n\n######### file_Dic ##########\n\n");afficher_file(file_Dic, (*afficher_maillon_DIC));
 
     DEBUG_MSG("\n\n###############################\nDEBUT DE L'ANALYSE GRAMMATICALE\n###############################\n\n");
 
-    automate_grammatical(&file_Lexeme, &file_Text, &file_Bss, &file_Data, &file_Symb, file_Dic);
+    automate_grammatical(&file_Lexeme, &file_Text, &file_Bss, &file_Data, &file_Symb, file_Dic, &file_Realoc);
 
-    printf("\n\n######### file_Lexeme ##########\n\n");afficher_file(file_Lexeme, (*afficher_maillon_LEXEME));
-    printf("\n\n######### file_Text ##########\n\n");afficher_file(file_Text, (*afficher_maillon_TEXT));
-    printf("\n\n######### file_Data ##########\n\n");afficher_file(file_Data, (*afficher_maillon_DATA));
-    printf("\n\n######### file_Bss ##########\n\n");afficher_file(file_Bss, (*afficher_maillon_DATA));
-    printf("\n\n######### file_Symb ##########\n\n");afficher_file(file_Symb, (*afficher_maillon_SYMB));
-
+    DEBUG_MSG("\t file_Lexeme\n");afficher_file(file_Lexeme, (*afficher_maillon_LEXEME));
+    DEBUG_MSG("\t file_Text\n");afficher_file(file_Text, (*afficher_maillon_TEXT));
+    DEBUG_MSG("\t file_Data\n");afficher_file(file_Data, (*afficher_maillon_DATA));
+    DEBUG_MSG("\t file_Bss\n");afficher_file(file_Bss, (*afficher_maillon_DATA));
+    DEBUG_MSG("\t file_Symb\n");afficher_file(file_Symb, (*afficher_maillon_SYMB));
+    DEBUG_MSG("\t file_Realoc\n");afficher_file(file_Realoc, (*afficher_maillon_REALOC));
 
     /* ---------------- Free memory and terminate -------------------*/
 
-
-
     /* TODO free everything properly*/
+    
+    liberer_file(file_Dic);
+    liberer_file(file_Text);
+    liberer_file(file_Bss);
+    liberer_file(file_Data);
+    liberer_file(file_Symb);
+    liberer_file(file_Realoc);
 
     exit( EXIT_SUCCESS );
 }

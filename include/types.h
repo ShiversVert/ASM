@@ -139,6 +139,22 @@ typedef struct _dic_ {
   */
 }* DIC;
 
+typedef enum{
+	R_MIPS_32, 
+	R_MIPS_26,
+	R_MIPS_HI16,
+	R_MIPS_LO16,
+	R_OFFSET
+}type_realoc;
+
+typedef struct _realoc_ {
+	zone_symb	zone;		/*Zone (ou est situe l'operande) de la realoc*/
+	double 		decalage;	/*Decalage de l'instruction ou la realoc doit etre faite*/
+	type_realoc	type;		/*Type de realoc a faire*/
+	/*OPERANDE*	op;			Pointeur vers l'operande a realouer... Utilitee?*/
+	/*SYMB* 	symb;		Pointeur vers l'operande dans la table des symboles*/
+} * REALOC;
+
 #include <fct_affichage.h> /*Oblige de le mettre apres la definition du type file*/
 
 #endif /* _TYPES_H_ */
