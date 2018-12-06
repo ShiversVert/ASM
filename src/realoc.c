@@ -32,7 +32,7 @@ void reallocation_offset(File* p_file_realoc_offset, File* p_file_Symb){
 }
 
 int remplace_realoc_offset(File* p_file_Symb, OPERANDE* p_op){
-	char* chaine_op = (*p_op)->chain;
+	char* chaine_op = calloc(1, sizeof(*chaine_op)); strcpy(chaine_op, (*p_op)->chain);
 	File file_SYMB_temp = *p_file_Symb;
 	File dernier_elem = *p_file_Symb; file_SYMB_temp = file_SYMB_temp->suiv;
 
@@ -44,6 +44,7 @@ int remplace_realoc_offset(File* p_file_Symb, OPERANDE* p_op){
 
 			sprintf((*p_op)->chain, "%.0lf", (((SYMB)(file_SYMB_temp->val))->decalage));
 			(*p_op)->type = OPER_TARGET;
+			free(chaine_op);
 			return(1);
 		}
 
@@ -55,7 +56,7 @@ int remplace_realoc_offset(File* p_file_Symb, OPERANDE* p_op){
 	SYMB new_symb = calloc(1, sizeof(*new_symb));
 
 	new_symb->zone = ZONE_UNKW;
-	new_symb->nom = (*p_op)->chain;
+	new_symb->nom = chaine_op;
 	new_symb->line_nb = -1;
 	new_symb->decalage = -1;
 

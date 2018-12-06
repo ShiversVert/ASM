@@ -86,7 +86,7 @@ void afficher_file(File f, void (*afficher_maillon)(void*) ){
 	else{
 		File dernier_elem = f;
 		f = f->suiv;
-		printf("###############\n\n");
+		printf("\n###############\n");
 		
 		do{
 			(*afficher_maillon)(f->val);
