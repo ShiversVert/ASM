@@ -57,7 +57,8 @@ typedef enum{
 	OPER_CHAINE,
 	OPER_SYMBOLE,
 	OPER_TARGET,
-	OPER_ERROR
+	OPER_ERROR,
+	OPER_ERROR_UNK_REGISTER
 }type_operande;
 
 typedef struct _operande_{

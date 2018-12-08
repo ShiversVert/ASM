@@ -1,5 +1,5 @@
 # TEST_RETURN_CODE = FAIL
-# Erreur sur les numeros de ligne lors de l'affichage
+#Probleme sur les numeros de ligne (pas genant pour la generation du binaire)
 .text
 boucle: BEQ $t0 , $t1 , 200
     

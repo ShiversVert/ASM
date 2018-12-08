@@ -34,24 +34,26 @@ void reallocation_offset(File* p_file_realoc_offset, File* p_file_Symb){
 int remplace_realoc_offset(File* p_file_Symb, OPERANDE* p_op){
 	char* chaine_op = calloc(1, sizeof(*chaine_op)); strcpy(chaine_op, (*p_op)->chain);
 	File file_SYMB_temp = *p_file_Symb;
-	File dernier_elem = *p_file_Symb; file_SYMB_temp = file_SYMB_temp->suiv;
+	
+	if((*p_file_Symb)!=NULL){
+		File dernier_elem = *p_file_Symb; file_SYMB_temp = file_SYMB_temp->suiv;
 
-	do
-	{/*On parcours la liste de symboles*/
+		do
+		{/*On parcours la liste de symboles*/
 
-		/*Si on trouve le symbole dans la liste de symboles*/
-		if (!strcasecmp(chaine_op, ((SYMB)(file_SYMB_temp->val))->nom)){
+			/*Si on trouve le symbole dans la liste de symboles*/
+			if (!strcasecmp(chaine_op, ((SYMB)(file_SYMB_temp->val))->nom)){
 
-			sprintf((*p_op)->chain, "%.0lf", (((SYMB)(file_SYMB_temp->val))->decalage));
-			(*p_op)->type = OPER_TARGET;
-			free(chaine_op);
-			return(1);
-		}
+				sprintf((*p_op)->chain, "%.0lf", (((SYMB)(file_SYMB_temp->val))->decalage));
+				(*p_op)->type = OPER_TARGET;
+				(*p_op)->bin = atol((*p_op)->chain);
+				free(chaine_op);
+				return(1);
+			}
 
-		file_SYMB_temp = file_SYMB_temp->suiv;
-	} while (file_SYMB_temp!=dernier_elem->suiv);
-
-
+			file_SYMB_temp = file_SYMB_temp->suiv;
+		} while (file_SYMB_temp!=dernier_elem->suiv);
+	}
 	/*On ne l'a pas trouve dans la table de symbole donc on l'ajoute avec ZONE_UNKW*/
 	SYMB new_symb = calloc(1, sizeof(*new_symb));
 

@@ -213,6 +213,11 @@ void afficher_maillon_OPERANDE(void* maillon){
 			printf("\n");
 			WARNING_MSG("%s\t\t%s", type, chain);
 			break;
+		case OPER_ERROR_UNK_REGISTER:
+			type = "OPER_ERROR_UNK_REGISTER";
+			printf("\n");
+			WARNING_MSG("%s\t\t%s", type, chain);
+			break;
 	}
 
 	if( ((OPERANDE)(maillon))->type != OPER_ERROR){

@@ -7,7 +7,7 @@
     ADDI $a3, $a0, 8
 boucle: BEQ $t0 , $t1 , byebye
     NOP
-    addi $t1 , $32 , 1
+    addi $t1 , $31 , 1
     J boucle
     BNE $5, $10, toto
     NOP

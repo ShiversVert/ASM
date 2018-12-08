@@ -205,15 +205,20 @@ int ajout_maillon_data(File* p_file_Data, File* p_file_Lexeme, LEXEME lexeme_cou
 
 				case DECIMAL:
 					new_operande->type = OPER_DECIMAL;
+					new_operande->bin = atol(new_operande->chain);
 					break;
 
 				case HEXA:
 					new_operande->type = OPER_HEXA;
+					new_operande->bin = strtol(new_operande->chain, NULL, 16);
 					break;
+
 
 				case OCTAL:
 					new_operande->type = OPER_OCTAL;
+					new_operande->bin = strtol(new_operande->chain, NULL, 8);
 					break;
+
 
 				case SYMBOLE:
 					new_operande->type = OPER_SYMBOLE;
@@ -316,16 +321,18 @@ int ajout_maillon_bss(File* p_file_Bss, File* p_file_Lexeme, LEXEME lexeme_coura
 
 				case DECIMAL:
 					new_operande->type = OPER_DECIMAL;
+					new_operande->bin = atol(new_operande->chain);
 					break;
-
 
 				case HEXA:
 					new_operande->type = OPER_HEXA;
+					new_operande->bin = strtol(new_operande->chain, NULL, 16);
 					break;
 
 
 				case OCTAL:
 					new_operande->type = OPER_OCTAL;
+					new_operande->bin = strtol(new_operande->chain, NULL, 8);
 					break;
 
 
@@ -442,21 +449,25 @@ int ajout_maillon_text(File* p_file_Text, File* p_file_Lexeme, LEXEME lexeme_cou
 								OPERANDE new_operande2 = calloc(1,sizeof(new_operande2));
 								new_operande2->type = OPER_BASE;
 								new_operande2->chain = ( (LEXEME)((*p_file_Lexeme)->suiv->val) )-> chain; /*On ajoute le registre comme nouvel operande*/
+								is_registre(&new_operande2, new_maillon->line_nb);
 								liste_operande = ajout_queue(new_operande2, liste_operande);
 								defiler(p_file_Lexeme); /*On enleve le registre de la file de lexeme*/
 								defiler(p_file_Lexeme); /*On enleve la ')'*/
 							}
 						}
 					}
+					new_operande->bin = atol(new_operande->chain);
 					break;
 
 				case HEXA:
 					new_operande->type = OPER_HEXA;
+					new_operande->bin = strtol(new_operande->chain, NULL, 16);
 					break;
 
 
 				case OCTAL:
 					new_operande->type = OPER_OCTAL;
+					new_operande->bin = strtol(new_operande->chain, NULL, 8);
 					break;
 
 
@@ -466,6 +477,8 @@ int ajout_maillon_text(File* p_file_Text, File* p_file_Lexeme, LEXEME lexeme_cou
 
 				case REGISTRE:
 					new_operande->type = OPER_REG;
+					is_registre(&new_operande, new_maillon->line_nb);
+					new_operande->bin = atol(new_operande->chain);
 					break;
 
 				default:
@@ -638,72 +651,6 @@ void calcul_decalage_Bss(File* p_file_Bss, BSS* p_new_maillon, double* p_offset_
  	free(op_temp);
  }
 
-
-/**
- * Permet de trouver et de remplacer les Symboles par la valeur de decalage associee
- *
- * @param p_file_Text File de text a parcourir
- * @param p_file_Symb Symboles ayant ete definis
- * @param file_Dic 	  File de Dictionnaire
- */
-
-void replace_in_Text(File* p_file_Text, File* p_file_Symb, File file_Dic){
-	File dernier_elem = *p_file_Text;
-	File file_TEXT_temp = (*p_file_Text)->suiv;
-
-	do /*On parcours toute la liste de Text*/
-	{
-		/*Remplacement des Symboles par leurs adresses*/
-
-		Liste l_op = ((TEXT)(file_TEXT_temp->val))->l_operande;
-		while(l_op != NULL){
-			/*Si l'operande est un Symbole*/
-			if (((OPERANDE)(l_op->val))->type == OPER_SYMBOLE){
-				/*On le compare a la file de symbole*/
-				replace_SYMB( (OPERANDE*)(&(l_op->val)) , p_file_Symb);
-			}
-
-			l_op =l_op->suiv;
-		}
-
-		/*is_in_dic(file_Dic, &file_TEXT_temp, p_file_realoc, p_file_realoc_offset);*/
-		file_TEXT_temp = file_TEXT_temp->suiv;
-	} while (file_TEXT_temp!=dernier_elem->suiv);
-
-}
-
-/**
- * Remplace le symbole donne en parametre 1 par la valeur de son decalage si il le trouve dans la file de symbole donnee en param 2
- *
- * @param  op          OPerenade courante contenant un symbole
- * @param  p_file_Symb file des symboles connus
- *
- * @return         retourne 1 si tout se passe bien, 0 sinon
- */
-
-int replace_SYMB(OPERANDE* op, File* p_file_Symb){
-	File dernier_elem = *p_file_Symb;
-	File file_SYMB_temp = (*p_file_Symb)->suiv;
-	char* chaine_op = (*op)->chain;
-
-	do
-	{/*On parcours la liste de symboles*/
-
-		/*Si on trouve le symbole dans la liste de symboles*/
-		if (!strcasecmp(chaine_op, ((SYMB)(file_SYMB_temp->val))->nom)){
-
-			sprintf((*op)->chain, "%.0lf", (((SYMB)(file_SYMB_temp->val))->decalage));
-			(*op)->type = OPER_TARGET;
-			return(1);
-		}
-
-		file_SYMB_temp = file_SYMB_temp->suiv;
-	} while (file_SYMB_temp!=dernier_elem->suiv);
-
-	WARNING_MSG("L'etiquette \"%s\" n'est jamais definie\n", (*op)->chain);
-	return(0);
-}
-
 /**
  * Verifie l'existence d'une instruction et ses operandes. Remplace les pseudos instruction en leur(s) instructions
  *
@@ -729,90 +676,8 @@ int is_in_dic(File file_Dic, File* p_file_Text_maillon_courant, File* p_file_rea
 
 	/*CAS PARTICULIER DES PSEUDOS INSTRUCTIONS*/
 
-	if(!strcasecmp((*p_maillon)->operateur,"LW")){
-		if( (*p_maillon)->nb_op==2 ){
-			if ( ((OPERANDE)(((*p_maillon)->l_operande)->val))->type ==  OPER_REG && ((OPERANDE)(((*p_maillon)->l_operande)->suiv->val))->type ==  OPER_SYMBOLE)
-			{
-				/*Si on trouve une instruction
-					LW $R, etiquette
-				On la remplace par
-					LUI $at, etiquette_poidsfort>>16
-					LW $t1, etiquette_poidsfaible($at)
-				*/
-			
-				if(is_registre((OPERANDE*)(&(l_operande->val)), (*p_maillon)->line_nb)==1){
-					((OPERANDE)(l_operande->val))->bin = atol(((OPERANDE)(l_operande->val))->chain);
-				}
-			
-				type_operande type_op = ((OPERANDE)(((*p_maillon)->l_operande)->val))-> type;
-				char* registre = calloc(1,sizeof(char*)); registre = ((OPERANDE)(((*p_maillon)->l_operande)->val))-> chain;
-				/*------------------------------------------*/
-				/*--------Modification du maillon LW--------*/
-				/*------------------------------------------*/
-				char* lui = "lui";
-				(*p_maillon)->operateur = lui;
-
-				((OPERANDE)(((*p_maillon)->l_operande)->val))->chain = "1";	/*$at*/
-
-				/*TODO : TROUVER LE BON TYPE POUR etiquette_poidsfort>>16 */
-				/*TODO : TROUVER COMMENT FAIRE etiquette_poidsfort>>16*/
-				((OPERANDE)(((*p_maillon)->l_operande)->suiv->val))->type = OPER_SYMBOLE;
-				/*On ne change pas la chaine
-				((OPERANDE)(((*p_maillon)->l_operande)->suiv->val))->chain = "etiquette_poidsfort>>16";
-				Mais on ajoute l'operande a laa table de realoc*/
-				ajout_maillon_realoc((OPERANDE*)&(((*p_maillon)->l_operande)->suiv->val), p_file_realoc, R_MIPS_HI16, ZONE_TEXT, (*p_maillon)->decalage);
-				/*------------------------------------------*/
-				/*Creation et remplissage du nouveau maillon*/
-				/*------------------------------------------*/
-				TEXT new_maillon_text = calloc(1,sizeof(*new_maillon_text));
-
-				char* operateur = "lw";
-				new_maillon_text->operateur = operateur;
-				new_maillon_text->type = TEXT_INST;
-				new_maillon_text->nb_op = 3;
-				new_maillon_text->line_nb = - ((*p_maillon)->line_nb) ;
-				new_maillon_text->decalage = (*p_maillon)->decalage+4;
-
-				/*Creation et remplissage de la liste d'operandes*/
-
-				OPERANDE op1 = calloc(1,sizeof(*op1));
-				op1->type = type_op;
-				op1->chain = registre;
-
-				OPERANDE op2 = calloc(1,sizeof(*op2));
-				op2->type = OPER_SYMBOLE;
-				/*TODO : POIDS FORTS DE L'ETIQUETTE*/
-				/*On ne change pas la chaine
-				op2->chain = "etiquette_poidsfaible";
-				Mais on ajoute l'operande a laa table de realoc*/
-				op2->chain = ((OPERANDE)(((*p_maillon)->l_operande)->suiv->val))->chain;
-				ajout_maillon_realoc(&op2, p_file_realoc, R_MIPS_LO16, ZONE_TEXT, new_maillon_text->decalage);
-
-				OPERANDE op3 = calloc(1,sizeof(*op3));
-				op3->type = OPER_BASE;
-				op3->chain = "1";	/*$at*/
-
-				Liste new_l_op = NULL;
-				new_l_op=ajout_tete((op3), new_l_op);
-				new_l_op=ajout_tete((op2), new_l_op);
-				new_l_op=ajout_tete((op1), new_l_op);
-
-				new_maillon_text->l_operande = new_l_op;
-
-				/*------------------------------------------*/
-				/*----------NOUVEAUX  BRANCHEMENTS----------*/
-				/*------------------------------------------*/
-				(*p_file_Text_maillon_courant) = enfiler(new_maillon_text, *p_file_Text_maillon_courant);
-				/*File new_maillon_file = calloc(1, sizeof(*new_maillon_file));
-				new_maillon_file->val = new_maillon_text;
-				new_maillon_file->suiv = (*p_file_Text_maillon_courant)->suiv;
-
-				(*p_file_Text_maillon_courant)->suiv = new_maillon_file;
-				*/
-
-				return(1);
-			}
-		}
+	if(is_pseudo_inst(file_Dic, p_file_Text_maillon_courant, p_file_realoc, p_file_realoc_offset, p_maillon, l_operande)){
+		return(1);
 	}
 
 
@@ -832,13 +697,9 @@ int is_in_dic(File file_Dic, File* p_file_Text_maillon_courant, File* p_file_rea
 						case 'R':
 							if (type_op_courrante != OPER_REG){
 								((OPERANDE)(l_operande->val))->type = OPER_ERROR;
-								WARNING_MSG("Erreur ligne %.0lf, l'opperande no %d de \"%s\" doit etre un offset\n", (*p_maillon)->line_nb, i, (*p_maillon)->operateur);
+								WARNING_MSG("Erreur ligne %.0lf, l'opperande no %d de \"%s\" doit etre un registre\n", (*p_maillon)->line_nb, i, (*p_maillon)->operateur);
 							}
-							else {
-								if(is_registre((OPERANDE*)(&(l_operande->val)), (*p_maillon)->line_nb)==1){
-									((OPERANDE)(l_operande->val))->bin = atol(((OPERANDE)(l_operande->val))->chain);
-								}
-							}
+							
 							break;
 
 						case 'O':
@@ -855,11 +716,6 @@ int is_in_dic(File file_Dic, File* p_file_Text_maillon_courant, File* p_file_rea
 							if (type_op_courrante != OPER_BASE){
 								((OPERANDE)(l_operande->val))->type = OPER_ERROR;
 								WARNING_MSG("Erreur ligne %.0lf, l'opperande no %d de \"%s\" doit etre une base\n", (*p_maillon)->line_nb, i, (*p_maillon)->operateur);
-							}
-							else {
-								if(is_registre((OPERANDE*)(&(l_operande->val)), (*p_maillon)->line_nb)==1){
-									((OPERANDE)(l_operande->val))->bin = atol(((OPERANDE)(l_operande->val))->chain);
-								}
 							}
 							break;
 
@@ -919,6 +775,397 @@ int is_in_dic(File file_Dic, File* p_file_Text_maillon_courant, File* p_file_rea
 }
 
 /**
+ * Partie de la fonction is_in_dic pour les pseudo-instructions (codee en dur)
+ *
+ * @param  file_Dic                    File de dictionnaire
+ * @param  p_file_Text_maillon_courant Pointeur sur le maillon courant de la file de texte, permet d'inserer des instruction si on rencontre une peusdo instruction
+ * @param  p_file_realoc 			   Table de realoc a completer si l'operande est une etiquette
+ * @param  p_file_realoc_offset 	   Table a completer si l'operande est une etiquette et de type O
+ * @param  p_maillon                   Pointeur sur le maillon courant de TEXT
+ * @param  l_operande                  Pointeur sur la liste des operandes de l'instruction courante
+ *
+ * @return                             retourne 1 si on trouve une pseudo instruction, 0 sinon
+ */
+int is_pseudo_inst(File file_Dic, File* p_file_Text_maillon_courant, File* p_file_realoc, File* p_file_realoc_offset, TEXT* p_maillon, Liste l_operande){
+	if(!strcasecmp((*p_maillon)->operateur,"LW")){
+		if( (*p_maillon)->nb_op==2 ){
+			if ( (((OPERANDE)(((*p_maillon)->l_operande)->val))->type ==  OPER_REG || ((OPERANDE)(((*p_maillon)->l_operande)->val))->type == OPER_ERROR_UNK_REGISTER) && ((OPERANDE)(((*p_maillon)->l_operande)->suiv->val))->type ==  OPER_SYMBOLE){
+				/*Si on trouve une instruction
+					LW $R, etiquette
+				On la remplace par
+					LUI $at, etiquette_poidsfort>>16
+					LW $R, etiquette_poidsfaible($at)
+				*/
+			/*
+				if(is_registre((OPERANDE*)(&(l_operande->val)), (*p_maillon)->line_nb)==1){
+					((OPERANDE)(l_operande->val))->bin = atol(((OPERANDE)(l_operande->val))->chain);
+				}
+			*/
+				type_operande type_op = ((OPERANDE)(((*p_maillon)->l_operande)->val))-> type;
+				char* registre = calloc(1,sizeof(char*)); registre = ((OPERANDE)(((*p_maillon)->l_operande)->val))-> chain;
+				/*------------------------------------------*/
+				/*--------Modification du maillon LW--------*/
+				/*------------------------------------------*/
+				char* lui = "lui";
+				(*p_maillon)->operateur = lui;
+
+				((OPERANDE)(((*p_maillon)->l_operande)->val))->chain = "1";	/*$at*/
+				((OPERANDE)(((*p_maillon)->l_operande)->val))->type = OPER_REG;	/*$at*/
+				((OPERANDE)(((*p_maillon)->l_operande)->val))->bin = 1;	/*$at*/
+
+				/*TODO : TROUVER LE BON TYPE POUR etiquette_poidsfort>>16 */
+				/*TODO : TROUVER COMMENT FAIRE etiquette_poidsfort>>16*/
+				((OPERANDE)(((*p_maillon)->l_operande)->suiv->val))->type = OPER_SYMBOLE;
+				/*On ne change pas la chaine
+				((OPERANDE)(((*p_maillon)->l_operande)->suiv->val))->chain = "etiquette_poidsfort>>16";
+				Mais on ajoute l'operande a laa table de realoc*/
+				ajout_maillon_realoc((OPERANDE*)&(((*p_maillon)->l_operande)->suiv->val), p_file_realoc, R_MIPS_HI16, ZONE_TEXT, (*p_maillon)->decalage);
+				/*------------------------------------------*/
+				/*Creation et remplissage du nouveau maillon*/
+				/*------------------------------------------*/
+				TEXT new_maillon_text = calloc(1,sizeof(*new_maillon_text));
+
+				char* operateur = "lw";
+				new_maillon_text->operateur = operateur;
+				new_maillon_text->type = TEXT_INST;
+				new_maillon_text->nb_op = 3;
+				new_maillon_text->line_nb = - ((*p_maillon)->line_nb) ;
+				new_maillon_text->decalage = (*p_maillon)->decalage+4;
+
+				/*Creation et remplissage de la liste d'operandes*/
+
+				OPERANDE op1 = calloc(1,sizeof(*op1));
+				op1->type = type_op;
+				op1->chain = registre;
+				op1->bin = ((OPERANDE)(((*p_maillon)->l_operande)->val))->bin;
+
+				OPERANDE op2 = calloc(1,sizeof(*op2));
+				op2->type = OPER_SYMBOLE;
+				/*TODO : POIDS FORTS DE L'ETIQUETTE*/
+				/*On ne change pas la chaine
+				op2->chain = "etiquette_poidsfaible";
+				Mais on ajoute l'operande a laa table de realoc*/
+				op2->chain = ((OPERANDE)(((*p_maillon)->l_operande)->suiv->val))->chain;
+				ajout_maillon_realoc(&op2, p_file_realoc, R_MIPS_LO16, ZONE_TEXT, new_maillon_text->decalage);
+
+				OPERANDE op3 = calloc(1,sizeof(*op3));
+				op3->type = OPER_BASE;
+				op3->chain = "1";	/*$at*/
+				op3->bin = 1;
+
+				Liste new_l_op = NULL;
+				new_l_op=ajout_tete((op3), new_l_op);
+				new_l_op=ajout_tete((op2), new_l_op);
+				new_l_op=ajout_tete((op1), new_l_op);
+
+				new_maillon_text->l_operande = new_l_op;
+
+				/*------------------------------------------*/
+				/*----------NOUVEAUX  BRANCHEMENTS----------*/
+				/*------------------------------------------*/
+				(*p_file_Text_maillon_courant) = enfiler(new_maillon_text, *p_file_Text_maillon_courant);
+				/*File new_maillon_file = calloc(1, sizeof(*new_maillon_file));
+				new_maillon_file->val = new_maillon_text;
+				new_maillon_file->suiv = (*p_file_Text_maillon_courant)->suiv;
+
+				(*p_file_Text_maillon_courant)->suiv = new_maillon_file;
+				*/
+
+				return(1);
+			}
+		}
+	}
+
+	else if(!strcasecmp((*p_maillon)->operateur,"SW")){
+		if( (*p_maillon)->nb_op==2 ){
+			if ( (((OPERANDE)(((*p_maillon)->l_operande)->val))->type ==  OPER_REG || ((OPERANDE)(((*p_maillon)->l_operande)->val))->type == OPER_ERROR_UNK_REGISTER) && ((OPERANDE)(((*p_maillon)->l_operande)->suiv->val))->type ==  OPER_SYMBOLE){
+
+				/*Si on trouve une instruction
+					SW $R, etiquette
+				On la remplace par
+					LUI $at, etiquette_poidsfort>>16
+					SW $R, etiquette_poidsfaible($at)
+				*/
+			
+				type_operande type_op = ((OPERANDE)(((*p_maillon)->l_operande)->val))-> type;
+				char* registre = calloc(1,sizeof(char*)); registre = ((OPERANDE)(((*p_maillon)->l_operande)->val))-> chain;
+				/*------------------------------------------*/
+				/*--------Modification du maillon LW--------*/
+				/*------------------------------------------*/
+				char* lui = "lui";
+				(*p_maillon)->operateur = lui;
+
+				((OPERANDE)(((*p_maillon)->l_operande)->val))->chain = "1";	/*$at*/
+				((OPERANDE)(((*p_maillon)->l_operande)->val))->bin = 1;	/*$at*/
+
+				/*TODO : TROUVER LE BON TYPE POUR etiquette_poidsfort>>16 */
+				/*TODO : TROUVER COMMENT FAIRE etiquette_poidsfort>>16*/
+				((OPERANDE)(((*p_maillon)->l_operande)->suiv->val))->type = OPER_SYMBOLE;
+				/*On ne change pas la chaine
+				((OPERANDE)(((*p_maillon)->l_operande)->suiv->val))->chain = "etiquette_poidsfort>>16";
+				Mais on ajoute l'operande a laa table de realoc*/
+				ajout_maillon_realoc((OPERANDE*)&(((*p_maillon)->l_operande)->suiv->val), p_file_realoc, R_MIPS_HI16, ZONE_TEXT, (*p_maillon)->decalage);
+				/*------------------------------------------*/
+				/*Creation et remplissage du nouveau maillon*/
+				/*------------------------------------------*/
+				TEXT new_maillon_text = calloc(1,sizeof(*new_maillon_text));
+
+				char* operateur = "sw";
+				new_maillon_text->operateur = operateur;
+				new_maillon_text->type = TEXT_INST;
+				new_maillon_text->nb_op = 3;
+				new_maillon_text->line_nb = - ((*p_maillon)->line_nb) ;
+				new_maillon_text->decalage = (*p_maillon)->decalage+4;
+
+				/*Creation et remplissage de la liste d'operandes*/
+
+				OPERANDE op1 = calloc(1,sizeof(*op1));
+				op1->type = type_op;
+				op1->chain = registre;
+				op1->bin = ((OPERANDE)(((*p_maillon)->l_operande)->val))->bin;
+
+				OPERANDE op2 = calloc(1,sizeof(*op2));
+				op2->type = OPER_SYMBOLE;
+				/*TODO : POIDS FORTS DE L'ETIQUETTE*/
+				/*On ne change pas la chaine
+				op2->chain = "etiquette_poidsfaible";
+				Mais on ajoute l'operande a laa table de realoc*/
+				op2->chain = ((OPERANDE)(((*p_maillon)->l_operande)->suiv->val))->chain;
+				ajout_maillon_realoc(&op2, p_file_realoc, R_MIPS_LO16, ZONE_TEXT, new_maillon_text->decalage);
+
+				OPERANDE op3 = calloc(1,sizeof(*op3));
+				op3->type = OPER_BASE;
+				op3->chain = "1";	/*$at*/
+				op3->bin = 1;
+
+				Liste new_l_op = NULL;
+				new_l_op=ajout_tete((op3), new_l_op);
+				new_l_op=ajout_tete((op2), new_l_op);
+				new_l_op=ajout_tete((op1), new_l_op);
+
+				new_maillon_text->l_operande = new_l_op;
+
+				/*------------------------------------------*/
+				/*----------NOUVEAUX  BRANCHEMENTS----------*/
+				/*------------------------------------------*/
+				(*p_file_Text_maillon_courant) = enfiler(new_maillon_text, *p_file_Text_maillon_courant);
+				/*File new_maillon_file = calloc(1, sizeof(*new_maillon_file));
+				new_maillon_file->val = new_maillon_text;
+				new_maillon_file->suiv = (*p_file_Text_maillon_courant)->suiv;
+
+				(*p_file_Text_maillon_courant)->suiv = new_maillon_file;
+				*/
+
+				return(1);
+			}
+		}
+	}
+
+	else if(!strcasecmp((*p_maillon)->operateur,"MOVE")){
+		if( (*p_maillon)->nb_op==2 ){
+			if ( (((OPERANDE)(((*p_maillon)->l_operande)->val))->type ==  OPER_REG || ((OPERANDE)(((*p_maillon)->l_operande)->val))->type == OPER_ERROR_UNK_REGISTER) && (((OPERANDE)(((*p_maillon)->l_operande)->suiv->val))->type ==  OPER_REG || ((OPERANDE)(((*p_maillon)->l_operande)->suiv->val))->type == OPER_ERROR_UNK_REGISTER) ){
+				/*Si on trouve une instruction
+					MOVE $rt, $rs
+				On la remplace par
+					ADD $rt, $rs, $0
+				*/
+				/*
+				if(is_registre((OPERANDE*)(&(l_operande->val)), (*p_maillon)->line_nb)==1){
+					((OPERANDE)(l_operande->val))->bin = atol(((OPERANDE)(l_operande->val))->chain);
+				}
+				if(is_registre((OPERANDE*)(&(l_operande->suiv->val)), (*p_maillon)->line_nb)==1){
+					((OPERANDE)(l_operande->suiv->val))->bin = atol(((OPERANDE)(l_operande->suiv->val))->chain);
+				}*/
+
+				char* zero = "0"; /*calloc(1,sizeof(char*)); zero = "0\0";*/
+				/*------------------------------------------*/
+				/*--------Modification du maillon LW--------*/
+				/*------------------------------------------*/
+				char* add = "add";
+				(*p_maillon)->operateur = add;
+
+				OPERANDE new_op = calloc(1,sizeof(*new_op));
+				new_op->chain = zero;
+				new_op->type = OPER_REG;
+				new_op->bin = 0;
+
+				l_operande = ajout_queue(new_op, l_operande);
+				return(1);
+			}
+		}
+	}
+
+	else if(!strcasecmp((*p_maillon)->operateur,"NEG")){
+		if( (*p_maillon)->nb_op==2 ){
+			if ( (((OPERANDE)(((*p_maillon)->l_operande)->val))->type ==  OPER_REG || ((OPERANDE)(((*p_maillon)->l_operande)->val))->type == OPER_ERROR_UNK_REGISTER) && (((OPERANDE)(((*p_maillon)->l_operande)->suiv->val))->type ==  OPER_REG || ((OPERANDE)(((*p_maillon)->l_operande)->suiv->val))->type == OPER_ERROR_UNK_REGISTER) ){
+				/*Si on trouve une instruction
+					NEG $Rs, $Rt
+				On la remplace par
+					SUB $rt, $0, $rs
+				*/
+				/*
+				if(is_registre((OPERANDE*)(&(l_operande->val)), (*p_maillon)->line_nb)==1){
+					((OPERANDE)(l_operande->val))->bin = atol(((OPERANDE)(l_operande->val))->chain);
+				}
+				if(is_registre((OPERANDE*)(&(l_operande->suiv->val)), (*p_maillon)->line_nb)==1){
+					((OPERANDE)(l_operande->suiv->val))->bin = atol(((OPERANDE)(l_operande->suiv->val))->chain);
+				}*/
+
+				char* zero = "0"; /*calloc(1,sizeof(char*)); zero = "0\0";*/
+				/*------------------------------------------*/
+				/*--------Modification du maillon LW--------*/
+				/*------------------------------------------*/
+				char* sub = "sub";
+				(*p_maillon)->operateur = sub;
+
+				OPERANDE new_op = calloc(1,sizeof(*new_op));
+				new_op->chain = zero;
+				new_op->type = OPER_REG;
+				new_op->bin = 0;
+
+				l_operande->suiv = ajout_tete(new_op, l_operande->suiv);
+				return(1);
+			}
+		}
+	}
+
+	else if(!strcasecmp((*p_maillon)->operateur,"LI")){
+		if( (*p_maillon)->nb_op==2 ){
+			if ( (((OPERANDE)(((*p_maillon)->l_operande)->val))->type ==  OPER_REG || ((OPERANDE)(((*p_maillon)->l_operande)->val))->type == OPER_ERROR_UNK_REGISTER) ){
+				/*Si on trouve une instruction
+					LI $rt, immediate
+				On la remplace par
+					ADDI $rt, $0, immediate
+				*/
+				int continuer = 0;
+				/*
+				if(is_registre((OPERANDE*)(&(l_operande->val)), (*p_maillon)->line_nb)==1){
+					((OPERANDE)(l_operande->val))->bin = atol(((OPERANDE)(l_operande->val))->chain);
+				}*/
+				
+
+				/*Si immediate est un symbole:*/
+				if(((OPERANDE)(((*p_maillon)->l_operande)->suiv->val))->type == OPER_SYMBOLE){
+					ajout_maillon_realoc((OPERANDE*)&(((*p_maillon)->l_operande)->suiv->val), p_file_realoc_offset, R_OFFSET, ZONE_TEXT, (*p_maillon)->decalage);
+					continuer = 1;
+				}
+				
+				/*Si immediate est un nombre*/
+				else if (((OPERANDE)(((*p_maillon)->l_operande)->suiv->val))->type == OPER_DECIMAL){					
+					continuer = 1;
+				}
+				else if ( (((OPERANDE)(((*p_maillon)->l_operande)->suiv->val))->type == OPER_HEXA)){
+					continuer = 1;
+				}
+				if(continuer){
+									
+				char* zero = "0"; /*calloc(1,sizeof(char*)); zero = "0\0";*/
+				/*------------------------------------------*/
+				/*--------Modification du maillon LW--------*/
+				/*------------------------------------------*/
+				char* addi = "addi";
+				(*p_maillon)->operateur = addi;
+
+				OPERANDE new_op = calloc(1,sizeof(*new_op));
+				new_op->chain = zero;
+				new_op->type = OPER_REG;
+				new_op->bin = 0;
+
+				l_operande->suiv = ajout_tete(new_op, l_operande->suiv);
+				return(1);
+				}
+			}	
+		}
+	}
+
+	else if(!strcasecmp((*p_maillon)->operateur,"BLT")){
+		if( (*p_maillon)->nb_op==3 ){
+			if ( (((OPERANDE)(((*p_maillon)->l_operande)->val))->type ==  OPER_REG || ((OPERANDE)(((*p_maillon)->l_operande)->val))->type == OPER_ERROR_UNK_REGISTER) && (((OPERANDE)(((*p_maillon)->l_operande)->suiv->val))->type ==  OPER_REG || ((OPERANDE)(((*p_maillon)->l_operande)->suiv->val))->type == OPER_ERROR_UNK_REGISTER) ){
+				int continuer = 0;
+				/*Si on trouve une instruction
+					BLT $rt, $rs, target
+				On la remplace par
+					SLT $1, $rt, $rs
+					BNE $1, $zero, target
+				*/
+				if (((OPERANDE)(((*p_maillon)->l_operande)->suiv->suiv->val))->type ==  OPER_SYMBOLE){
+					ajout_maillon_realoc((OPERANDE*)&(((*p_maillon)->l_operande)->suiv->suiv->val), p_file_realoc_offset, R_OFFSET, ZONE_TEXT, (*p_maillon)->decalage);
+					continuer = 1;
+				}
+
+				else if(((OPERANDE)(((*p_maillon)->l_operande)->suiv->suiv->val))->type ==  OPER_DECIMAL || ((OPERANDE)(((*p_maillon)->l_operande)->suiv->suiv->val))->type ==  OPER_HEXA){
+					continuer =1;
+				}
+				if (continuer){
+					/*type_operande type_op = ((OPERANDE)(((*p_maillon)->l_operande)->val))-> type;
+					char* registre = calloc(1,sizeof(char*)); registre = ((OPERANDE)(((*p_maillon)->l_operande)->val))-> chain;*/
+					/*------------------------------------------*/
+					/*--------Modification du maillon LW--------*/
+					/*------------------------------------------*/
+					char* slt = "slt";
+					(*p_maillon)->operateur = slt;
+
+					OPERANDE op0 = calloc(1,sizeof(*op0));
+					op0->type = OPER_REG;
+					op0->chain = "1";
+					op0->bin = 1;
+
+					/*On enleve le maillon target pour le reinserer apres*/
+					Liste l_target = ((*p_maillon)->l_operande)->suiv->suiv;
+					((*p_maillon)->l_operande)->suiv->suiv = NULL;
+
+					(*p_maillon)->l_operande = ajout_tete(op0, (*p_maillon)->l_operande);
+
+					/*------------------------------------------*/
+					/*Creation et remplissage du nouveau maillon*/
+					/*------------------------------------------*/
+					TEXT new_maillon_text = calloc(1,sizeof(*new_maillon_text));
+
+					char* operateur = "bne";
+					new_maillon_text->operateur = operateur;
+					new_maillon_text->type = TEXT_INST;
+					new_maillon_text->nb_op = 3;
+					new_maillon_text->line_nb = - ((*p_maillon)->line_nb) ;
+					new_maillon_text->decalage = (*p_maillon)->decalage+4;
+
+					/*Creation et remplissage de la liste d'operandes*/
+
+					OPERANDE op1 = calloc(1,sizeof(*op1));
+					op1->type = OPER_REG;
+					op1->chain = "1";
+					op1->bin = 1;
+
+					OPERANDE op2 = calloc(1,sizeof(*op2));
+					op2->type = OPER_REG;
+					op2->chain = "0";
+					op2->bin = 0;
+
+					Liste new_l_op = l_target; /*On reinsere le maillon target*/
+					new_l_op=ajout_tete((op2), new_l_op);
+					new_l_op=ajout_tete((op1), new_l_op);
+
+					new_maillon_text->l_operande = new_l_op;
+
+					/*------------------------------------------*/
+					/*----------NOUVEAUX  BRANCHEMENTS----------*/
+					/*------------------------------------------*/
+					(*p_file_Text_maillon_courant) = enfiler(new_maillon_text, *p_file_Text_maillon_courant);
+					/*File new_maillon_file = calloc(1, sizeof(*new_maillon_file));
+					new_maillon_file->val = new_maillon_text;
+					new_maillon_file->suiv = (*p_file_Text_maillon_courant)->suiv;
+
+					(*p_file_Text_maillon_courant)->suiv = new_maillon_file;
+					*/
+
+					return(1);
+				}
+			}
+		}
+	}
+	return(0);
+}
+
+/**
  * Verifie que l'opperande courrante (qui est un registre) est un registre existant
  *
  * @param  p_op    operande courante contenant un regisre
@@ -935,8 +1182,9 @@ int is_registre(OPERANDE* p_op, double line_nb){
 		(*p_op)->chain = "1"; return(1);
 	}
 	if(strlen(registre)>3){
-		(*p_op)->type = OPER_ERROR;
-		WARNING_MSG("Erreur ligne %.0lf : le registre \"%s\" n'existe pas\n", line_nb, registre); return(0);
+		(*p_op)->type = OPER_ERROR_UNK_REGISTER;
+		(*p_op)->chain = (*p_op)->chain + 1;
+		WARNING_MSG("Erreur ligne %.0lf : le registre \"$%s\" n'existe pas\n", line_nb, registre); return(0);
 	}
 
 	if(isdigit(registre[1])){/*Si le premier caractere du registre est un chiffre => Registre*/
@@ -945,24 +1193,24 @@ int is_registre(OPERANDE* p_op, double line_nb){
 			return(1); /*Le registre ne contient qu'un carac qui est un chiffre*/
 		}
 		else if(isdigit(registre[2])){ /*Le registre contient deux carac qui ne sont que des chiffres*/
-			reg[0] = registre[1];reg[1] = registre[2];
+			reg[0] = registre[1];reg[1] = registre[2];reg[2] = '\0';
 			reg_int= strtol(reg, (char **)NULL, 10);
 			if (reg_int>=0 && reg_int<=31){
 				/* PAS NECESSAIRE
 				if(reg_int == 26 || reg_int==27){
-					(*p_op)->type = OPER_ERROR;
+					(*p_op)->type = OPER_ERROR_UNK_REGISTER;
 					WARNING_MSG("Erreur ligne %.0lf : le registre \"%s\" est reserve au kernel\n", line_nb, registre); return(0);
 				}*/
 				(*p_op)->chain = (*p_op)->chain + 1; /*On enleve le dollar*/
 				return(1);
 			}
 			else{ /*Le deuxieme carac du registre est une lettre IMPOSSIBLE*/
-				(*p_op)->type = OPER_ERROR;
+				(*p_op)->type = OPER_ERROR_UNK_REGISTER;
 				WARNING_MSG("Erreur ligne %.0lf : le registre \"%s\" n'existe pas\n", line_nb, registre); return(0);
 			}
 		}
 		else{ /*Le deuxieme carac du registre est une lettre IMPOSSIBLE*/
-			(*p_op)->type = OPER_ERROR;
+			(*p_op)->type = OPER_ERROR_UNK_REGISTER;
 			WARNING_MSG("Erreur ligne %.0lf : le registre \"%s\" n'existe pas\n", line_nb, registre); return(0);
 		}
 	}
@@ -973,7 +1221,7 @@ int is_registre(OPERANDE* p_op, double line_nb){
 			if(isdigit(registre[2])){
 				if (atoi(&registre[2])<=3){sprintf((*p_op)->chain, "%d", atoi(&registre[2]) + 4); return 1;}
 			}
-			(*p_op)->type = OPER_ERROR;
+			(*p_op)->type = OPER_ERROR_UNK_REGISTER;
 			WARNING_MSG("Erreur ligne %.0lf : le registre \"%s\" n'existe pas\n", line_nb, registre);return(0);
 		}
 
@@ -981,7 +1229,7 @@ int is_registre(OPERANDE* p_op, double line_nb){
 			if(isdigit(registre[2])){
 				if (atoi(&registre[2])<=1){sprintf((*p_op)->chain, "%d", atoi(&registre[2]) + 2);return 1;}
 			}
-			(*p_op)->type = OPER_ERROR;
+			(*p_op)->type = OPER_ERROR_UNK_REGISTER;
 			WARNING_MSG("Erreur ligne %.0lf : le registre \"%s\" n'existe pas\n", line_nb, registre);return(0);
 		}
 
@@ -991,7 +1239,7 @@ int is_registre(OPERANDE* p_op, double line_nb){
 				else sprintf((*p_op)->chain, "%d", atoi(&registre[2]) + 16);
 				return 1;
 			}
-			(*p_op)->type = OPER_ERROR;
+			(*p_op)->type = OPER_ERROR_UNK_REGISTER;
 			WARNING_MSG("Erreur ligne %.0lf : le registre \"%s\" n'existe pas\n", line_nb, registre);return(0);
 		}
 
@@ -1000,7 +1248,7 @@ int is_registre(OPERANDE* p_op, double line_nb){
 			if(isdigit(registre[2])){
 				if (atoi(&registre[2])<=7){sprintf((*p_op)->chain, "%d", atoi(&registre[2]) + 16); return 1;}
 			}
-			(*p_op)->type = OPER_ERROR;
+			(*p_op)->type = OPER_ERROR_UNK_REGISTER;
 			WARNING_MSG("Erreur ligne %.0lf : le registre \"%s\" n'existe pas\n", line_nb, registre);return(0);
 		}
 
@@ -1008,20 +1256,20 @@ int is_registre(OPERANDE* p_op, double line_nb){
 			if(isdigit(registre[2])){
 				if (atoi(&registre[2])<=1){
 					/*PAS NECESSAIRE
-					(*p_op)->type = OPER_ERROR;
+					(*p_op)->type = OPER_ERROR_UNK_REGISTER;
 					WARNING_MSG("Erreur ligne %.0lf : le registre \"%s\" est reserve au kernel\n", line_nb, registre); return(0);
 					*/
 					sprintf((*p_op)->chain, "%d", atoi(&registre[2]) + 26);return 1;
 				}
 			}
-			(*p_op)->type = OPER_ERROR;
+			(*p_op)->type = OPER_ERROR_UNK_REGISTER;
 			WARNING_MSG("Erreur ligne %.0lf : le registre \"%s\" n'existe pas\n", line_nb, registre);return(0);
 		}
 		if(registre[1]=='g' && registre[2]=='p'){(*p_op)->chain = "28"; return 1;}
 		if(registre[1]=='f' && registre[2]=='p'){(*p_op)->chain = "30"; return 1;}
 		if(registre[1]=='r' && registre[2]=='a'){(*p_op)->chain = "31"; return 1;}
 
-		(*p_op)->type = OPER_ERROR;
+		(*p_op)->type = OPER_ERROR_UNK_REGISTER;
 		WARNING_MSG("Erreur ligne %.0lf : le registre \"%s\" n'existe pas\n", line_nb, registre);return(0);
 	}
 	return 0;

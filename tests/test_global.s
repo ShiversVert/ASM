@@ -1,3 +1,4 @@
+# TEST_RETURN_CODE = PASS
 0x18
 %
 0a "test_quotes \" ! "
