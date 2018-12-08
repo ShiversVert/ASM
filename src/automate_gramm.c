@@ -544,15 +544,21 @@ void calcul_decalage_Data(File* p_file_Data, DATA* p_new_maillon, double* p_offs
 		}
 
 		else if(strcmp( (*p_new_maillon)->operateur , ".word")==0){
-
-			if((int)(*p_offset_data)%4 == 0){
+			if((int)(*p_offset_data) == 0){
+				(*p_new_maillon)->decalage = (*p_offset_data);
 				(*p_offset_data) += 4;
 			}
-			/*On aligne les .word modulo 4*/
 			else{
-				(*p_offset_data) +=  4 - (int)(*p_offset_data)%4;
+				if((int)(*p_offset_data)%4 == 0){
+					(*p_new_maillon)->decalage = (*p_offset_data);
+					(*p_offset_data) += 4;
+				}
+				/*On aligne les .word modulo 4*/
+				else{
+					(*p_offset_data) +=  4 - (int)(*p_offset_data)%4;
+					(*p_new_maillon)->decalage = (*p_offset_data); /*On overrite la valeur dans le cas d'un .word*/
+				}
 			}
-			(*p_new_maillon)->decalage = (*p_offset_data); /*On overrite la valeur dans le cas d'un .word*/
 		}
 
 		else{
@@ -632,11 +638,6 @@ void calcul_decalage_Bss(File* p_file_Bss, BSS* p_new_maillon, double* p_offset_
  	free(op_temp);
  }
 
- /*@param maillon Pointeur sur le maillon en cours d'analyse
-  *@param p_file_Dic pointeur sur le nouveau maillon (en cours de creation) pour acceder a ses infos et y ecrire le decalage
-  *@return Ne retourne rien mais ecrit la valeure du decalage dans le nouveau maillon
-  *@brief Fonction a appeler la de la creation d'un maillon TEXT pour verifier 1) l'existence de l'operation 2) Son nb d'operande 3)Le type des operandes
-  */
 
 /**
  * Permet de trouver et de remplacer les Symboles par la valeur de decalage associee
@@ -738,7 +739,11 @@ int is_in_dic(File file_Dic, File* p_file_Text_maillon_courant, File* p_file_rea
 					LUI $at, etiquette_poidsfort>>16
 					LW $t1, etiquette_poidsfaible($at)
 				*/
-				is_registre(((OPERANDE*)&(((*p_maillon)->l_operande)->val)), (*p_maillon)->line_nb);
+			
+				if(is_registre((OPERANDE*)(&(l_operande->val)), (*p_maillon)->line_nb)==1){
+					((OPERANDE)(l_operande->val))->bin = atol(((OPERANDE)(l_operande->val))->chain);
+				}
+			
 				type_operande type_op = ((OPERANDE)(((*p_maillon)->l_operande)->val))-> type;
 				char* registre = calloc(1,sizeof(char*)); registre = ((OPERANDE)(((*p_maillon)->l_operande)->val))-> chain;
 				/*------------------------------------------*/
@@ -829,7 +834,11 @@ int is_in_dic(File file_Dic, File* p_file_Text_maillon_courant, File* p_file_rea
 								((OPERANDE)(l_operande->val))->type = OPER_ERROR;
 								WARNING_MSG("Erreur ligne %.0lf, l'opperande no %d de \"%s\" doit etre un offset\n", (*p_maillon)->line_nb, i, (*p_maillon)->operateur);
 							}
-							else is_registre((OPERANDE*)(&(l_operande->val)), (*p_maillon)->line_nb);
+							else {
+								if(is_registre((OPERANDE*)(&(l_operande->val)), (*p_maillon)->line_nb)==1){
+									((OPERANDE)(l_operande->val))->bin = atol(((OPERANDE)(l_operande->val))->chain);
+								}
+							}
 							break;
 
 						case 'O':
@@ -847,7 +856,11 @@ int is_in_dic(File file_Dic, File* p_file_Text_maillon_courant, File* p_file_rea
 								((OPERANDE)(l_operande->val))->type = OPER_ERROR;
 								WARNING_MSG("Erreur ligne %.0lf, l'opperande no %d de \"%s\" doit etre une base\n", (*p_maillon)->line_nb, i, (*p_maillon)->operateur);
 							}
-							else is_registre((OPERANDE*)(&(l_operande->val)), (*p_maillon)->line_nb);
+							else {
+								if(is_registre((OPERANDE*)(&(l_operande->val)), (*p_maillon)->line_nb)==1){
+									((OPERANDE)(l_operande->val))->bin = atol(((OPERANDE)(l_operande->val))->chain);
+								}
+							}
 							break;
 
 						case 'T':
@@ -932,7 +945,7 @@ int is_registre(OPERANDE* p_op, double line_nb){
 			return(1); /*Le registre ne contient qu'un carac qui est un chiffre*/
 		}
 		else if(isdigit(registre[2])){ /*Le registre contient deux carac qui ne sont que des chiffres*/
-			reg[0] = registre[1];reg[0] = registre[2];
+			reg[0] = registre[1];reg[1] = registre[2];
 			reg_int= strtol(reg, (char **)NULL, 10);
 			if (reg_int>=0 && reg_int<=31){
 				/* PAS NECESSAIRE
@@ -942,6 +955,10 @@ int is_registre(OPERANDE* p_op, double line_nb){
 				}*/
 				(*p_op)->chain = (*p_op)->chain + 1; /*On enleve le dollar*/
 				return(1);
+			}
+			else{ /*Le deuxieme carac du registre est une lettre IMPOSSIBLE*/
+				(*p_op)->type = OPER_ERROR;
+				WARNING_MSG("Erreur ligne %.0lf : le registre \"%s\" n'existe pas\n", line_nb, registre); return(0);
 			}
 		}
 		else{ /*Le deuxieme carac du registre est une lettre IMPOSSIBLE*/

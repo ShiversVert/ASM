@@ -179,6 +179,7 @@ void afficher_maillon_TEXT(void* maillon){
 void afficher_maillon_OPERANDE(void* maillon){
 	char* chain = ((OPERANDE)(maillon))->chain;
 	char* type;
+	unsigned long bin = ((OPERANDE)(maillon))->bin;
 	switch ( ((OPERANDE)(maillon))->type ) {
 		case OPER_REG:
 			type = "OPER_REG";
@@ -214,9 +215,10 @@ void afficher_maillon_OPERANDE(void* maillon){
 			break;
 	}
 
-	if( ((OPERANDE)(maillon))->type != OPER_ERROR) {
-		printf("\n\t%s\t\t", type);
-		printf("%s", chain);
+	if( ((OPERANDE)(maillon))->type != OPER_ERROR){
+		printf("\n\tType : %s\t\t", type);
+		printf("Chaine : %s\t\t", chain);
+		printf("Binaire : 0x%lx", bin);
 	}
 }
 

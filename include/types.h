@@ -62,6 +62,7 @@ typedef enum{
 
 typedef struct _operande_{
 	char*			chain;
+	unsigned long	bin;
 	type_operande 	type;
 }*OPERANDE;
 
