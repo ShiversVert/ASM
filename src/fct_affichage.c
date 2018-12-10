@@ -258,11 +258,16 @@ void afficher_maillon_DIC(void* maillon){
 	char* operateur = ((DIC)(maillon))->chain;
 	int nb_op = ((DIC)(maillon))->nb_op;
 	char* type_op = ((DIC)(maillon))->type_op;
-	int i;
+	int i; int nb_bin = 0;
 
 	printf("%s\t%d\t",operateur, nb_op);
 	for (i=0; i<nb_op; i++){
 		printf("%c ", type_op[i]);
+	}
+	printf("\t\t");
+	while((((DIC)(maillon))->bin)[nb_bin][1]!=0 && nb_bin<=5){/*Illisible mais fonctionne*/
+		printf("%d:%d ", (((DIC)(maillon))->bin)[nb_bin][0] , (((DIC)(maillon))->bin)[nb_bin][1] );
+		nb_bin++;
 	}
 	printf("\n");
 }

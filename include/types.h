@@ -132,20 +132,15 @@ typedef struct _dic_ {
   char*     chain;        /*Chaine de caractere de l'instruction*/
   int       nb_op;        /*Nombre d'operandes de l'instruction*/
   char      type_op[3];   /*Tableau de 3 char contenant le type de l'opperande i*/
+
+  int      bin[6][2];   /*Tableau de 5 int contenant le nombre a coder et le nombre de bits*/
   /*
-  R => registre
+  Rd Rs Rt => registre
   O => offset
   B => base (On a donc O B pour un offset(base) )
   T => target
   I => valeur immediate
   S => shift amount
-  */
- /*
- char* nom
- char type_instr
- int nb_op
- File file_op
- File queue_bin
   */
 }* DIC;
 

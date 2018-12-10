@@ -95,7 +95,7 @@ int main ( int argc, char *argv[] ) {
     File file_Realoc = NULL;
     DEBUG_MSG("\n\n###############################\nCHARGEMENT DU DICTIONNAIRE\n###############################\n\n");
 
-    file_Dic = import_dictionnaire("./dictionnaires/dictionnaire_instructions.txt");
+    file_Dic = import_dictionnaire("./dictionnaires/dictionnaire_instructions_new2.txt");
     DEBUG_MSG("\n\n######### file_Dic ##########\n\n");afficher_file(file_Dic, (*afficher_maillon_DIC));
 
     DEBUG_MSG("\n\n###############################\nDEBUT DE L'ANALYSE GRAMMATICALE\n###############################\n\n");

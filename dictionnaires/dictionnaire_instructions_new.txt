@@ -1,0 +1,26 @@
+ADD Rd Rs Rt 0 s:5 t:5 d:5 0:5 32:6
+ADDI Rt Rs I 8 s:5 t:5 I:16
+AND Rd Rs Rt 0 s:5 t:5 d:5 0:5 36:6
+BEQ Rs Rt O  4 s:5 t:5 O:16
+BGTZ Rs O    7 s:5 0:5 O:16
+BLEZ Rs O    6 s:5 0:5 O:16
+BNE Rs Rt O  5 s:5 t:5 O:16
+DIV Rs Rt    0 s:5 t:5 0:5 0:5 26:6
+J T          2 T:26
+JAL T        3 T:26
+JR Rs        0 s:5 0:5 0:5 0:5  8:6
+LUI Rt I     15 0:5 t:5 I:16
+LW Rt O B    35 B:5 t:5 O:16
+MFHI Rd      0 0:5 0:5 d:5 0:5 16:6
+MFLO Rd      0 0:5 0:5 d:5 0:5 18:6
+MULT Rs Rt   0 s:5 t:5 0:5 0:5 24:6
+NOP          0 0:26
+OR Rd Rs Rt  0 s:5 t:5 d:5 0:5 37:6
+ROTR Rd Rt S 0 1:5 t:5 d:5 0:5 2:6
+SLL Rd Rt S  0 0:5 t:5 d:5 S:5 0:6
+SLT Rd Rs Rt 0 s:5 t:5 d:5 0:5 42:6
+SRL Rd Rt S  0 0:5 t:5 d:5 s:5 2:6
+SUB Rd Rs Rt 0 s:5 t:5 d:5 0:5 34:6
+SW Rt O B    43 B:5 t:5 O:16 
+SYSCALL      0 0:20 12:6
+XOR Rd Rs Rt 0 s:5 t:5 d:5 0:5 38:6
