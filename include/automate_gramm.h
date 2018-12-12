@@ -15,6 +15,7 @@
 #include <ctype.h>
 #include <global.h>
 #include <string.h>
+#include <math.h>
 
 #include <types.h>
 #include <liste.h>
@@ -37,5 +38,7 @@ void calcul_decalage_Bss(File* p_file_Bss, BSS* p_new_maillon, double* p_offset_
 int is_in_dic(File file_Dic, File* p_file_Text_maillon_courant, File* p_file_realoc, File* p_file_realoc_offset);
 int is_pseudo_inst(File file_Dic, File* p_file_Text_maillon_courant, File* p_file_realoc, File* p_file_realoc_offset, TEXT* p_maillon, Liste l_operande);
 int is_registre(OPERANDE* p_op, double line_nb);
+
+void generation_bin_instr(TEXT maillon, DIC definition);
 
 #endif /*_AUTOMATE_GRAMM_H_*/

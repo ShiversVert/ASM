@@ -6,7 +6,7 @@
  * Automate related definitions and prototypes
  */
 
-#include "automate.h"
+#include <automate.h>
 
 /**
  * @param f 		File de lexemes a remplir
@@ -71,8 +71,8 @@ File automate_lexical(File f, char* token, int line_nb, int* cmpt_err){
 
 		case S_DECIMAL:
 			if (token[j+1]!='\0'){ /*Si le decimal ne contient pas que un chiffre*/
+				j++;
 				while (token[j]!='\0'){
-					j++;
 					if (!isdigit(token[j])) S = S_ERROR; /*Si ce n'est pas un chiffre => Erreur*/
 					j++;
 				}

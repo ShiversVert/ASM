@@ -1,9 +1,10 @@
 # TEST_RETURN_CODE = PASS
 .set noreorder
 .text
+    ADD $t1, $t2, $t3
     Lw $t1 , lunchtime
     LW $zero, -200($k0)
-    ADDI $t1,$at,8
+    ADDI $t1,$at, 0x26589
     ADDI $a3, $a0, 8
 boucle: BEQ $t0 , $t1 , byebye
     NOP

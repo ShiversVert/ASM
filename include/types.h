@@ -81,6 +81,7 @@ typedef struct _text_{
 	double 		line_nb;
 	double 		decalage;
 	Liste 		l_operande;
+	int 		bin;
 }*TEXT ;
 
 

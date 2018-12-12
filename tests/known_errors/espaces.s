@@ -1,0 +1,4 @@
+# TEST_RETURN_CODE = FAIL
+
+ADDI $t1 $t2 123 
+

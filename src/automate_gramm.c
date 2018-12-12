@@ -751,6 +751,7 @@ int is_in_dic(File file_Dic, File* p_file_Text_maillon_courant, File* p_file_rea
 					l_operande = l_operande->suiv;
 				}
 				free(operande_courante);
+				generation_bin_instr(*p_maillon, (DIC)((file_Dic)->val));
 				return(0);
 			}
 
@@ -1273,4 +1274,34 @@ int is_registre(OPERANDE* p_op, double line_nb){
 		WARNING_MSG("Erreur ligne %.0lf : le registre \"%s\" n'existe pas\n", line_nb, registre);return(0);
 	}
 	return 0;
+}
+
+void generation_bin_instr(TEXT maillon, DIC definition){
+	int i=1, j, masque, decalage = 32;
+	Liste l_op;
+
+	masque = pow(2, definition->bin[0][1]) -1; /*que des 1 sur le nombre de bit qu'il faut*/
+	decalage -= definition->bin[0][1];
+	maillon->bin = (masque & definition->bin[0][0])<<decalage; /*On recupere l'opcode*/
+	
+
+	while(definition->bin[i][1]!=0){
+		/*On parcours le tableau binaire tant que l'operande/l'inof n'est pas codee sur 0 bits*/
+		decalage -= definition->bin[i][1];
+		masque = pow(2, definition->bin[i][1]) -1; /*que des 1 sur le nombre de bit qu'il faut*/
+
+		if(definition->bin[i][0]>=0){ /*Si le nombre est positif, on le code sur "decalage" bits*/
+			maillon->bin = maillon->bin | ((masque & definition->bin[i][0] )<<decalage);
+		}	
+		else{ /*Sinon il faut chercher l'operande correspondante*/
+			l_op = maillon->l_operande;
+			for(j=1; j<-definition->bin[i][0]; j++){ /*On cherche la bonne operande*/
+				l_op = l_op->suiv; 
+			}
+			maillon->bin = maillon->bin | ((masque & (((OPERANDE)(l_op->val))->bin))<<decalage);
+		}
+
+		i++;
+	}
+
 }
