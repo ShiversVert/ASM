@@ -88,11 +88,11 @@ int main ( int argc, char *argv[] ) {
 
     /* ---------------- Do the grammatical analysis -----------------*/
     File file_Dic = NULL;
-    File file_Text = NULL;
-    File file_Bss = NULL;
-    File file_Data = NULL;
-    File file_Symb = NULL;
-    File file_Realoc = NULL;
+    File file_Text = NULL; long taille_text = 0;
+    File file_Bss = NULL; long taille_bss = 0;
+    File file_Data = NULL; long taille_data = 0;
+    File file_Symb = NULL; long taille_symb = 0;
+    File file_Realoc = NULL; long taille_realoc = 0;
     DEBUG_MSG("\n\n###############################\nCHARGEMENT DU DICTIONNAIRE\n###############################\n\n");
 
     file_Dic = import_dictionnaire("./dictionnaires/dictionnaire_instructions_new2.txt");
@@ -100,17 +100,17 @@ int main ( int argc, char *argv[] ) {
 
     DEBUG_MSG("\n\n###############################\nDEBUT DE L'ANALYSE GRAMMATICALE\n###############################\n\n");
 
-    automate_grammatical(&file_Lexeme, &file_Text, &file_Bss, &file_Data, &file_Symb, file_Dic, &file_Realoc);
+    automate_grammatical(&file_Lexeme, &file_Text, &file_Bss, &file_Data, &file_Symb, file_Dic, &file_Realoc, &taille_symb, &taille_data, &taille_text, &taille_bss, &taille_realoc, &cmpt_err);
 
     DEBUG_MSG("\t file_Lexeme\n");afficher_file(file_Lexeme, (*afficher_maillon_LEXEME));
-    DEBUG_MSG("\t file_Text\n");afficher_file(file_Text, (*afficher_maillon_TEXT));
-    DEBUG_MSG("\t file_Data\n");afficher_file(file_Data, (*afficher_maillon_DATA));
-    DEBUG_MSG("\t file_Bss\n");afficher_file(file_Bss, (*afficher_maillon_DATA));
-    DEBUG_MSG("\t file_Symb\n");afficher_file(file_Symb, (*afficher_maillon_SYMB));
-    DEBUG_MSG("\t file_Realoc\n");afficher_file(file_Realoc, (*afficher_maillon_REALOC));
+    DEBUG_MSG("\t file_Text\t %ld elements\n", taille_text);afficher_file(file_Text, (*afficher_maillon_TEXT));
+    DEBUG_MSG("\t file_Data\t %ld elements\n", taille_data);afficher_file(file_Data, (*afficher_maillon_DATA));
+    DEBUG_MSG("\t file_Bss\t %ld elements\n", taille_bss);afficher_file(file_Bss, (*afficher_maillon_DATA));
+    DEBUG_MSG("\t file_Symb\t %ld elements\n", taille_symb);afficher_file(file_Symb, (*afficher_maillon_SYMB));
+    DEBUG_MSG("\t file_Realoc\t %ld elements\n", taille_realoc);afficher_file(file_Realoc, (*afficher_maillon_REALOC));
 
     /* ---------------- Free memory and terminate -------------------*/
-
+    /*long* p_taille_symb, long* p_taille_data, long* p_taille_text, long* p_taille_bss, int* p_cmpt_err*/
     /* TODO free everything properly*/
     
     liberer_file(file_Dic);

@@ -11,7 +11,11 @@
  * @param file_Dic      file de Dictionnaire
  */
 
-void automate_grammatical(File* p_file_Lexeme, File* p_file_Text, File* p_file_Bss, File* p_file_Data, File* p_file_Symb, File file_Dic, File* p_file_realoc){
+void automate_grammatical(File* p_file_Lexeme, 		File* p_file_Text, 		File* p_file_Bss, 
+							File* p_file_Data, 		File* p_file_Symb, 		File file_Dic, 
+							File* p_file_realoc,	long* p_taille_symb, 	long* p_taille_data, 	
+							long* p_taille_text,	long* p_taille_bss, 	long* p_taille_realoc,
+							int* p_cmpt_err){
 
 	/*if (*p_file_Lexeme != NULL)	*p_file_Lexeme = (*p_file_Lexeme)->suiv;*/ /*Si la file de lexeme n'est pas cide, on va chercher le premier lexeme de la file*/
 
@@ -32,23 +36,32 @@ void automate_grammatical(File* p_file_Lexeme, File* p_file_Text, File* p_file_B
 
 			case S_GRAMM_DATA:
 				if(analyse_gramm1(p_file_Lexeme, &S, lexeme_courant) != 1){ /*Cas speciaux .bss .text .data & commentaire*/
-					ajout_maillon_data(p_file_Data, p_file_Lexeme, lexeme_courant, p_file_Symb, &offset_data, p_file_realoc);
+					ajout_maillon_data(	p_file_Data, 	p_file_Lexeme, 	lexeme_courant,
+										p_file_Symb, 	&offset_data, 	p_file_realoc, 
+										p_taille_symb, 	p_taille_data, 	p_taille_realoc,
+										p_cmpt_err);
 				}
 				break;
 
 			case S_GRAMM_TEXT:
 				if(analyse_gramm1(p_file_Lexeme, &S, lexeme_courant) != 1){ /*Cas speciaux .bss .text .data & commentaire*/
-					ajout_maillon_text(p_file_Text, p_file_Lexeme, lexeme_courant, p_file_Symb, &offset_text, file_Dic, p_file_realoc, &file_realoc_offset);
+					ajout_maillon_text(p_file_Text, 	p_file_Lexeme, 			lexeme_courant, 
+										p_file_Symb, 	&offset_text, 			file_Dic, 
+										p_file_realoc, 	&file_realoc_offset, 	p_taille_symb, 
+										p_taille_text, 	p_taille_realoc, 		p_cmpt_err);
 				}
 				break;
 
 			case S_GRAMM_BSS:
 				if(analyse_gramm1(p_file_Lexeme, &S, lexeme_courant) != 1){ /*Cas speciaux .bss .text .data & commentaire*/
-					ajout_maillon_bss(p_file_Bss, p_file_Lexeme, lexeme_courant, p_file_Symb, &offset_bss);
+					ajout_maillon_bss(	p_file_Bss, 	p_file_Lexeme, 	lexeme_courant, 
+										p_file_Symb, 	&offset_bss, 	p_taille_symb, 
+										p_taille_bss, 	p_cmpt_err);
 				}
 				break;
 
 			default:
+				(*p_cmpt_err)++;
 				WARNING_MSG("Bien joue, vous etes rentre dans la matrice");
 				break;
 		}
@@ -57,7 +70,7 @@ void automate_grammatical(File* p_file_Lexeme, File* p_file_Text, File* p_file_B
 	}
 
 	free(lexeme_courant);
-	reallocation_offset(&file_realoc_offset, p_file_Symb);
+	reallocation_offset(&file_realoc_offset, p_file_Symb, p_taille_symb);
 	/*replace_in_Text(p_file_Text, p_file_Symb, file_Dic);*/
 }
 
@@ -143,7 +156,10 @@ void get_current_Lexeme(File* p_file_Lexeme, LEXEME* p_lexeme_courant){
  * @return                Retourne 0 si tout ce passe correctement, 1 s'il y a une erreur
  */
 
-int ajout_maillon_data(File* p_file_Data, File* p_file_Lexeme, LEXEME lexeme_courant, File* p_file_Symb, double* p_offset_data, File* p_file_realoc){
+int ajout_maillon_data(	File* p_file_Data, 		File* p_file_Lexeme, 	LEXEME lexeme_courant, 
+						File* p_file_Symb, 		double* p_offset_data, 	File* p_file_realoc, 
+						long* p_taille_symb, 	long* p_taille_data, 	long* p_taille_realoc,
+						int* p_cmpt_err){
 	/*Si le lexeme est une etiquette, on doit creer un maillon symb et l'ajouter la la collection de symboles*/
 	if(lexeme_courant->cat==ETIQUETTE){
 		SYMB new_symb = calloc(1,sizeof(*new_symb));
@@ -163,6 +179,7 @@ int ajout_maillon_data(File* p_file_Data, File* p_file_Lexeme, LEXEME lexeme_cou
 
 		*p_file_Symb = enfiler(new_symb, *p_file_Symb); /*On enfile ce nouveau maillon a la file de symboles*/
 		defiler(p_file_Lexeme); get_current_Lexeme(p_file_Lexeme, &lexeme_courant);/*On defile le symbole de la file de lexemes*/
+		(*p_taille_symb)++;
 	}
 	/*Puis on continue a ajouter le reste de la ligne (ou la ligne suivante?) a la collection text*/
 
@@ -170,6 +187,7 @@ int ajout_maillon_data(File* p_file_Data, File* p_file_Lexeme, LEXEME lexeme_cou
 	new_maillon->line_nb = lexeme_courant->line_nb;
 
 	if(lexeme_courant->cat!=DIRECTIVE){	/*Si le lexeme n'est pas une directive (une eventuelle etiquette a deja ete enlevee)*/
+		(*p_cmpt_err)++;
 		WARNING_MSG("Erreur ligne %.0lf, .data peut contienir que des directives\n", lexeme_courant->line_nb);
 		new_maillon->type = DATA_ERROR;
 
@@ -239,16 +257,18 @@ int ajout_maillon_data(File* p_file_Data, File* p_file_Lexeme, LEXEME lexeme_cou
 	new_maillon->nb_op = nb_op;
 	new_maillon->l_operande=liste_operande;
 
-	calcul_decalage_Data(p_file_Data, &new_maillon, p_offset_data);
+	calcul_decalage_Data(p_file_Data, &new_maillon, p_offset_data, p_cmpt_err);
 	Liste l_op_temp = new_maillon->l_operande;
 	while(l_op_temp!=NULL){
 			if (((OPERANDE)(l_op_temp->val))->type == OPER_SYMBOLE) {
+				(*p_taille_realoc)++;
 				ajout_maillon_realoc((OPERANDE*)&(l_op_temp->val), p_file_realoc, R_MIPS_32, ZONE_DATA, new_maillon->decalage);
 			}
 			l_op_temp = l_op_temp->suiv;
 	}
 	/*Ajout du nouveau maillon a la file de Data*/
 	*p_file_Data = enfiler(new_maillon, *p_file_Data);
+	(*p_taille_data)++;
 	return(0);
 }
 
@@ -264,7 +284,9 @@ int ajout_maillon_data(File* p_file_Data, File* p_file_Lexeme, LEXEME lexeme_cou
  * @return                Retourne 0 si tout ce passe correctement, 1 s'il y a une erreur
  */
 
-int ajout_maillon_bss(File* p_file_Bss, File* p_file_Lexeme, LEXEME lexeme_courant, File* p_file_Symb, double* p_offset_bss){
+int ajout_maillon_bss(	File* p_file_Bss, 	File* p_file_Lexeme, 	LEXEME lexeme_courant, 
+						File* p_file_Symb, 	double* p_offset_bss, 	long* p_taille_symb, 
+						long* p_taille_bss,	int* p_cmpt_err){
 	/*Si le lexeme est une etiquette, on doit creer un maillon symb et l'ajouter la la collection de symboles*/
 	if(lexeme_courant->cat==ETIQUETTE){
 		SYMB new_symb = calloc(1,sizeof(*new_symb));
@@ -275,6 +297,7 @@ int ajout_maillon_bss(File* p_file_Bss, File* p_file_Lexeme, LEXEME lexeme_coura
 		if(*p_file_Bss==NULL) new_symb->decalage = 0;
 		else new_symb->decalage = *p_offset_bss;
 
+		(*p_taille_symb)++;
 		*p_file_Symb = enfiler(new_symb, *p_file_Symb); /*On enfile ce nouveau maillon a la file de symboles*/
 		defiler(p_file_Lexeme); get_current_Lexeme(p_file_Lexeme, &lexeme_courant);/*On defile le symbole de la file de lexemes*/
 	}
@@ -285,6 +308,7 @@ int ajout_maillon_bss(File* p_file_Bss, File* p_file_Lexeme, LEXEME lexeme_coura
 
 	if(lexeme_courant->cat!=DIRECTIVE){	/*Si le lexeme n'est pas une directive*/
 		WARNING_MSG("Erreur ligne %.0lf, .bss peut contienir que des directives\n", lexeme_courant->line_nb);
+		(*p_cmpt_err)++;
 		new_maillon->type = BSS_ERROR;
 
 		do{ /*On saute la ligne du fichier*/
@@ -355,10 +379,11 @@ int ajout_maillon_bss(File* p_file_Bss, File* p_file_Lexeme, LEXEME lexeme_coura
 	new_maillon->nb_op = nb_op;
 	new_maillon->l_operande=liste_operande;
 
-	calcul_decalage_Bss(p_file_Bss, &new_maillon, p_offset_bss);
+	calcul_decalage_Bss(p_file_Bss, &new_maillon, p_offset_bss, p_cmpt_err);
 
 	/*Ajout du nouveau maillon a la file de Bss*/
 	*p_file_Bss = enfiler(new_maillon, *p_file_Bss);
+	(*p_taille_bss)++;
 	return(0);
 }
 
@@ -375,7 +400,10 @@ int ajout_maillon_bss(File* p_file_Bss, File* p_file_Lexeme, LEXEME lexeme_coura
   * @return                Retourne 0 si tout ce passe correctement, 1 s'il y a une erreur
   */
 
-int ajout_maillon_text(File* p_file_Text, File* p_file_Lexeme, LEXEME lexeme_courant, File* p_file_Symb, double* p_offset_text, File file_Dic, File* p_file_realoc, File* p_file_realoc_offset){
+int ajout_maillon_text(	File* p_file_Text, 		File* p_file_Lexeme, 		LEXEME lexeme_courant, 
+						File* p_file_Symb, 		double* p_offset_text, 		File file_Dic, 
+						File* p_file_realoc, 	File* p_file_realoc_offset, long* p_taille_symb, 
+						long* p_taille_text, 	long* p_taille_realoc,		int* p_cmpt_err){
 	/*Si le lexeme est une etiquette, on doit creer un maillon symb et l'ajouter la la collection de symboles*/
 	if(lexeme_courant->cat==ETIQUETTE){
 		SYMB new_symb = calloc(1,sizeof(*new_symb));
@@ -386,6 +414,7 @@ int ajout_maillon_text(File* p_file_Text, File* p_file_Lexeme, LEXEME lexeme_cou
 		if(*p_file_Text==NULL) new_symb->decalage = 0;
 		else new_symb->decalage = *p_offset_text;
 
+		(*p_taille_symb)++;
 		*p_file_Symb = enfiler(new_symb, *p_file_Symb); /*On enfile ce nouveau maillon a la file de symboles*/
 		defiler(p_file_Lexeme); get_current_Lexeme(p_file_Lexeme, &lexeme_courant);/*On defile le symbole de la file de lexemes*/
 		return(0);
@@ -399,7 +428,9 @@ int ajout_maillon_text(File* p_file_Text, File* p_file_Lexeme, LEXEME lexeme_cou
 	new_maillon->line_nb = lexeme_courant->line_nb;
 
 	if(lexeme_courant->cat!=SYMBOLE){	/*Si le lexeme n'est pas une chaine*/
+		(*p_taille_symb)++;
 		WARNING_MSG("Erreur ligne %.0lf, \"%s\" n'est pas une instruction\n", lexeme_courant->line_nb, lexeme_courant->chain);
+		(*p_cmpt_err)++;
 		new_maillon->type = TEXT_ERROR;
 
 		do{ /*On saute la ligne du fichier*/
@@ -449,7 +480,7 @@ int ajout_maillon_text(File* p_file_Text, File* p_file_Lexeme, LEXEME lexeme_cou
 								OPERANDE new_operande2 = calloc(1,sizeof(new_operande2));
 								new_operande2->type = OPER_BASE;
 								new_operande2->chain = ( (LEXEME)((*p_file_Lexeme)->suiv->val) )-> chain; /*On ajoute le registre comme nouvel operande*/
-								is_registre(&new_operande2, new_maillon->line_nb);
+								is_registre(&new_operande2, new_maillon->line_nb, p_cmpt_err);
 								liste_operande = ajout_queue(new_operande2, liste_operande);
 								defiler(p_file_Lexeme); /*On enleve le registre de la file de lexeme*/
 								defiler(p_file_Lexeme); /*On enleve la ')'*/
@@ -477,11 +508,12 @@ int ajout_maillon_text(File* p_file_Text, File* p_file_Lexeme, LEXEME lexeme_cou
 
 				case REGISTRE:
 					new_operande->type = OPER_REG;
-					is_registre(&new_operande, new_maillon->line_nb);
+					is_registre(&new_operande, new_maillon->line_nb, p_cmpt_err);
 					new_operande->bin = atol(new_operande->chain);
 					break;
 
 				default:
+					(*p_taille_symb)++;
 					new_operande->type = OPER_ERROR;
 					break;
 			}
@@ -505,8 +537,9 @@ int ajout_maillon_text(File* p_file_Text, File* p_file_Lexeme, LEXEME lexeme_cou
 	/*is_in_dic(&new_maillon, file_Dic);*/
 	/*Ajout du nouveau maillon a la file de Text*/
 	*p_file_Text = enfiler(new_maillon, *p_file_Text);
+	(*p_taille_text)++;
 
-	is_in_dic(file_Dic, p_file_Text, p_file_realoc, p_file_realoc_offset);
+	is_in_dic(file_Dic, p_file_Text, p_file_realoc, p_file_realoc_offset, p_taille_text, p_taille_realoc, p_cmpt_err);
 	return(0);
 }
 
@@ -517,7 +550,7 @@ int ajout_maillon_text(File* p_file_Text, File* p_file_Lexeme, LEXEME lexeme_cou
  * @param p_new_maillon pointeur sur le nouveau maillon (en cours de creation) pour acceder a ses infos et y ecrire le decalage
  * @param p_offset_data dernier offset calcule
  */
-void calcul_decalage_Data(File* p_file_Data, DATA* p_new_maillon, double* p_offset_data){
+void calcul_decalage_Data(File* p_file_Data, DATA* p_new_maillon, double* p_offset_data, int* p_cmpt_err){
 	(*p_new_maillon)->decalage = (*p_offset_data);
 
 	int cmpt_operande;
@@ -542,6 +575,7 @@ void calcul_decalage_Data(File* p_file_Data, DATA* p_new_maillon, double* p_offs
 			else{
 				(*p_new_maillon)->type = DATA_ERROR;
 				WARNING_MSG("Erreur ligne %.0lf, l'operande %d n'est pas un nombre\n", (*p_new_maillon)->line_nb, cmpt_operande);
+				(*p_cmpt_err)++;
 			}
 		}
 
@@ -553,6 +587,7 @@ void calcul_decalage_Data(File* p_file_Data, DATA* p_new_maillon, double* p_offs
 			else{
 				(*p_new_maillon)->type = DATA_ERROR;
 				WARNING_MSG("Erreur ligne %.0lf, l'operande %d n'est pas une chaine de caractere\n", (*p_new_maillon)->line_nb, cmpt_operande);
+				(*p_cmpt_err)++;
 			}
 		}
 
@@ -576,6 +611,7 @@ void calcul_decalage_Data(File* p_file_Data, DATA* p_new_maillon, double* p_offs
 
 		else{
 			WARNING_MSG("Operateur : \"%s\" non reconnu dans un .data\n", (*p_new_maillon)->operateur);
+			(*p_cmpt_err)++;
 			break;
 		}
 		/*On passe a l'operande suivante*/
@@ -614,7 +650,7 @@ void calcul_decalage_Text(File* p_file_Text, TEXT* p_new_maillon, double* p_offs
  * @param p_offset_bss  dernier offset calcule
  */
 
-void calcul_decalage_Bss(File* p_file_Bss, BSS* p_new_maillon, double* p_offset_bss){
+void calcul_decalage_Bss(File* p_file_Bss, BSS* p_new_maillon, double* p_offset_bss, int* p_cmpt_err){
  	(*p_new_maillon)->decalage = (*p_offset_bss);
 
  	int cmpt_operande=1;
@@ -636,11 +672,13 @@ void calcul_decalage_Bss(File* p_file_Bss, BSS* p_new_maillon, double* p_offset_
  			else{
  				(*p_new_maillon)->type = DATA_ERROR;
  				WARNING_MSG("Erreur ligne %.0lf, l'operande %d n'est pas un nombre", (*p_new_maillon)->line_nb, cmpt_operande);
+ 				(*p_cmpt_err)++;
  			}
  		}
 
  		else{
  			WARNING_MSG("Operateur : \"%s\" non reconnu dans un .bss", (*p_new_maillon)->operateur);
+ 			(*p_cmpt_err)++;
  			break;
  		}
  		/*On passe a l'operande suivante*/
@@ -662,7 +700,7 @@ void calcul_decalage_Bss(File* p_file_Bss, BSS* p_new_maillon, double* p_offset_
  * @return         retourne 1 si tout se passe bien, 0 sinon
  */
 
-int is_in_dic(File file_Dic, File* p_file_Text_maillon_courant, File* p_file_realoc, File* p_file_realoc_offset){
+int is_in_dic(File file_Dic, File* p_file_Text_maillon_courant, File* p_file_realoc, File* p_file_realoc_offset,long* p_taille_text, long* p_taille_realoc, int* p_cmpt_err){
 
 	TEXT* p_maillon = (TEXT*)(&((*p_file_Text_maillon_courant)->val)); /*Utile si on veut rajouter un maillon*/
 
@@ -676,7 +714,7 @@ int is_in_dic(File file_Dic, File* p_file_Text_maillon_courant, File* p_file_rea
 
 	/*CAS PARTICULIER DES PSEUDOS INSTRUCTIONS*/
 
-	if(is_pseudo_inst(file_Dic, p_file_Text_maillon_courant, p_file_realoc, p_file_realoc_offset, p_maillon, l_operande)){
+	if(is_pseudo_inst(file_Dic, p_file_Text_maillon_courant, p_file_realoc, p_file_realoc_offset, p_maillon, l_operande, p_taille_text, p_taille_realoc, p_cmpt_err)){
 		return(1);
 	}
 
@@ -698,6 +736,7 @@ int is_in_dic(File file_Dic, File* p_file_Text_maillon_courant, File* p_file_rea
 							if (type_op_courrante != OPER_REG){
 								((OPERANDE)(l_operande->val))->type = OPER_ERROR;
 								WARNING_MSG("Erreur ligne %.0lf, l'opperande no %d de \"%s\" doit etre un registre\n", (*p_maillon)->line_nb, i, (*p_maillon)->operateur);
+								(*p_cmpt_err)++;
 							}
 							
 							break;
@@ -709,6 +748,7 @@ int is_in_dic(File file_Dic, File* p_file_Text_maillon_courant, File* p_file_rea
 							else if (type_op_courrante != OPER_OFFSET){
 								((OPERANDE)(l_operande->val))->type = OPER_ERROR;
 								WARNING_MSG("Erreur ligne %.0lf, l'opperande no %d de \"%s\" doit etre un offset\n", (*p_maillon)->line_nb, i, (*p_maillon)->operateur);
+								(*p_cmpt_err)++;
 							}
 							break;
 
@@ -716,27 +756,32 @@ int is_in_dic(File file_Dic, File* p_file_Text_maillon_courant, File* p_file_rea
 							if (type_op_courrante != OPER_BASE){
 								((OPERANDE)(l_operande->val))->type = OPER_ERROR;
 								WARNING_MSG("Erreur ligne %.0lf, l'opperande no %d de \"%s\" doit etre une base\n", (*p_maillon)->line_nb, i, (*p_maillon)->operateur);
+								(*p_cmpt_err)++;
 							}
 							break;
 
 						case 'T':
 							if (type_op_courrante == OPER_SYMBOLE){
+								(*p_taille_realoc)++;
 								ajout_maillon_realoc((OPERANDE*)&(l_operande->val), p_file_realoc, R_MIPS_26, ZONE_TEXT, (*p_maillon)->decalage);
 							}
 							else if (type_op_courrante != OPER_DECIMAL && type_op_courrante != OPER_HEXA && type_op_courrante != OPER_REG){
 								((OPERANDE)(l_operande->val))->type = OPER_ERROR;
 								WARNING_MSG("Erreur ligne %.0lf, l'opperande no %d de \"%s\" doit etre un offset\n", (*p_maillon)->line_nb, i, (*p_maillon)->operateur);
+								(*p_cmpt_err)++;
 							}
 
 							break;
 
 						case 'I':
 							if (type_op_courrante == OPER_SYMBOLE){
+								(*p_taille_realoc)++;
 								ajout_maillon_realoc((OPERANDE*)&(l_operande->val), p_file_realoc, R_MIPS_LO16, ZONE_TEXT, (*p_maillon)->decalage);
 							}
 							else if (type_op_courrante != OPER_DECIMAL && type_op_courrante != OPER_HEXA){
 								((OPERANDE)(l_operande->val))->type = OPER_ERROR;
 								WARNING_MSG("Erreur ligne %.0lf, l'opperande no %d doit etre une valeure immediate\n", (*p_maillon)->line_nb, i);
+								(*p_cmpt_err)++;
 							}
 							break;
 
@@ -744,6 +789,7 @@ int is_in_dic(File file_Dic, File* p_file_Text_maillon_courant, File* p_file_rea
 							if (type_op_courrante != OPER_DECIMAL && type_op_courrante != OPER_HEXA){
 								((OPERANDE)(l_operande->val))->type = OPER_ERROR;
 								WARNING_MSG("Erreur ligne %.0lf, l'opperande no %d doit etre un nombre de decalage\n", (*p_maillon)->line_nb, i);
+								(*p_cmpt_err)++;
 							}
 							break;
 
@@ -758,6 +804,7 @@ int is_in_dic(File file_Dic, File* p_file_Text_maillon_courant, File* p_file_rea
 			else{
 				(*p_maillon)->type = TEXT_ERROR;
 				WARNING_MSG("Erreur ligne %.0lf, le nombre d'operateur de \"%s\" est %d au lieu de %d\n", (*p_maillon)->line_nb, (*p_maillon)->operateur, (*p_maillon)->nb_op, ((DIC)((file_Dic)->val))->nb_op );
+				(*p_cmpt_err)++;
 				free(operande_courante);
 				free(p_maillon);
 				return(1);
@@ -771,6 +818,7 @@ int is_in_dic(File file_Dic, File* p_file_Text_maillon_courant, File* p_file_rea
 	/*On a parcouru tout le dic sans trouver l'instruction*/
 	(*p_maillon)->type = TEXT_ERROR;
 	WARNING_MSG("Instruction \"%s\" ligne: %.0lf inconnue\n", (*p_maillon)->operateur, (*p_maillon)->line_nb);
+	(*p_cmpt_err)++;
 	free(operande_courante);
 	return(1);
 }
@@ -787,7 +835,7 @@ int is_in_dic(File file_Dic, File* p_file_Text_maillon_courant, File* p_file_rea
  *
  * @return                             retourne 1 si on trouve une pseudo instruction, 0 sinon
  */
-int is_pseudo_inst(File file_Dic, File* p_file_Text_maillon_courant, File* p_file_realoc, File* p_file_realoc_offset, TEXT* p_maillon, Liste l_operande){
+int is_pseudo_inst(File file_Dic, File* p_file_Text_maillon_courant, File* p_file_realoc, File* p_file_realoc_offset, TEXT* p_maillon, Liste l_operande, long* p_taille_text, long* p_taille_realoc, int* p_cmpt_err){
 	if(!strcasecmp((*p_maillon)->operateur,"LW")){
 		if( (*p_maillon)->nb_op==2 ){
 			if ( (((OPERANDE)(((*p_maillon)->l_operande)->val))->type ==  OPER_REG || ((OPERANDE)(((*p_maillon)->l_operande)->val))->type == OPER_ERROR_UNK_REGISTER) && ((OPERANDE)(((*p_maillon)->l_operande)->suiv->val))->type ==  OPER_SYMBOLE){
@@ -820,10 +868,11 @@ int is_pseudo_inst(File file_Dic, File* p_file_Text_maillon_courant, File* p_fil
 				/*On ne change pas la chaine
 				((OPERANDE)(((*p_maillon)->l_operande)->suiv->val))->chain = "etiquette_poidsfort>>16";
 				Mais on ajoute l'operande a laa table de realoc*/
+				(*p_taille_realoc)++;
 				ajout_maillon_realoc((OPERANDE*)&(((*p_maillon)->l_operande)->suiv->val), p_file_realoc, R_MIPS_HI16, ZONE_TEXT, (*p_maillon)->decalage);
 				
 				/*Generation du code binaire*/
-				is_in_dic(file_Dic, p_file_Text_maillon_courant, p_file_realoc, p_file_realoc_offset);
+				is_in_dic(file_Dic, p_file_Text_maillon_courant, p_file_realoc, p_file_realoc_offset, p_taille_text, p_taille_realoc, p_cmpt_err);
 				/*------------------------------------------*/
 				/*Creation et remplissage du nouveau maillon*/
 				/*------------------------------------------*/
@@ -850,6 +899,7 @@ int is_pseudo_inst(File file_Dic, File* p_file_Text_maillon_courant, File* p_fil
 				op2->chain = "etiquette_poidsfaible";
 				Mais on ajoute l'operande a laa table de realoc*/
 				op2->chain = ((OPERANDE)(((*p_maillon)->l_operande)->suiv->val))->chain;
+				(*p_taille_realoc)++;
 				ajout_maillon_realoc(&op2, p_file_realoc, R_MIPS_LO16, ZONE_TEXT, new_maillon_text->decalage);
 
 				OPERANDE op3 = calloc(1,sizeof(*op3));
@@ -874,9 +924,14 @@ int is_pseudo_inst(File file_Dic, File* p_file_Text_maillon_courant, File* p_fil
 
 				(*p_file_Text_maillon_courant)->suiv = new_maillon_file;
 				*/
-				is_in_dic(file_Dic, p_file_Text_maillon_courant, p_file_realoc, p_file_realoc_offset);
+				(*p_taille_text)++;
+				is_in_dic(file_Dic, p_file_Text_maillon_courant, p_file_realoc, p_file_realoc_offset, p_taille_text, p_taille_realoc, p_cmpt_err);
 				return(1);
 			}
+			WARNING_MSG("Erreur ligne %.0lf : Le type des operandes est incorrect", (*p_maillon)->line_nb);
+			(*p_maillon)->type = TEXT_ERROR;
+			(*p_cmpt_err)++;
+			return 0;	
 		}
 	}
 
@@ -908,9 +963,10 @@ int is_pseudo_inst(File file_Dic, File* p_file_Text_maillon_courant, File* p_fil
 				/*On ne change pas la chaine
 				((OPERANDE)(((*p_maillon)->l_operande)->suiv->val))->chain = "etiquette_poidsfort>>16";
 				Mais on ajoute l'operande a laa table de realoc*/
+				(*p_taille_realoc)++;
 				ajout_maillon_realoc((OPERANDE*)&(((*p_maillon)->l_operande)->suiv->val), p_file_realoc, R_MIPS_HI16, ZONE_TEXT, (*p_maillon)->decalage);
 				/*generation du code binaire*/
-				is_in_dic(file_Dic, p_file_Text_maillon_courant, p_file_realoc, p_file_realoc_offset);
+				is_in_dic(file_Dic, p_file_Text_maillon_courant, p_file_realoc, p_file_realoc_offset, p_taille_text, p_taille_realoc, p_cmpt_err);
 				/*------------------------------------------*/
 				/*Creation et remplissage du nouveau maillon*/
 				/*------------------------------------------*/
@@ -938,6 +994,7 @@ int is_pseudo_inst(File file_Dic, File* p_file_Text_maillon_courant, File* p_fil
 				Mais on ajoute l'operande a laa table de realoc*/
 				op2->chain = ((OPERANDE)(((*p_maillon)->l_operande)->suiv->val))->chain;
 				ajout_maillon_realoc(&op2, p_file_realoc, R_MIPS_LO16, ZONE_TEXT, new_maillon_text->decalage);
+				(*p_taille_realoc)++;
 
 				OPERANDE op3 = calloc(1,sizeof(*op3));
 				op3->type = OPER_BASE;
@@ -955,12 +1012,16 @@ int is_pseudo_inst(File file_Dic, File* p_file_Text_maillon_courant, File* p_fil
 				/*----------NOUVEAUX  BRANCHEMENTS----------*/
 				/*------------------------------------------*/
 				(*p_file_Text_maillon_courant) = enfiler(new_maillon_text, *p_file_Text_maillon_courant);
-				
+				(*p_taille_text)++;
 				/*generation du code binaire*/
-				is_in_dic(file_Dic, p_file_Text_maillon_courant, p_file_realoc, p_file_realoc_offset);
+				is_in_dic(file_Dic, p_file_Text_maillon_courant, p_file_realoc, p_file_realoc_offset, p_taille_text, p_taille_realoc, p_cmpt_err);
 
 				return(1);
 			}
+			WARNING_MSG("Erreur ligne %.0lf : Le type des operandes est incorrect", (*p_maillon)->line_nb);
+			(*p_maillon)->type = TEXT_ERROR;
+			(*p_cmpt_err)++;
+			return 0;	
 		}
 	}
 
@@ -997,11 +1058,19 @@ int is_pseudo_inst(File file_Dic, File* p_file_Text_maillon_courant, File* p_fil
 				l_operande = ajout_queue(new_op, l_operande);
 				/*generation du code binaire*/
 
-				is_in_dic(file_Dic, p_file_Text_maillon_courant, p_file_realoc, p_file_realoc_offset);
+				is_in_dic(file_Dic, p_file_Text_maillon_courant, p_file_realoc, p_file_realoc_offset, p_taille_text, p_taille_realoc, p_cmpt_err);
 
 				return(1);
 			}
+			WARNING_MSG("Erreur ligne %.0lf : Le type des operandes est incorrect", (*p_maillon)->line_nb);
+			(*p_maillon)->type = TEXT_ERROR;
+			(*p_cmpt_err)++;
+			return 0;	
 		}
+		WARNING_MSG("Erreur ligne %.0lf : L'instuction MOVE doit avoir 2 operandes", (*p_maillon)->line_nb);
+		(*p_maillon)->type = TEXT_ERROR;
+		(*p_cmpt_err)++;	
+		return 0;
 	}
 
 	else if(!strcasecmp((*p_maillon)->operateur,"NEG")){
@@ -1035,10 +1104,18 @@ int is_pseudo_inst(File file_Dic, File* p_file_Text_maillon_courant, File* p_fil
 
 				l_operande->suiv = ajout_tete(new_op, l_operande->suiv);
 
-				is_in_dic(file_Dic, p_file_Text_maillon_courant, p_file_realoc, p_file_realoc_offset);
+				is_in_dic(file_Dic, p_file_Text_maillon_courant, p_file_realoc, p_file_realoc_offset, p_taille_text, p_taille_realoc, p_cmpt_err);
 				return(1);
 			}
+			WARNING_MSG("Erreur ligne %.0lf : Le type des operandes est incorrect", (*p_maillon)->line_nb);
+			(*p_maillon)->type = TEXT_ERROR;
+			(*p_cmpt_err)++;
+			return 0;	
 		}
+		WARNING_MSG("Erreur ligne %.0lf : L'instuction NEG doit avoir 2 operandes", (*p_maillon)->line_nb);
+		(*p_maillon)->type = TEXT_ERROR;
+		(*p_cmpt_err)++;	
+		return 0;
 	}
 
 	else if(!strcasecmp((*p_maillon)->operateur,"LI")){
@@ -1086,11 +1163,19 @@ int is_pseudo_inst(File file_Dic, File* p_file_Text_maillon_courant, File* p_fil
 
 				l_operande->suiv = ajout_tete(new_op, l_operande->suiv);
 
-				is_in_dic(file_Dic, p_file_Text_maillon_courant, p_file_realoc, p_file_realoc_offset);
+				is_in_dic(file_Dic, p_file_Text_maillon_courant, p_file_realoc, p_file_realoc_offset, p_taille_text, p_taille_realoc, p_cmpt_err);
 				return(1);
 				}
-			}	
+			}
+			WARNING_MSG("Erreur ligne %.0lf : Le type des operandes est incorrect", (*p_maillon)->line_nb);
+			(*p_maillon)->type = TEXT_ERROR;
+			(*p_cmpt_err)++;	
+			return 0;
 		}
+		WARNING_MSG("Erreur ligne %.0lf : L'instuction LI doit avoir 2 operandes", (*p_maillon)->line_nb);
+		(*p_maillon)->type = TEXT_ERROR;
+		(*p_cmpt_err)++;	
+		return 0;
 	}
 
 	else if(!strcasecmp((*p_maillon)->operateur,"BLT")){
@@ -1131,7 +1216,7 @@ int is_pseudo_inst(File file_Dic, File* p_file_Text_maillon_courant, File* p_fil
 
 					(*p_maillon)->l_operande = ajout_tete(op0, (*p_maillon)->l_operande);
 
-					is_in_dic(file_Dic, p_file_Text_maillon_courant, p_file_realoc, p_file_realoc_offset);
+					is_in_dic(file_Dic, p_file_Text_maillon_courant, p_file_realoc, p_file_realoc_offset, p_taille_text, p_taille_realoc, p_cmpt_err);
 					/*------------------------------------------*/
 					/*Creation et remplissage du nouveau maillon*/
 					/*------------------------------------------*/
@@ -1167,12 +1252,21 @@ int is_pseudo_inst(File file_Dic, File* p_file_Text_maillon_courant, File* p_fil
 					/*------------------------------------------*/
 					(*p_file_Text_maillon_courant) = enfiler(new_maillon_text, *p_file_Text_maillon_courant);
 					
-					is_in_dic(file_Dic, p_file_Text_maillon_courant, p_file_realoc, p_file_realoc_offset);
+					is_in_dic(file_Dic, p_file_Text_maillon_courant, p_file_realoc, p_file_realoc_offset, p_taille_text, p_taille_realoc, p_cmpt_err);
 					return(1);
 				}
 			}
+			WARNING_MSG("Erreur ligne %.0lf : Le type des operandes est incorrect", (*p_maillon)->line_nb);
+			(*p_maillon)->type = TEXT_ERROR;
+			(*p_cmpt_err)++;
+			return 0;
 		}
-	}
+		/*On on n'a pas 3 operandes*/
+		WARNING_MSG("Erreur ligne %.0lf : L'instuction BLT doit avoir 3 operandes", (*p_maillon)->line_nb);
+		(*p_maillon)->type = TEXT_ERROR;
+		(*p_cmpt_err)++;	
+		return 0;
+	}	
 	return(0);
 }
 
@@ -1184,7 +1278,7 @@ int is_pseudo_inst(File file_Dic, File* p_file_Text_maillon_courant, File* p_fil
  *
  * @return         retourne 1 si tout se passe bien, 0 sinon
  */
-int is_registre(OPERANDE* p_op, double line_nb){
+int is_registre(OPERANDE* p_op, double line_nb, int* p_cmpt_err){
 	char* registre = (*p_op)->chain; char reg[3];
 	int reg_int;
 
@@ -1195,7 +1289,7 @@ int is_registre(OPERANDE* p_op, double line_nb){
 	if(strlen(registre)>3){
 		(*p_op)->type = OPER_ERROR_UNK_REGISTER;
 		(*p_op)->chain = (*p_op)->chain + 1;
-		WARNING_MSG("Erreur ligne %.0lf : le registre \"$%s\" n'existe pas\n", line_nb, registre); return(0);
+		WARNING_MSG("Erreur ligne %.0lf : le registre \"$%s\" n'existe pas\n", line_nb, registre); (*p_cmpt_err)++; return(0);
 	}
 
 	if(isdigit(registre[1])){/*Si le premier caractere du registre est un chiffre => Registre*/
@@ -1217,12 +1311,12 @@ int is_registre(OPERANDE* p_op, double line_nb){
 			}
 			else{ /*Le deuxieme carac du registre est une lettre IMPOSSIBLE*/
 				(*p_op)->type = OPER_ERROR_UNK_REGISTER;
-				WARNING_MSG("Erreur ligne %.0lf : le registre \"%s\" n'existe pas\n", line_nb, registre); return(0);
+				WARNING_MSG("Erreur ligne %.0lf : le registre \"%s\" n'existe pas\n", line_nb, registre); (*p_cmpt_err)++; return(0);
 			}
 		}
 		else{ /*Le deuxieme carac du registre est une lettre IMPOSSIBLE*/
 			(*p_op)->type = OPER_ERROR_UNK_REGISTER;
-			WARNING_MSG("Erreur ligne %.0lf : le registre \"%s\" n'existe pas\n", line_nb, registre); return(0);
+			WARNING_MSG("Erreur ligne %.0lf : le registre \"%s\" n'existe pas\n", line_nb, registre); (*p_cmpt_err)++; return(0);
 		}
 	}
 
@@ -1233,7 +1327,7 @@ int is_registre(OPERANDE* p_op, double line_nb){
 				if (atoi(&registre[2])<=3){sprintf((*p_op)->chain, "%d", atoi(&registre[2]) + 4); return 1;}
 			}
 			(*p_op)->type = OPER_ERROR_UNK_REGISTER;
-			WARNING_MSG("Erreur ligne %.0lf : le registre \"%s\" n'existe pas\n", line_nb, registre);return(0);
+			WARNING_MSG("Erreur ligne %.0lf : le registre \"%s\" n'existe pas\n", line_nb, registre); (*p_cmpt_err)++; return(0);
 		}
 
 		if(registre[1]=='v'){
@@ -1241,7 +1335,7 @@ int is_registre(OPERANDE* p_op, double line_nb){
 				if (atoi(&registre[2])<=1){sprintf((*p_op)->chain, "%d", atoi(&registre[2]) + 2);return 1;}
 			}
 			(*p_op)->type = OPER_ERROR_UNK_REGISTER;
-			WARNING_MSG("Erreur ligne %.0lf : le registre \"%s\" n'existe pas\n", line_nb, registre);return(0);
+			WARNING_MSG("Erreur ligne %.0lf : le registre \"%s\" n'existe pas\n", line_nb, registre); (*p_cmpt_err)++; return(0);
 		}
 
 		if(registre[1]=='t'){
@@ -1251,7 +1345,7 @@ int is_registre(OPERANDE* p_op, double line_nb){
 				return 1;
 			}
 			(*p_op)->type = OPER_ERROR_UNK_REGISTER;
-			WARNING_MSG("Erreur ligne %.0lf : le registre \"%s\" n'existe pas\n", line_nb, registre);return(0);
+			WARNING_MSG("Erreur ligne %.0lf : le registre \"%s\" n'existe pas\n", line_nb, registre); (*p_cmpt_err)++; return(0);
 		}
 
 		if(registre[1]=='s'){
@@ -1260,7 +1354,7 @@ int is_registre(OPERANDE* p_op, double line_nb){
 				if (atoi(&registre[2])<=7){sprintf((*p_op)->chain, "%d", atoi(&registre[2]) + 16); return 1;}
 			}
 			(*p_op)->type = OPER_ERROR_UNK_REGISTER;
-			WARNING_MSG("Erreur ligne %.0lf : le registre \"%s\" n'existe pas\n", line_nb, registre);return(0);
+			WARNING_MSG("Erreur ligne %.0lf : le registre \"%s\" n'existe pas\n", line_nb, registre); (*p_cmpt_err)++; return(0);
 		}
 
 		if(registre[1]=='k'){
@@ -1274,14 +1368,14 @@ int is_registre(OPERANDE* p_op, double line_nb){
 				}
 			}
 			(*p_op)->type = OPER_ERROR_UNK_REGISTER;
-			WARNING_MSG("Erreur ligne %.0lf : le registre \"%s\" n'existe pas\n", line_nb, registre);return(0);
+			WARNING_MSG("Erreur ligne %.0lf : le registre \"%s\" n'existe pas\n", line_nb, registre); (*p_cmpt_err)++; return(0);
 		}
 		if(registre[1]=='g' && registre[2]=='p'){(*p_op)->chain = "28"; return 1;}
 		if(registre[1]=='f' && registre[2]=='p'){(*p_op)->chain = "30"; return 1;}
 		if(registre[1]=='r' && registre[2]=='a'){(*p_op)->chain = "31"; return 1;}
 
 		(*p_op)->type = OPER_ERROR_UNK_REGISTER;
-		WARNING_MSG("Erreur ligne %.0lf : le registre \"%s\" n'existe pas\n", line_nb, registre);return(0);
+		WARNING_MSG("Erreur ligne %.0lf : le registre \"%s\" n'existe pas\n", line_nb, registre); (*p_cmpt_err)++; return(0);
 	}
 	return 0;
 }

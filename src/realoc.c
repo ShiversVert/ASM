@@ -20,18 +20,18 @@ void ajout_maillon_realoc(OPERANDE* p_op, File* p_file_realoc, type_realoc type,
 }
 
 /**Permet de parcourir uniquement la liste d'operande SYMB qui ontdoivent avoir des offset comme opérandes et les remplacer*/
-void reallocation_offset(File* p_file_realoc_offset, File* p_file_Symb){
+void reallocation_offset(File* p_file_realoc_offset, File* p_file_Symb, long* p_taille_symb){
 	while(*p_file_realoc_offset != NULL){
 		/*On parcours la liste de realoc_offset*/
 		OPERANDE* p_op = (((REALOC)((*p_file_realoc_offset)->val))->p_op);
 
-		remplace_realoc_offset(p_file_Symb, p_op);
+		remplace_realoc_offset(p_file_Symb, p_op, p_taille_symb);
 
 		defiler(p_file_realoc_offset);
 	}
 }
 
-int remplace_realoc_offset(File* p_file_Symb, OPERANDE* p_op){
+int remplace_realoc_offset(File* p_file_Symb, OPERANDE* p_op, long* p_taille_symb){
 	char* chaine_op = calloc(1, sizeof(*chaine_op)); strcpy(chaine_op, (*p_op)->chain);
 	File file_SYMB_temp = *p_file_Symb;
 	
@@ -62,6 +62,7 @@ int remplace_realoc_offset(File* p_file_Symb, OPERANDE* p_op){
 	new_symb->line_nb = 0;
 	new_symb->decalage = 0;
 
+	(*p_taille_symb)++;
 	*p_file_Symb = enfiler(new_symb, *p_file_Symb); /*On enfile ce nouveau maillon a la file de symboles*/
 
 	return(0);
