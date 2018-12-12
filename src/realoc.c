@@ -63,5 +63,6 @@ int remplace_realoc_offset(File* p_file_Symb, OPERANDE* p_op){
 	new_symb->decalage = 0;
 
 	*p_file_Symb = enfiler(new_symb, *p_file_Symb); /*On enfile ce nouveau maillon a la file de symboles*/
+
 	return(0);
 }

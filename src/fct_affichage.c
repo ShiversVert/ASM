@@ -164,7 +164,7 @@ void afficher_maillon_TEXT(void* maillon){
 	}
 		printf("dec : %.0lf\t\t", decalage);
 		printf("nb_op : %d\t\t", nb_op);
-		printf("binaire : 0x%x\n", ((TEXT)(maillon))->bin);
+		printf("binaire : 0x%x", ((TEXT)(maillon))->bin);
 		afficher_liste( ( ((TEXT)(maillon))->l_operande) , (*afficher_maillon_OPERANDE));
 		printf("\n");
 }

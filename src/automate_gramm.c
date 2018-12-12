@@ -821,6 +821,9 @@ int is_pseudo_inst(File file_Dic, File* p_file_Text_maillon_courant, File* p_fil
 				((OPERANDE)(((*p_maillon)->l_operande)->suiv->val))->chain = "etiquette_poidsfort>>16";
 				Mais on ajoute l'operande a laa table de realoc*/
 				ajout_maillon_realoc((OPERANDE*)&(((*p_maillon)->l_operande)->suiv->val), p_file_realoc, R_MIPS_HI16, ZONE_TEXT, (*p_maillon)->decalage);
+				
+				/*Generation du code binaire*/
+				is_in_dic(file_Dic, p_file_Text_maillon_courant, p_file_realoc, p_file_realoc_offset);
 				/*------------------------------------------*/
 				/*Creation et remplissage du nouveau maillon*/
 				/*------------------------------------------*/
@@ -871,7 +874,7 @@ int is_pseudo_inst(File file_Dic, File* p_file_Text_maillon_courant, File* p_fil
 
 				(*p_file_Text_maillon_courant)->suiv = new_maillon_file;
 				*/
-
+				is_in_dic(file_Dic, p_file_Text_maillon_courant, p_file_realoc, p_file_realoc_offset);
 				return(1);
 			}
 		}
@@ -906,6 +909,8 @@ int is_pseudo_inst(File file_Dic, File* p_file_Text_maillon_courant, File* p_fil
 				((OPERANDE)(((*p_maillon)->l_operande)->suiv->val))->chain = "etiquette_poidsfort>>16";
 				Mais on ajoute l'operande a laa table de realoc*/
 				ajout_maillon_realoc((OPERANDE*)&(((*p_maillon)->l_operande)->suiv->val), p_file_realoc, R_MIPS_HI16, ZONE_TEXT, (*p_maillon)->decalage);
+				/*generation du code binaire*/
+				is_in_dic(file_Dic, p_file_Text_maillon_courant, p_file_realoc, p_file_realoc_offset);
 				/*------------------------------------------*/
 				/*Creation et remplissage du nouveau maillon*/
 				/*------------------------------------------*/
@@ -950,12 +955,9 @@ int is_pseudo_inst(File file_Dic, File* p_file_Text_maillon_courant, File* p_fil
 				/*----------NOUVEAUX  BRANCHEMENTS----------*/
 				/*------------------------------------------*/
 				(*p_file_Text_maillon_courant) = enfiler(new_maillon_text, *p_file_Text_maillon_courant);
-				/*File new_maillon_file = calloc(1, sizeof(*new_maillon_file));
-				new_maillon_file->val = new_maillon_text;
-				new_maillon_file->suiv = (*p_file_Text_maillon_courant)->suiv;
-
-				(*p_file_Text_maillon_courant)->suiv = new_maillon_file;
-				*/
+				
+				/*generation du code binaire*/
+				is_in_dic(file_Dic, p_file_Text_maillon_courant, p_file_realoc, p_file_realoc_offset);
 
 				return(1);
 			}
@@ -978,19 +980,25 @@ int is_pseudo_inst(File file_Dic, File* p_file_Text_maillon_courant, File* p_fil
 					((OPERANDE)(l_operande->suiv->val))->bin = atol(((OPERANDE)(l_operande->suiv->val))->chain);
 				}*/
 
-				char* zero = "0"; /*calloc(1,sizeof(char*)); zero = "0\0";*/
+				char* zero = "0";
 				/*------------------------------------------*/
-				/*--------Modification du maillon LW--------*/
+				/*--------Modification du maillon MOVE--------*/
 				/*------------------------------------------*/
 				char* add = "add";
 				(*p_maillon)->operateur = add;
+				(*p_maillon)->nb_op =3;
 
 				OPERANDE new_op = calloc(1,sizeof(*new_op));
 				new_op->chain = zero;
 				new_op->type = OPER_REG;
 				new_op->bin = 0;
 
+
 				l_operande = ajout_queue(new_op, l_operande);
+				/*generation du code binaire*/
+
+				is_in_dic(file_Dic, p_file_Text_maillon_courant, p_file_realoc, p_file_realoc_offset);
+
 				return(1);
 			}
 		}
@@ -1018,6 +1026,7 @@ int is_pseudo_inst(File file_Dic, File* p_file_Text_maillon_courant, File* p_fil
 				/*------------------------------------------*/
 				char* sub = "sub";
 				(*p_maillon)->operateur = sub;
+				(*p_maillon)->nb_op =3;
 
 				OPERANDE new_op = calloc(1,sizeof(*new_op));
 				new_op->chain = zero;
@@ -1025,6 +1034,8 @@ int is_pseudo_inst(File file_Dic, File* p_file_Text_maillon_courant, File* p_fil
 				new_op->bin = 0;
 
 				l_operande->suiv = ajout_tete(new_op, l_operande->suiv);
+
+				is_in_dic(file_Dic, p_file_Text_maillon_courant, p_file_realoc, p_file_realoc_offset);
 				return(1);
 			}
 		}
@@ -1066,6 +1077,7 @@ int is_pseudo_inst(File file_Dic, File* p_file_Text_maillon_courant, File* p_fil
 				/*------------------------------------------*/
 				char* addi = "addi";
 				(*p_maillon)->operateur = addi;
+				(*p_maillon)->nb_op++;
 
 				OPERANDE new_op = calloc(1,sizeof(*new_op));
 				new_op->chain = zero;
@@ -1073,6 +1085,8 @@ int is_pseudo_inst(File file_Dic, File* p_file_Text_maillon_courant, File* p_fil
 				new_op->bin = 0;
 
 				l_operande->suiv = ajout_tete(new_op, l_operande->suiv);
+
+				is_in_dic(file_Dic, p_file_Text_maillon_courant, p_file_realoc, p_file_realoc_offset);
 				return(1);
 				}
 			}	
@@ -1117,6 +1131,7 @@ int is_pseudo_inst(File file_Dic, File* p_file_Text_maillon_courant, File* p_fil
 
 					(*p_maillon)->l_operande = ajout_tete(op0, (*p_maillon)->l_operande);
 
+					is_in_dic(file_Dic, p_file_Text_maillon_courant, p_file_realoc, p_file_realoc_offset);
 					/*------------------------------------------*/
 					/*Creation et remplissage du nouveau maillon*/
 					/*------------------------------------------*/
@@ -1151,13 +1166,8 @@ int is_pseudo_inst(File file_Dic, File* p_file_Text_maillon_courant, File* p_fil
 					/*----------NOUVEAUX  BRANCHEMENTS----------*/
 					/*------------------------------------------*/
 					(*p_file_Text_maillon_courant) = enfiler(new_maillon_text, *p_file_Text_maillon_courant);
-					/*File new_maillon_file = calloc(1, sizeof(*new_maillon_file));
-					new_maillon_file->val = new_maillon_text;
-					new_maillon_file->suiv = (*p_file_Text_maillon_courant)->suiv;
-
-					(*p_file_Text_maillon_courant)->suiv = new_maillon_file;
-					*/
-
+					
+					is_in_dic(file_Dic, p_file_Text_maillon_courant, p_file_realoc, p_file_realoc_offset);
 					return(1);
 				}
 			}
@@ -1304,4 +1314,10 @@ void generation_bin_instr(TEXT maillon, DIC definition){
 		i++;
 	}
 
+	maillon->bin = ((maillon->bin>>24)  & 0x000000ff) | // move byte 3 to byte 0
+                    ((maillon->bin<<8)  & 0x00ff0000) | // move byte 1 to byte 2
+                    ((maillon->bin>>8)  & 0x0000ff00) | // move byte 2 to byte 1
+                    ((maillon->bin<<24) & 0xff000000); 	// byte 0 to byte 3
 }
+
+
