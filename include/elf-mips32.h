@@ -15,7 +15,7 @@
 extern "C" {
 #endif
 
-#include <pelf/pelf.h>
+#include <pelf.h>
 
 
 #define EF_MIPS_NORERODER      0x00000001

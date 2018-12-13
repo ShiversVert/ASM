@@ -9,6 +9,18 @@
  */
 
 #include <string.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <strings.h>
+#include <ctype.h>
+#include <global.h>
+#include <string.h>
+
+#include <types.h>
+#include <liste.h>
+#include <file.h>
+#include <notify.h>
+
 #include <sys/param.h> /* host endianness */
 
 
@@ -29,7 +41,7 @@ extern "C" {
 #define PELF_HOST_ENDIANNESS ELFDATA2LSB
 #endif
 
-#include <pelf/elf.h>
+#include <elf.h>
 
 
 typedef union {
@@ -189,7 +201,7 @@ int   elf_write_relocatable( char *filename, char *machine, int noreorder,
   return #type;			     \
   break;
 
-#include <pelf/elf-mips32.h>
+#include <elf-mips32.h>
 
 
 #ifdef __cplusplus

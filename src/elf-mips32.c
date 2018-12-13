@@ -1,4 +1,4 @@
-#include <pelf/pelf.h>
+#include <pelf.h>
 
 int elf_mips_reloc_num( char *rname ) {
     elf_catch_reloc( rname, R_MIPS_NONE );

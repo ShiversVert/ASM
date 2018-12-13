@@ -109,10 +109,17 @@ int main ( int argc, char *argv[] ) {
     DEBUG_MSG("\t file_Symb\t %ld elements\n", taille_symb);afficher_file(file_Symb, (*afficher_maillon_SYMB));
     DEBUG_MSG("\t file_Realoc\t %ld elements\n", taille_realoc);afficher_file(file_Realoc, (*afficher_maillon_REALOC));
 
+    if(cmpt_err>0){
+        WARNING_MSG("%d erreurs\n detectee", cmpt_err);
+        ERROR_MSG("Erreur(s) grammatical detectee(s), terminaison du programme.\n");
+        exit( EXIT_FAILURE );
+    }
+
+    /* ----------------------- Elf conversion -----------------------*/
+    gramm_to_elf(&file_Text, &file_Bss, &file_Data, &file_Symb, &file_Realoc, file, 
+                        &taille_symb, &taille_data, &taille_text, &taille_bss, &taille_realoc);
     /* ---------------- Free memory and terminate -------------------*/
-    /*long* p_taille_symb, long* p_taille_data, long* p_taille_text, long* p_taille_bss, int* p_cmpt_err*/
-    /* TODO free everything properly*/
-    
+        
     liberer_file(file_Dic);
     liberer_file(file_Text);
     liberer_file(file_Bss);

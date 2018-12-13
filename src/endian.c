@@ -8,7 +8,7 @@
  * Endianness stuff.
  */
 
-#include <pelf/elf.h>
+#include <elf.h>
 
 static void elf_endian_flip16( unsigned short *v ) {
     unsigned char *p = (unsigned char *)v;

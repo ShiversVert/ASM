@@ -8,7 +8,7 @@
  * ELF stuffs.
  */
 
-#include <pelf/pelf.h>
+#include <pelf.h>
 
 #include <stdio.h>
 #include <string.h>

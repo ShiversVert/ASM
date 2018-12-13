@@ -13,9 +13,9 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include <pelf/section.h>
+#include <section.h>
 
-#include <pelf/pelf.h>
+#include <pelf.h>
 
 
 

@@ -8,7 +8,7 @@
  * Write ELF.
  */
 
-#include <pelf/pelf.h>
+#include <pelf.h>
 
 
 

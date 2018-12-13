@@ -568,7 +568,7 @@ void calcul_decalage_Data(File* p_file_Data, DATA* p_new_maillon, double* p_offs
 		}
 
 		else if(strcmp( (*p_new_maillon)->operateur , ".space")==0){
-			/*TODO : gerer les nombre hexa et octal (notamment atof)*/
+			
 			if (op_temp->type==OPER_DECIMAL){ /*Si l'opperande est bien un nombre*/
 				(*p_offset_data) += atof(op_temp->chain);
 			}

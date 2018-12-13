@@ -12,7 +12,7 @@
 #include <string.h>
 #include <libgen.h> /* basename(3) */
 
-#include <pelf/pelf.h>
+#include <pelf.h>
 
 int   elf_read_ehdr( FILE *fp, Elf_Ehdr *ehdr ) {
 

@@ -8,7 +8,7 @@
  * Print ELF structures.
  */
 
-#include <pelf/pelf.h>
+#include <pelf.h>
 
 static char *elf_print_reltype( unsigned int machine, unsigned int type ) {
     switch( machine ) {
