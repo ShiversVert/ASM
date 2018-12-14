@@ -24,7 +24,7 @@ LFLAGS=-lm
 LFLAGS_ELF = -fPIC
 
 CFLAGS_ELF=$(CFLAGS) -w
-CFLAGS_DBG=$(CFLAGS) -g -DDEBUG -Wall
+CFLAGS_DBG=$(CFLAGS) -g -DDEBUG -Wall -Wno-pointer-sign -Wno-unused-variable
 CFLAGS_RLS=$(CFLAGS)
 
 SRC=$(wildcard $(SRCDIR)/*.c)

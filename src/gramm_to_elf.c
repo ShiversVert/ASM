@@ -34,6 +34,15 @@ void gramm_to_elf(	File* p_file_Text, 		File* p_file_Bss, 		File* p_file_Data,
     char* machine = "mips";
     int noreorder = 1;
 
+    /*------------ECRITURE DU NOM DU .O------------*/
+    char new_name[strlen(name)+9], extension[2], dir[8]; //strcpy(new_name, name);
+	//memset(new_name, '\0', sizeof(new_name));
+
+	strcpy(new_name, "./output");
+	strcat(new_name, strchr(name, '/'));
+	new_name[strlen(new_name)-1] = 'o';
+
+    DEBUG_MSG("Fichier de sortie : %s\n", new_name);
     /*-------------------COEUR-------------------*/
     shstrtab = make_shstrtab_section();
 
@@ -52,7 +61,7 @@ void gramm_to_elf(	File* p_file_Text, 		File* p_file_Bss, 		File* p_file_Data,
         ERROR_MSG("Impossible d'ecrire la section .bss (information manquante)\n" );
     }
 
-    strtab   = make_strtab_syms_section(p_file_Symb, p_taille_symb, (struct Elf32_Sym **)(&syms),  shstrtab);
+    strtab   = make_strtab_syms_section(p_file_Symb, p_taille_symb, syms, shstrtab);
 
     symtab   = make_symtab_section( shstrtab, strtab, syms, (*p_taille_symb));
 
@@ -65,7 +74,7 @@ void gramm_to_elf(	File* p_file_Text, 		File* p_file_Bss, 		File* p_file_Data,
 
     /*--------------------Ecriture dans le fichier--------------------*/
 
-    elf_write_relocatable( name, machine, noreorder,
+    elf_write_relocatable( new_name, machine, noreorder,
                            text->start, text->sz,
                            data->start, data->sz,
                            bss->start, bss->sz,
@@ -123,7 +132,7 @@ section make_text_section(File *p_file_Text, long* p_taille_text){
 
 	if((*p_taille_text)>0){
 		(*p_file_Text) = (*p_file_Text)->suiv;
-		for(int i =0; i<= *p_taille_text; i++){
+		for(int i =0; i< *p_taille_text; i++){
 			instructions[i] = ((TEXT)((*p_file_Text)->val))->bin;
 			defiler(p_file_Text);
 		}
@@ -139,7 +148,7 @@ section make_data_section(File *p_file_Data, long* p_taille_data){
 
 	if((*p_taille_data)>0){
 		(*p_file_Data) = (*p_file_Data)->suiv;
-		for(int i =0; i<= *p_taille_data; i++){
+		for(int i =0; i< *p_taille_data; i++){
 			data_prog[i] = ((TEXT)((*p_file_Data)->val))->bin;
 			defiler(p_file_Data);
 		}
@@ -164,7 +173,7 @@ section make_bss_section(File* p_file_Bss){
     return bss;
 }
 
-section make_strtab_syms_section( File* p_file_Symb, long* p_taille_symb, Elf32_Sym* syms[], section shstrtab) {
+section make_strtab_syms_section( File* p_file_Symb, long* p_taille_symb, Elf32_Sym syms[], section shstrtab) {
     section strtab = new_section( ".strtab", SECTION_CHUNK_SZ);
 
     add_string_to_table( strtab, "" ); /* ELF string tables start with a '0' */
@@ -172,23 +181,23 @@ section make_strtab_syms_section( File* p_file_Symb, long* p_taille_symb, Elf32_
     while((*p_file_Symb)!=NULL){
         add_string_to_table(strtab, ((SYMB)((*p_file_Symb)->val))->nom);
 
-        (*syms)[i].st_name = elf_get_string_offset( strtab->start, strtab->sz, ((SYMB)((*p_file_Symb)->val))->nom);
-    	(*syms)[i].st_size = 0;
-    	(*syms)[i].st_value = ((SYMB)((*p_file_Symb)->val))->decalage;
-    	(*syms)[i].st_other = 0;
+        syms[i].st_name = elf_get_string_offset( strtab->start, strtab->sz, ((SYMB)((*p_file_Symb)->val))->nom);
+    	syms[i].st_size = 0;
+    	syms[i].st_value = ((SYMB)((*p_file_Symb)->val))->decalage;
+    	syms[i].st_other = 0;
     	switch (((SYMB)((*p_file_Symb)->val))->zone){
     		case ZONE_UNKW:
-    			(*syms)[i].st_info = ELF32_ST_INFO(STB_GLOBAL, STT_NOTYPE);
+    			syms[i].st_info = ELF32_ST_INFO(STB_GLOBAL, STT_NOTYPE);
     			break;
 
     		case ZONE_TEXT:
-    			(*syms)[i].st_info = ELF32_ST_INFO(STB_LOCAL, STT_NOTYPE);
-    			(*syms)[i].st_shndx  = elf_get_string_index( shstrtab->start, shstrtab->sz, ".text" );
+    			syms[i].st_info = ELF32_ST_INFO(STB_LOCAL, STT_NOTYPE);
+    			syms[i].st_shndx  = elf_get_string_index( shstrtab->start, shstrtab->sz, ".text" );
     			break;
     		
     		case ZONE_BSS:
-    			(*syms)[i].st_info = ELF32_ST_INFO(STB_LOCAL, STT_NOTYPE);
-    			(*syms)[i].st_shndx  = elf_get_string_index( shstrtab->start, shstrtab->sz, ".bss" );
+    			syms[i].st_info = ELF32_ST_INFO(STB_LOCAL, STT_NOTYPE);
+    			syms[i].st_shndx  = elf_get_string_index( shstrtab->start, shstrtab->sz, ".bss" );
     			break;
     		
     		default:
@@ -334,4 +343,15 @@ int elf_get_sym_index_from_name(section symtab, section shstrtab, section strtab
     }
     return -1;
 
+}
+
+char* name_s_to_name_o(char* name){
+	char new_name[strlen(name)+9], extension[2], dir[8]; //strcpy(new_name, name);
+	memset(new_name, '\0', sizeof(new_name));
+
+	strcpy(new_name, "./output");
+	strcat(new_name, strchr(name, '/'));
+	new_name[strlen(new_name)-1] = 'o';
+
+	return(new_name);
 }

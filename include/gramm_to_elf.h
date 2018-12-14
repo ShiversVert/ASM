@@ -35,7 +35,7 @@ section make_shstrtab_section( void ) ;
 section make_text_section(File *p_file_Text, long* p_taille_text);
 section make_data_section(File *p_file_Data, long* p_taille_data);
 section make_bss_section(File* p_file_Bss);
-section make_strtab_syms_section( File* p_file_Symb, long* p_taille_symb, Elf32_Sym** syms, section shstrtab);
+section make_strtab_syms_section( File* p_file_Symb, long* p_taille_symb, Elf32_Sym syms[], section shstrtab);
 section make_symtab_section(section shstrtab, section strtab,  Elf32_Sym symbols[], int nb_syms  ) ;
 int taille_tab_rel(long* taille_text_reloc, long* taille_data_reloc, File* p_file_realoc);
 void file_realoc_to_tab_realoc(File* p_file_realoc, Elf32_Rel text_reloc[], Elf32_Rel data_reloc[], 
@@ -43,5 +43,6 @@ void file_realoc_to_tab_realoc(File* p_file_realoc, Elf32_Rel text_reloc[], Elf3
 								section shstrtab, section strtab);
 section make_rel32_section(char *relname, Elf32_Rel relocations[], int nb_reloc);
 int elf_get_sym_index_from_name(section symtab, section shstrtab, section strtab, char* sym_name);
+char* name_s_to_name_o(char* name);
 
 #endif //_GRAMM_TO_ELF_

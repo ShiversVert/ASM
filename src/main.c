@@ -18,6 +18,7 @@
 #include <dictionnaire_instruction.h>
 #include <automate.h>
 #include <automate_gramm.h>
+#include <gramm_to_elf.h>
 
 /**
  * @param exec Name of executable.
@@ -116,6 +117,7 @@ int main ( int argc, char *argv[] ) {
     }
 
     /* ----------------------- Elf conversion -----------------------*/
+    DEBUG_MSG("\n\n###############################\nECRITURE DU FICHIER BINAIRE\n###############################\n\n");
     gramm_to_elf(&file_Text, &file_Bss, &file_Data, &file_Symb, &file_Realoc, file, 
                         &taille_symb, &taille_data, &taille_text, &taille_bss, &taille_realoc);
     /* ---------------- Free memory and terminate -------------------*/
