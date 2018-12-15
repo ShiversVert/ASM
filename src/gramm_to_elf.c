@@ -35,11 +35,12 @@ void gramm_to_elf(	File* p_file_Text, 		File* p_file_Bss, 		File* p_file_Data,
     int noreorder = 1;
 
     /*------------ECRITURE DU NOM DU .O------------*/
-    char new_name[strlen(name)+9], extension[2], dir[8]; //strcpy(new_name, name);
-	//memset(new_name, '\0', sizeof(new_name));
+    char new_name[strlen(name)];// extension[2], dir[8]; //strcpy(new_name, name);
+	memset(new_name, '\0', sizeof(new_name));
+    strcpy(new_name, name);
 
-	strcpy(new_name, "./output");
-	strcat(new_name, strchr(name, '/'));
+	//strcpy(new_name, "/tests");///output");
+	//strcat(new_name, strchr(name, '/'));
 	new_name[strlen(new_name)-1] = 'o';
 
     DEBUG_MSG("Fichier de sortie : %s\n", new_name);
@@ -84,13 +85,14 @@ void gramm_to_elf(	File* p_file_Text, 		File* p_file_Bss, 		File* p_file_Data,
                            reltext->start, reltext->sz,
                            reldata->start, reldata->sz);
 
-
+    /*
     print_section( text );
     print_section( data );
     print_section( bss );
     print_section( strtab );
     print_section( symtab );
-
+    */
+   
     /*--------------------Liberation--------------------*/
     del_section(     text );
     del_section(     data );
@@ -131,9 +133,9 @@ section make_text_section(File *p_file_Text, long* p_taille_text){
 	int instructions[(*p_taille_text)];
 
 	if((*p_taille_text)>0){
-		(*p_file_Text) = (*p_file_Text)->suiv;
+		//(*p_file_Text) = (*p_file_Text)->suiv;
 		for(int i =0; i< *p_taille_text; i++){
-			instructions[i] = ((TEXT)((*p_file_Text)->val))->bin;
+			instructions[i] = ((TEXT)((*p_file_Text)->suiv->val))->bin;
 			defiler(p_file_Text);
 		}
 
@@ -144,12 +146,84 @@ section make_text_section(File *p_file_Text, long* p_taille_text){
 
 section make_data_section(File *p_file_Data, long* p_taille_data){
 	section        data = new_section( ".data", SECTION_CHUNK_SZ );
-	int data_prog[(*p_taille_data)];
+    int cmpt_octet;
+    int i = 0; int n, cmpt_inter,j ;
+    int taille_data_prog = (int)((*p_taille_data)/4);
+	int data_prog[taille_data_prog]; /*EN OCTETS*/
+    memset(data_prog, 0x0, *p_taille_data);
+    DATA data_courant = NULL;
 
+    /*On raisonne sur les octets*/
 	if((*p_taille_data)>0){
-		(*p_file_Data) = (*p_file_Data)->suiv;
-		for(int i =0; i< *p_taille_data; i++){
-			data_prog[i] = ((TEXT)((*p_file_Data)->val))->bin;
+
+		while((*p_file_Data) != NULL){
+            data_courant = (DATA)((*p_file_Data)->suiv->val);
+			switch(data_courant->type){
+                case DATA_BYTE :
+                    /*On trouve .byte n => Il faut faire 1 OCTETS de valeur "n" dans data_prog */
+                    while(data_courant->l_operande != NULL){
+                        n = ((OPERANDE)((data_courant->l_operande)->val))->bin;
+                        
+                        data_prog[i] = data_prog[i] | deplace_octet(n, 3-cmpt_octet%4);
+                        cmpt_octet++; i = (int)(cmpt_octet/4);
+                        
+                        (data_courant->l_operande) = supprimer_tete( (data_courant->l_operande) );
+                    }
+                    break;
+                    break;
+
+                case DATA_SPACE :
+                    /*On trouve .space n => Il faut faire n OCTETS nuls dans data_prog */
+                    while(data_courant->l_operande != NULL){
+                        n = ((OPERANDE)((data_courant->l_operande)->val))->bin;
+                        cmpt_inter = cmpt_octet + i;
+                        for(;cmpt_octet<cmpt_inter; cmpt_octet++){
+                            data_prog[i] = data_prog[i] | deplace_octet(0x0, 3-cmpt_octet%4);
+                            cmpt_octet++; i = (int)(cmpt_octet/4);
+                        }
+                        (data_courant->l_operande) = supprimer_tete( (data_courant->l_operande) );
+                    }
+                    break;
+
+                case DATA_ASCIIZ :
+                    /*On trouve .ascizz "chaine" => il faut remplir un octet par caractere de la chaine*/
+                    while(data_courant->l_operande != NULL){
+                        n = strlen( ((OPERANDE)((data_courant->l_operande)->val))->chain ) - 1;
+                        char chaine[n]; 
+                        strcpy(chaine, ((OPERANDE)((data_courant->l_operande)->val))->chain + 1); /*On enleve la premiere quote*/
+                        chaine[n] = '\0';
+                        cmpt_inter = n + i;
+                        for(j =0;j<n; j++){
+                            data_prog[i] = data_prog[i] | deplace_octet(chaine[j], 3-cmpt_octet%4);
+                            cmpt_octet++; i = (int)(cmpt_octet/4);
+                        }
+
+                        (data_courant->l_operande) = supprimer_tete( (data_courant->l_operande) );
+                    }
+                    break;
+
+                case DATA_WORD :
+                    /*On trouve .word n, on ecrit n sur un int (4 octets) swappes*/
+                    while(data_courant->l_operande != NULL){
+                        n = ((OPERANDE)((data_courant->l_operande)->val))->bin;
+                                               
+                        data_prog[i] = n;
+                        data_prog[i] = ((data_prog[i]>>24)  & 0x000000ff) | // move byte 3 to byte 0
+                                        ((data_prog[i]<<8)  & 0x00ff0000) | // move byte 1 to byte 2
+                                        ((data_prog[i]>>8)  & 0x0000ff00) | // move byte 2 to byte 1
+                                        ((data_prog[i]<<24) & 0xff000000);  // byte 0 to byte 3
+                        
+                        i++; cmpt_octet+=4;
+
+                        (data_courant->l_operande) = supprimer_tete( data_courant->l_operande );
+                    }
+                    break;
+
+                default : 
+                    ERROR_MSG("Impossible de lire une directive");
+                    break;
+            }
+            
 			defiler(p_file_Data);
 		}
 
@@ -161,10 +235,13 @@ section make_data_section(File *p_file_Data, long* p_taille_data){
 section make_bss_section(File* p_file_Bss){
     section bss = new_section( ".bss", SECTION_CHUNK_SZ );
     long compteur = 0;
+    BSS bss_courant;
     while((*p_file_Bss)!=NULL){
-    	while(((((BSS)((*p_file_Bss)->val))->l_operande) != NULL) ){
-    		compteur += ((OPERANDE)((((BSS)((*p_file_Bss)->val))->l_operande)->val))->bin;
-    		((BSS)((*p_file_Bss)->val))->l_operande = supprimer_tete(((BSS)((*p_file_Bss)->val))->l_operande);
+        bss_courant = ((BSS)((*p_file_Bss)->suiv->val));
+
+    	while(( bss_courant->l_operande != NULL) ){
+            compteur += ((OPERANDE)((bss_courant->l_operande)->val))->bin;
+    		bss_courant->l_operande = supprimer_tete(bss_courant->l_operande);
     	}
     	defiler(p_file_Bss);
     }
@@ -354,4 +431,19 @@ char* name_s_to_name_o(char* name){
 	new_name[strlen(new_name)-1] = 'o';
 
 	return(new_name);
+}
+
+/**
+ * Deplace l'octet "a" en num_octet position
+ * @param  a         octet a deplacer
+ * @param  num_octet numero de l'octet dans un int (compris entre 0 et 3, inutile pour 3)
+ * @return           renvoie l'octet deplace
+ */
+int deplace_octet(int a, int num_octet){
+    if (num_octet > 3) return a;
+
+    int masque[4]= {0xff000000, 0x00ff0000, 0x0000ff00, 0x000000ff};
+    int decalage[4] = {24, 16, 8 ,0};
+    
+    return (a << decalage[num_octet]) & masque[num_octet];
 }

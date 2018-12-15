@@ -71,7 +71,7 @@ void automate_grammatical(File* p_file_Lexeme, 		File* p_file_Text, 		File* p_fi
 
 	free(lexeme_courant);
 	reallocation_offset(&file_realoc_offset, p_file_Symb, p_taille_symb);
-	/*replace_in_Text(p_file_Text, p_file_Symb, file_Dic);*/
+	(*p_taille_data)=(offset_data); /*TAille de data EN OCTET*/
 }
 
 
@@ -564,11 +564,13 @@ void calcul_decalage_Data(File* p_file_Data, DATA* p_new_maillon, double* p_offs
 		op_temp->type = (((OPERANDE)((p_operande_courante)->val))->type);
 
 		if(strcmp( (*p_new_maillon)->operateur , ".byte")==0){
+			(*p_new_maillon)->type = DATA_BYTE;
 			(*p_offset_data) += 1;
 		}
 
 		else if(strcmp( (*p_new_maillon)->operateur , ".space")==0){
-			
+			(*p_new_maillon)->type = DATA_SPACE;
+
 			if (op_temp->type==OPER_DECIMAL){ /*Si l'opperande est bien un nombre*/
 				(*p_offset_data) += atof(op_temp->chain);
 			}
@@ -580,6 +582,7 @@ void calcul_decalage_Data(File* p_file_Data, DATA* p_new_maillon, double* p_offs
 		}
 
 		else if(strcmp( (*p_new_maillon)->operateur , ".asciiz")==0){
+			(*p_new_maillon)->type = DATA_ASCIIZ;
 
 			if (op_temp->type==OPER_CHAINE ){ /*Si l'opperande est bien une chaine*/
 				(*p_offset_data) += strlen(op_temp->chain);
@@ -592,6 +595,8 @@ void calcul_decalage_Data(File* p_file_Data, DATA* p_new_maillon, double* p_offs
 		}
 
 		else if(strcmp( (*p_new_maillon)->operateur , ".word")==0){
+			(*p_new_maillon)->type = DATA_WORD;
+
 			if((int)(*p_offset_data) == 0){
 				(*p_new_maillon)->decalage = (*p_offset_data);
 				(*p_offset_data) += 4;
@@ -605,8 +610,10 @@ void calcul_decalage_Data(File* p_file_Data, DATA* p_new_maillon, double* p_offs
 				else{
 					(*p_offset_data) +=  4 - (int)(*p_offset_data)%4;
 					(*p_new_maillon)->decalage = (*p_offset_data); /*On overrite la valeur dans le cas d'un .word*/
+					(*p_offset_data)+=4;
 				}
 			}
+
 		}
 
 		else{

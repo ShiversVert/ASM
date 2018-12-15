@@ -102,6 +102,10 @@ typedef struct _bss_{
 
 typedef enum{
 	DATA_DIR,
+	DATA_BYTE,
+	DATA_SPACE,
+	DATA_ASCIIZ,
+	DATA_WORD,
 	DATA_ERROR
 }type_data;
 

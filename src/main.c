@@ -121,7 +121,9 @@ int main ( int argc, char *argv[] ) {
     gramm_to_elf(&file_Text, &file_Bss, &file_Data, &file_Symb, &file_Realoc, file, 
                         &taille_symb, &taille_data, &taille_text, &taille_bss, &taille_realoc);
     /* ---------------- Free memory and terminate -------------------*/
-        
+    
+    DEBUG_MSG("\n\n###############################\nLIBERATION ET TERMINAISON\n###############################\n\n");
+
     liberer_file(file_Dic);
     liberer_file(file_Text);
     liberer_file(file_Bss);

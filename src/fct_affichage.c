@@ -81,6 +81,23 @@ void afficher_maillon_DATA(void* maillon){
 		case DATA_DIR:
 			type = "DATA_DIR";
 			break;
+			
+		case DATA_BYTE :
+			type = "DATA_BYTE";
+			break;
+			
+		case DATA_SPACE :
+			type = "DATA_SPACE";
+			break;
+			
+		case DATA_ASCIIZ :
+			type = "DATA_ASCIIZ";
+			break;
+			
+		case DATA_WORD :
+			type = "DATA_WORD";
+			break;
+			
 		case DATA_ERROR:
 			type = "DATA_ERROR";
 			WARNING_MSG("%s \t\t%.0lf\t\t%s\n", type, line_nb, operateur);

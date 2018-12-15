@@ -20,6 +20,7 @@
 #include <liste.h>
 #include <file.h>
 #include <notify.h>
+#include <automate_gramm.h>
 
 #include <pelf.h>
 #include <section.h>
