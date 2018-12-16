@@ -19,7 +19,7 @@ INCLUDE=-I$(INCDIR)
 INCLUDE_ELF=-I$(INCDIR_ELF)
 
 # Pour activer les sorties INFO_MSG, ajouter -DVERBOSE aux CFLAGS 
-CFLAGS=-std=c99 $(INCLUDE)
+CFLAGS=-std=c99 -D_SVID_SOURCE $(INCLUDE)
 LFLAGS=-lm
 LFLAGS_ELF = -fPIC
 

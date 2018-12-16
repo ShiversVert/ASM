@@ -70,7 +70,7 @@ void automate_grammatical(File* p_file_Lexeme, 		File* p_file_Text, 		File* p_fi
 	}
 
 	free(lexeme_courant);
-	reallocation_offset(&file_realoc_offset, p_file_Symb, p_taille_symb);
+	reallocation_offset(&file_realoc_offset, p_file_Symb, p_taille_symb, file_Dic);
 	(*p_taille_data)=(offset_data); /*TAille de data EN OCTET*/
 }
 
@@ -262,7 +262,7 @@ int ajout_maillon_data(	File* p_file_Data, 		File* p_file_Lexeme, 	LEXEME lexeme
 	while(l_op_temp!=NULL){
 			if (((OPERANDE)(l_op_temp->val))->type == OPER_SYMBOLE) {
 				(*p_taille_realoc)++;
-				ajout_maillon_realoc((OPERANDE*)&(l_op_temp->val), p_file_realoc, R_MIPS_32, ZONE_DATA, new_maillon->decalage);
+				ajout_maillon_realoc((OPERANDE*)&(l_op_temp->val), p_file_realoc, R_MIPS_32, ZONE_DATA, new_maillon->decalage, NULL);
 			}
 			l_op_temp = l_op_temp->suiv;
 	}
@@ -750,7 +750,9 @@ int is_in_dic(File file_Dic, File* p_file_Text_maillon_courant, File* p_file_rea
 
 						case 'O':
 							if (type_op_courrante == OPER_SYMBOLE){
-								ajout_maillon_realoc((OPERANDE*)&(l_operande->val), p_file_realoc_offset, R_OFFSET, ZONE_TEXT, (*p_maillon)->decalage);
+								if( (*p_maillon)->line_nb >= 0 ){
+									ajout_maillon_realoc((OPERANDE*)&(l_operande->val), p_file_realoc_offset, R_OFFSET, ZONE_TEXT, (*p_maillon)->decalage, *p_file_Text_maillon_courant);
+								}
 							}
 							else if (type_op_courrante != OPER_OFFSET){
 								((OPERANDE)(l_operande->val))->type = OPER_ERROR;
@@ -769,8 +771,10 @@ int is_in_dic(File file_Dic, File* p_file_Text_maillon_courant, File* p_file_rea
 
 						case 'T':
 							if (type_op_courrante == OPER_SYMBOLE){
-								(*p_taille_realoc)++;
-								ajout_maillon_realoc((OPERANDE*)&(l_operande->val), p_file_realoc, R_MIPS_26, ZONE_TEXT, (*p_maillon)->decalage);
+								if((*p_maillon)->line_nb >= 0){
+									(*p_taille_realoc)++;
+									ajout_maillon_realoc((OPERANDE*)&(l_operande->val), p_file_realoc, R_MIPS_26, ZONE_TEXT, (*p_maillon)->decalage, NULL);
+								}
 							}
 							else if (type_op_courrante != OPER_DECIMAL && type_op_courrante != OPER_HEXA && type_op_courrante != OPER_REG){
 								((OPERANDE)(l_operande->val))->type = OPER_ERROR;
@@ -782,8 +786,10 @@ int is_in_dic(File file_Dic, File* p_file_Text_maillon_courant, File* p_file_rea
 
 						case 'I':
 							if (type_op_courrante == OPER_SYMBOLE){
-								(*p_taille_realoc)++;
-								ajout_maillon_realoc((OPERANDE*)&(l_operande->val), p_file_realoc, R_MIPS_LO16, ZONE_TEXT, (*p_maillon)->decalage);
+								if( (*p_maillon)->line_nb >= 0){
+									(*p_taille_realoc)++;
+									ajout_maillon_realoc((OPERANDE*)&(l_operande->val), p_file_realoc, R_MIPS_LO16, ZONE_TEXT, (*p_maillon)->decalage, NULL);
+								}
 							}
 							else if (type_op_courrante != OPER_DECIMAL && type_op_courrante != OPER_HEXA){
 								((OPERANDE)(l_operande->val))->type = OPER_ERROR;
@@ -864,6 +870,7 @@ int is_pseudo_inst(File file_Dic, File* p_file_Text_maillon_courant, File* p_fil
 				/*------------------------------------------*/
 				char* lui = "lui";
 				(*p_maillon)->operateur = lui;
+				(*p_maillon)->line_nb = -(*p_maillon)->line_nb;
 
 				((OPERANDE)(((*p_maillon)->l_operande)->val))->chain = "1";	/*$at*/
 				((OPERANDE)(((*p_maillon)->l_operande)->val))->type = OPER_REG;	/*$at*/
@@ -876,7 +883,7 @@ int is_pseudo_inst(File file_Dic, File* p_file_Text_maillon_courant, File* p_fil
 				((OPERANDE)(((*p_maillon)->l_operande)->suiv->val))->chain = "etiquette_poidsfort>>16";
 				Mais on ajoute l'operande a laa table de realoc*/
 				(*p_taille_realoc)++;
-				ajout_maillon_realoc((OPERANDE*)&(((*p_maillon)->l_operande)->suiv->val), p_file_realoc, R_MIPS_HI16, ZONE_TEXT, (*p_maillon)->decalage);
+				ajout_maillon_realoc((OPERANDE*)&(((*p_maillon)->l_operande)->suiv->val), p_file_realoc, R_MIPS_HI16, ZONE_TEXT, (*p_maillon)->decalage, NULL);
 				
 				/*Generation du code binaire*/
 				is_in_dic(file_Dic, p_file_Text_maillon_courant, p_file_realoc, p_file_realoc_offset, p_taille_text, p_taille_realoc, p_cmpt_err);
@@ -889,7 +896,7 @@ int is_pseudo_inst(File file_Dic, File* p_file_Text_maillon_courant, File* p_fil
 				new_maillon_text->operateur = operateur;
 				new_maillon_text->type = TEXT_INST;
 				new_maillon_text->nb_op = 3;
-				new_maillon_text->line_nb = - ((*p_maillon)->line_nb) ;
+				new_maillon_text->line_nb = ((*p_maillon)->line_nb) ;
 				new_maillon_text->decalage = (*p_maillon)->decalage+4;
 
 				/*Creation et remplissage de la liste d'operandes*/
@@ -907,7 +914,7 @@ int is_pseudo_inst(File file_Dic, File* p_file_Text_maillon_courant, File* p_fil
 				Mais on ajoute l'operande a laa table de realoc*/
 				op2->chain = ((OPERANDE)(((*p_maillon)->l_operande)->suiv->val))->chain;
 				(*p_taille_realoc)++;
-				ajout_maillon_realoc(&op2, p_file_realoc, R_MIPS_LO16, ZONE_TEXT, new_maillon_text->decalage);
+				ajout_maillon_realoc(&op2, p_file_realoc, R_MIPS_LO16, ZONE_TEXT, new_maillon_text->decalage, NULL);
 
 				OPERANDE op3 = calloc(1,sizeof(*op3));
 				op3->type = OPER_BASE;
@@ -960,6 +967,7 @@ int is_pseudo_inst(File file_Dic, File* p_file_Text_maillon_courant, File* p_fil
 				/*------------------------------------------*/
 				char* lui = "lui";
 				(*p_maillon)->operateur = lui;
+				(*p_maillon)->line_nb = -(*p_maillon)->line_nb;
 
 				((OPERANDE)(((*p_maillon)->l_operande)->val))->chain = "1";	/*$at*/
 				((OPERANDE)(((*p_maillon)->l_operande)->val))->bin = 1;	/*$at*/
@@ -971,7 +979,7 @@ int is_pseudo_inst(File file_Dic, File* p_file_Text_maillon_courant, File* p_fil
 				((OPERANDE)(((*p_maillon)->l_operande)->suiv->val))->chain = "etiquette_poidsfort>>16";
 				Mais on ajoute l'operande a laa table de realoc*/
 				(*p_taille_realoc)++;
-				ajout_maillon_realoc((OPERANDE*)&(((*p_maillon)->l_operande)->suiv->val), p_file_realoc, R_MIPS_HI16, ZONE_TEXT, (*p_maillon)->decalage);
+				ajout_maillon_realoc((OPERANDE*)&(((*p_maillon)->l_operande)->suiv->val), p_file_realoc, R_MIPS_HI16, ZONE_TEXT, (*p_maillon)->decalage, NULL );
 				/*generation du code binaire*/
 				is_in_dic(file_Dic, p_file_Text_maillon_courant, p_file_realoc, p_file_realoc_offset, p_taille_text, p_taille_realoc, p_cmpt_err);
 				/*------------------------------------------*/
@@ -983,7 +991,7 @@ int is_pseudo_inst(File file_Dic, File* p_file_Text_maillon_courant, File* p_fil
 				new_maillon_text->operateur = operateur;
 				new_maillon_text->type = TEXT_INST;
 				new_maillon_text->nb_op = 3;
-				new_maillon_text->line_nb = - ((*p_maillon)->line_nb) ;
+				new_maillon_text->line_nb = ((*p_maillon)->line_nb) ;
 				new_maillon_text->decalage = (*p_maillon)->decalage+4;
 
 				/*Creation et remplissage de la liste d'operandes*/
@@ -1000,7 +1008,7 @@ int is_pseudo_inst(File file_Dic, File* p_file_Text_maillon_courant, File* p_fil
 				op2->chain = "etiquette_poidsfaible";
 				Mais on ajoute l'operande a laa table de realoc*/
 				op2->chain = ((OPERANDE)(((*p_maillon)->l_operande)->suiv->val))->chain;
-				ajout_maillon_realoc(&op2, p_file_realoc, R_MIPS_LO16, ZONE_TEXT, new_maillon_text->decalage);
+				ajout_maillon_realoc(&op2, p_file_realoc, R_MIPS_LO16, ZONE_TEXT, new_maillon_text->decalage, NULL);
 				(*p_taille_realoc)++;
 
 				OPERANDE op3 = calloc(1,sizeof(*op3));
@@ -1142,7 +1150,7 @@ int is_pseudo_inst(File file_Dic, File* p_file_Text_maillon_courant, File* p_fil
 
 				/*Si immediate est un symbole:*/
 				if(((OPERANDE)(((*p_maillon)->l_operande)->suiv->val))->type == OPER_SYMBOLE){
-					ajout_maillon_realoc((OPERANDE*)&(((*p_maillon)->l_operande)->suiv->val), p_file_realoc_offset, R_OFFSET, ZONE_TEXT, (*p_maillon)->decalage);
+					ajout_maillon_realoc((OPERANDE*)&(((*p_maillon)->l_operande)->suiv->val), p_file_realoc_offset, R_OFFSET, ZONE_TEXT, (*p_maillon)->decalage, *p_file_Text_maillon_courant);
 					continuer = 1;
 				}
 				
@@ -1196,7 +1204,7 @@ int is_pseudo_inst(File file_Dic, File* p_file_Text_maillon_courant, File* p_fil
 					BNE $1, $zero, target
 				*/
 				if (((OPERANDE)(((*p_maillon)->l_operande)->suiv->suiv->val))->type ==  OPER_SYMBOLE){
-					ajout_maillon_realoc((OPERANDE*)&(((*p_maillon)->l_operande)->suiv->suiv->val), p_file_realoc_offset, R_OFFSET, ZONE_TEXT, (*p_maillon)->decalage);
+					ajout_maillon_realoc((OPERANDE*)&(((*p_maillon)->l_operande)->suiv->suiv->val), p_file_realoc_offset, R_OFFSET, ZONE_TEXT, (*p_maillon)->decalage, *p_file_Text_maillon_courant);
 					continuer = 1;
 				}
 

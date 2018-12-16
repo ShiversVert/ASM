@@ -21,8 +21,8 @@
 #include <file.h>
 #include <notify.h>
 
-void ajout_maillon_realoc(OPERANDE* p_op, File* p_file_realoc, type_realoc type, zone_symb zone, double decalage);
-void reallocation_offset(File* p_file_realoc_offset, File* p_file_Symb, long* p_taille_symb);
+void ajout_maillon_realoc(OPERANDE* p_op, File* p_file_realoc, type_realoc type, zone_symb zone, double decalage, File file_text);
+void reallocation_offset(File* p_file_realoc_offset, File* p_file_Symb, long* p_taille_symb, File file_Dic);
 int remplace_realoc_offset(File* p_file_Symb, OPERANDE* p_op, long* p_taille_symb);
 
 

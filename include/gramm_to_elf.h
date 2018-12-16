@@ -44,6 +44,6 @@ void file_realoc_to_tab_realoc(File* p_file_realoc, Elf32_Rel text_reloc[], Elf3
 								section shstrtab, section strtab);
 section make_rel32_section(char *relname, Elf32_Rel relocations[], int nb_reloc);
 int elf_get_sym_index_from_name(section symtab, section shstrtab, section strtab, char* sym_name);
-char* name_s_to_name_o(char* name);
+int deplace_octet(int a, int num_octet);
 
 #endif //_GRAMM_TO_ELF_

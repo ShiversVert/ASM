@@ -162,7 +162,7 @@ typedef struct _realoc_ {
 	double 		decalage;	/*Decalage de l'instruction ou la realoc doit etre faite*/
 	type_realoc	type;		/*Type de realoc a faire*/
 	OPERANDE*	p_op;			/*Pointeur vers l'operande a realouer... Utilitee?*/
-	/*SYMB* 	symb;		Pointeur vers l'operande dans la table des symboles*/
+	File		file_text; 	/*POinteur sur l'instruction correspondante. Sert pour recalculer le binaire de l'instruction une fois l'operande_offset reallouee*/
 } * REALOC;
 
 #include <fct_affichage.h> /*Oblige de le mettre apres la definition du type file*/

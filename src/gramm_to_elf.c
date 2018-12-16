@@ -141,6 +141,14 @@ section make_text_section(File *p_file_Text, long* p_taille_text){
 
 		write_section(text, (unsigned char *)(instructions), sizeof(*instructions)*(*p_taille_text), 0);
 	}
+
+    DEBUG_MSG("\nInstructions : \n");
+    printf("\n");
+    for (int k = 0; k <(*p_taille_text); k++) {
+        printf("%8.8x ", instructions[k]);
+        if ((k+1)%4 == 0) printf("\n");
+    }
+    printf("\n");
 	return text;
 }
 
@@ -229,7 +237,16 @@ section make_data_section(File *p_file_Data, long* p_taille_data){
 
 		write_section(data, (unsigned char *)(data_prog), sizeof(*data_prog)*(*p_taille_data), 0);
 	}
-	return data;
+
+    DEBUG_MSG("\nData_prog : \n");
+    printf("\n");
+    for (int k = 0; k <taille_data_prog; k++) {
+        printf("%8.8x ", data_prog[k]);
+        if ((k+1)%4 == 0) printf("\n");
+    }
+    printf("\n");
+
+    return data;
 }
 
 section make_bss_section(File* p_file_Bss){
@@ -420,17 +437,6 @@ int elf_get_sym_index_from_name(section symtab, section shstrtab, section strtab
     }
     return -1;
 
-}
-
-char* name_s_to_name_o(char* name){
-	char new_name[strlen(name)+9], extension[2], dir[8]; //strcpy(new_name, name);
-	memset(new_name, '\0', sizeof(new_name));
-
-	strcpy(new_name, "./output");
-	strcat(new_name, strchr(name, '/'));
-	new_name[strlen(new_name)-1] = 'o';
-
-	return(new_name);
 }
 
 /**

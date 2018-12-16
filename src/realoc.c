@@ -9,25 +9,31 @@
  * @param type 					Type de realloc a faire -> depend de du type de l'operande dans le dictionnaire
  * @param zone 					Zone ou est definie l'operande /!\ (et pas le symbole)
  */
-void ajout_maillon_realoc(OPERANDE* p_op, File* p_file_realoc, type_realoc type, zone_symb zone, double decalage){
+void ajout_maillon_realoc(OPERANDE* p_op, File* p_file_realoc, type_realoc type, zone_symb zone, double decalage, File file_text){	int ajouter = 0;
 	REALOC new_maillon = calloc(1, sizeof(*new_maillon));
 	new_maillon->zone = zone;
 	new_maillon->decalage = decalage;
 	new_maillon->type = type;
 	new_maillon->p_op = p_op;
+	new_maillon->file_text = file_text;
 
 	*p_file_realoc = enfiler(new_maillon, *p_file_realoc);
+	
 }
 
-/**Permet de parcourir uniquement la liste d'operande SYMB qui ontdoivent avoir des offset comme opérandes et les remplacer*/
-void reallocation_offset(File* p_file_realoc_offset, File* p_file_Symb, long* p_taille_symb){
+/**Permet de parcourir uniquement la liste d'operande SYMB qui ontdoivent avoir des offset comme operandes et les remplacer*/
+void reallocation_offset(File* p_file_realoc_offset, File* p_file_Symb, long* p_taille_symb, File file_Dic){
+	long inutile; 
 	while(*p_file_realoc_offset != NULL){
 		/*On parcours la liste de realoc_offset*/
-		OPERANDE* p_op = (((REALOC)((*p_file_realoc_offset)->val))->p_op);
+		OPERANDE* p_op = (((REALOC)((*p_file_realoc_offset)->suiv->val))->p_op);
 
 		remplace_realoc_offset(p_file_Symb, p_op, p_taille_symb);
 
-		defiler(p_file_realoc_offset);
+		is_in_dic(file_Dic, &(((REALOC)((*p_file_realoc_offset)->suiv->val))->file_text), NULL, NULL, &inutile, &inutile, (int*)(&inutile) );
+		//int is_in_dic(File file_Dic, File* p_file_Text_maillon_courant, File* p_file_realoc, File* p_file_realoc_offset,long* p_taille_text, long* p_taille_realoc, int* p_cmpt_err)
+
+		defiler(p_file_realoc_offset);		
 	}
 }
 
@@ -44,9 +50,9 @@ int remplace_realoc_offset(File* p_file_Symb, OPERANDE* p_op, long* p_taille_sym
 			/*Si on trouve le symbole dans la liste de symboles*/
 			if (!strcasecmp(chaine_op, ((SYMB)(file_SYMB_temp->val))->nom)){
 
-				sprintf((*p_op)->chain, "%.0lf", (((SYMB)(file_SYMB_temp->val))->decalage));
+				//sprintf((*p_op)->chain, "%.0lf", (((SYMB)(file_SYMB_temp->val))->decalage));
 				(*p_op)->type = OPER_TARGET;
-				(*p_op)->bin = atol((*p_op)->chain);
+				(*p_op)->bin = (unsigned long) (((SYMB)(file_SYMB_temp->val))->decalage);
 				free(chaine_op);
 				return(1);
 			}
@@ -61,6 +67,9 @@ int remplace_realoc_offset(File* p_file_Symb, OPERANDE* p_op, long* p_taille_sym
 	new_symb->nom = chaine_op;
 	new_symb->line_nb = 0;
 	new_symb->decalage = 0;
+
+	(*p_op)->type = OPER_TARGET;
+	(*p_op)->bin = 0;
 
 	(*p_taille_symb)++;
 	*p_file_Symb = enfiler(new_symb, *p_file_Symb); /*On enfile ce nouveau maillon a la file de symboles*/

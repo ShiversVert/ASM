@@ -107,8 +107,8 @@ void afficher_maillon_DATA(void* maillon){
 	if(((DATA)(maillon))->type != DATA_ERROR) {
 		printf("%s\t\t", type);
 		printf("%s\t\t", operateur);
-		printf("line : %.0lf\t\t", line_nb);
-		printf("dec : %.0lf\t\t", decalage);
+		printf("line : %4.0lf\t\t", line_nb);
+		printf("dec : %4.0lf\t\t", decalage);
 		printf("nb_op : %d\t\t", nb_op);
 		afficher_liste(( (DATA)(maillon))->l_operande , (*afficher_maillon_OPERANDE));
 		printf("\n");
@@ -175,13 +175,13 @@ void afficher_maillon_TEXT(void* maillon){
 	}
 
 	if(((TEXT)(maillon))->type != TEXT_ERROR) {
-		printf("%s\t\t", type);
-		printf("%s\t\t", operateur);
-		printf("line : %.0lf\t\t", line_nb);
+		printf("%s:\t", type);
+		printf("%5s\t", operateur);
+		printf("line : %4.0lf\t\t", line_nb);
 	}
-		printf("dec : %.0lf\t\t", decalage);
-		printf("nb_op : %d\t\t", nb_op);
-		printf("binaire : 0x%x", ((TEXT)(maillon))->bin);
+		printf("dec : %4.0lf\t", decalage);
+		printf("nb_op : %1d\t", nb_op);
+		printf("binaire : 0x%8.8x", ((TEXT)(maillon))->bin);
 		afficher_liste( ( ((TEXT)(maillon))->l_operande) , (*afficher_maillon_OPERANDE));
 		printf("\n");
 }
@@ -238,9 +238,9 @@ void afficher_maillon_OPERANDE(void* maillon){
 	}
 
 	if( ((OPERANDE)(maillon))->type != OPER_ERROR){
-		printf("\n\tType : %s\t\t", type);
+		printf("\n\tType : %12s\t", type);
 		printf("Chaine : %s\t\t", chain);
-		printf("Binaire : 0x%lx", bin);
+		printf("Binaire : 0x%8.8lx", bin);
 	}
 }
 
@@ -265,9 +265,9 @@ void afficher_maillon_SYMB(void* maillon){
 	}
 	/**int tab = (int)round((strlen(nom))/5); int i;*/
 	printf("%s\t", zone);
-	printf("%s\t\t", nom);/*for(i = tab; i==0; i--) printf("\t");*/
-	printf("\tline:%.0lf\t", line_nb);
-	printf("decalage:%.0lf\n", decalage);
+	printf("%16s\t", nom);
+	printf("line:%4.0lf\t", line_nb);
+	printf("decalage:%4.0lf\n", decalage);
 
 }
 
