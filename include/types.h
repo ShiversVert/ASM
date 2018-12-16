@@ -150,18 +150,19 @@ typedef struct _dic_ {
 }* DIC;
 
 typedef enum{
-	R_MIPS_32,
-	R_MIPS_26,
-	R_MIPS_HI16,
-	R_MIPS_LO16,
-	R_OFFSET
+	R_OFFSET = 0,
+	R_MIPS_32 = 2, 		
+	R_MIPS_26 = 4,		
+	R_MIPS_HI16 = 5,	
+	R_MIPS_LO16 = 6	
 }type_realoc;
 
 typedef struct _realoc_ {
 	zone_symb	zone;		/*Zone (ou est situe l'operande) de la realoc*/
+	zone_symb	zone_def;	/*Zone de definition du symbole*/
 	double 		decalage;	/*Decalage de l'instruction ou la realoc doit etre faite*/
 	type_realoc	type;		/*Type de realoc a faire*/
-	OPERANDE*	p_op;			/*Pointeur vers l'operande a realouer... Utilitee?*/
+	OPERANDE*	p_op;		/*Pointeur vers l'operande a realouer... Utilitee?*/
 	File		file_text; 	/*POinteur sur l'instruction correspondante. Sert pour recalculer le binaire de l'instruction une fois l'operande_offset reallouee*/
 } * REALOC;
 

@@ -291,7 +291,7 @@ void afficher_maillon_DIC(void* maillon){
 
 void afficher_maillon_REALOC(void* maillon){
 	char* zone_txt[3] = {"ZONE_DATA","ZONE_TEXT","ZONE_BSS"};
-	char* type_realoc_txt[5] = {"R_MIPS_32","R_MIPS_26","R_MIPS_HI16","R_MIPS_LO16","R_OFFSET"};
+	char* type_realoc_txt[7] = {"R_OFFSET","","R_MIPS_32","","R_MIPS_26","R_MIPS_HI16","R_MIPS_LO16"};
 
 	zone_symb	zone = ((REALOC)(maillon))-> zone;
 	double 		decalage = ((REALOC)(maillon))-> decalage;

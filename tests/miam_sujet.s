@@ -10,10 +10,11 @@ boucle: BEQ $t0 , $t1 , byebye
     NOP
     addi $t1 , $31 , 1
     J boucle
-    BNE $5, $10, toto
+    #BNE $5, $10, toto
     NOP
 byebye:
-    JAL viteviteauru
+    #JAL viteviteauru
+    JAL 0x14
 
 .data
 lunchtime: .word 12

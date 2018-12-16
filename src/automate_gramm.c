@@ -71,6 +71,7 @@ void automate_grammatical(File* p_file_Lexeme, 		File* p_file_Text, 		File* p_fi
 
 	free(lexeme_courant);
 	reallocation_offset(&file_realoc_offset, p_file_Symb, p_taille_symb, file_Dic);
+	zone_def_symb_realoc(p_file_realoc, p_file_Symb, p_taille_symb);
 	(*p_taille_data)=(offset_data); /*TAille de data EN OCTET*/
 }
 
@@ -481,6 +482,7 @@ int ajout_maillon_text(	File* p_file_Text, 		File* p_file_Lexeme, 		LEXEME lexem
 								new_operande2->type = OPER_BASE;
 								new_operande2->chain = ( (LEXEME)((*p_file_Lexeme)->suiv->val) )-> chain; /*On ajoute le registre comme nouvel operande*/
 								is_registre(&new_operande2, new_maillon->line_nb, p_cmpt_err);
+								new_operande2->bin = atoi(new_operande2->chain);
 								liste_operande = ajout_queue(new_operande2, liste_operande);
 								defiler(p_file_Lexeme); /*On enleve le registre de la file de lexeme*/
 								defiler(p_file_Lexeme); /*On enleve la ')'*/
@@ -865,6 +867,7 @@ int is_pseudo_inst(File file_Dic, File* p_file_Text_maillon_courant, File* p_fil
 			*/
 				type_operande type_op = ((OPERANDE)(((*p_maillon)->l_operande)->val))-> type;
 				char* registre = calloc(1,sizeof(char*)); registre = ((OPERANDE)(((*p_maillon)->l_operande)->val))-> chain;
+				int registre_int = ((OPERANDE)(((*p_maillon)->l_operande)->val))->bin;
 				/*------------------------------------------*/
 				/*--------Modification du maillon LW--------*/
 				/*------------------------------------------*/
@@ -872,9 +875,9 @@ int is_pseudo_inst(File file_Dic, File* p_file_Text_maillon_courant, File* p_fil
 				(*p_maillon)->operateur = lui;
 				(*p_maillon)->line_nb = -(*p_maillon)->line_nb;
 
-				((OPERANDE)(((*p_maillon)->l_operande)->val))->chain = "1";	/*$at*/
-				((OPERANDE)(((*p_maillon)->l_operande)->val))->type = OPER_REG;	/*$at*/
-				((OPERANDE)(((*p_maillon)->l_operande)->val))->bin = 1;	/*$at*/
+				((OPERANDE)(((*p_maillon)->l_operande)->val))->chain = registre;
+				((OPERANDE)(((*p_maillon)->l_operande)->val))->type = OPER_REG;	
+				((OPERANDE)(((*p_maillon)->l_operande)->val))->bin = registre_int;
 
 				/*TODO : TROUVER LE BON TYPE POUR etiquette_poidsfort>>16 */
 				/*TODO : TROUVER COMMENT FAIRE etiquette_poidsfort>>16*/
@@ -914,12 +917,11 @@ int is_pseudo_inst(File file_Dic, File* p_file_Text_maillon_courant, File* p_fil
 				Mais on ajoute l'operande a laa table de realoc*/
 				op2->chain = ((OPERANDE)(((*p_maillon)->l_operande)->suiv->val))->chain;
 				(*p_taille_realoc)++;
-				ajout_maillon_realoc(&op2, p_file_realoc, R_MIPS_LO16, ZONE_TEXT, new_maillon_text->decalage, NULL);
-
+				
 				OPERANDE op3 = calloc(1,sizeof(*op3));
 				op3->type = OPER_BASE;
-				op3->chain = "1";	/*$at*/
-				op3->bin = 1;
+				op3->chain = registre;
+				op3->bin = registre_int;
 
 				Liste new_l_op = NULL;
 				new_l_op=ajout_tete((op3), new_l_op);
@@ -932,6 +934,8 @@ int is_pseudo_inst(File file_Dic, File* p_file_Text_maillon_courant, File* p_fil
 				/*----------NOUVEAUX  BRANCHEMENTS----------*/
 				/*------------------------------------------*/
 				(*p_file_Text_maillon_courant) = enfiler(new_maillon_text, *p_file_Text_maillon_courant);
+				
+				ajout_maillon_realoc((OPERANDE*)&(((*p_maillon)->l_operande)->suiv->val), p_file_realoc, R_MIPS_LO16, ZONE_TEXT, new_maillon_text->decalage, NULL);
 				/*File new_maillon_file = calloc(1, sizeof(*new_maillon_file));
 				new_maillon_file->val = new_maillon_text;
 				new_maillon_file->suiv = (*p_file_Text_maillon_courant)->suiv;
@@ -1405,7 +1409,7 @@ void generation_bin_instr(TEXT maillon, DIC definition){
 	
 
 	while(definition->bin[i][1]!=0){
-		/*On parcours le tableau binaire tant que l'operande/l'inof n'est pas codee sur 0 bits*/
+		/*On parcours le tableau binaire tant que l'operande/l'info n'est pas codee sur 0 bits*/
 		decalage -= definition->bin[i][1];
 		masque = pow(2, definition->bin[i][1]) -1; /*que des 1 sur le nombre de bit qu'il faut*/
 

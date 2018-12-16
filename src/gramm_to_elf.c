@@ -175,7 +175,7 @@ section make_data_section(File *p_file_Data, long* p_taille_data){
                         data_prog[i] = data_prog[i] | deplace_octet(n, 3-cmpt_octet%4);
                         cmpt_octet++; i = (int)(cmpt_octet/4);
                         
-                        (data_courant->l_operande) = supprimer_tete( (data_courant->l_operande) );
+                        (data_courant->l_operande) = (data_courant->l_operande)->suiv;
                     }
                     break;
                     break;
@@ -189,7 +189,7 @@ section make_data_section(File *p_file_Data, long* p_taille_data){
                             data_prog[i] = data_prog[i] | deplace_octet(0x0, 3-cmpt_octet%4);
                             cmpt_octet++; i = (int)(cmpt_octet/4);
                         }
-                        (data_courant->l_operande) = supprimer_tete( (data_courant->l_operande) );
+                        (data_courant->l_operande) = (data_courant->l_operande)->suiv;
                     }
                     break;
 
@@ -206,7 +206,7 @@ section make_data_section(File *p_file_Data, long* p_taille_data){
                             cmpt_octet++; i = (int)(cmpt_octet/4);
                         }
 
-                        (data_courant->l_operande) = supprimer_tete( (data_courant->l_operande) );
+                        (data_courant->l_operande) = (data_courant->l_operande)->suiv;
                     }
                     break;
 
@@ -223,7 +223,7 @@ section make_data_section(File *p_file_Data, long* p_taille_data){
                         
                         i++; cmpt_octet+=4;
 
-                        (data_courant->l_operande) = supprimer_tete( data_courant->l_operande );
+                        (data_courant->l_operande) = (data_courant->l_operande)->suiv;
                     }
                     break;
 
@@ -273,13 +273,13 @@ section make_strtab_syms_section( File* p_file_Symb, long* p_taille_symb, Elf32_
     add_string_to_table( strtab, "" ); /* ELF string tables start with a '0' */
     int i= 0;
     while((*p_file_Symb)!=NULL){
-        add_string_to_table(strtab, ((SYMB)((*p_file_Symb)->val))->nom);
+        add_string_to_table(strtab, ((SYMB)((*p_file_Symb)->suiv->val))->nom);
 
-        syms[i].st_name = elf_get_string_offset( strtab->start, strtab->sz, ((SYMB)((*p_file_Symb)->val))->nom);
+        syms[i].st_name = elf_get_string_offset( strtab->start, strtab->sz, ((SYMB)((*p_file_Symb)->suiv->val))->nom);
     	syms[i].st_size = 0;
-    	syms[i].st_value = ((SYMB)((*p_file_Symb)->val))->decalage;
+    	syms[i].st_value = ((SYMB)((*p_file_Symb)->suiv->val))->decalage;
     	syms[i].st_other = 0;
-    	switch (((SYMB)((*p_file_Symb)->val))->zone){
+    	switch (((SYMB)((*p_file_Symb)->suiv->val))->zone){
     		case ZONE_UNKW:
     			syms[i].st_info = ELF32_ST_INFO(STB_GLOBAL, STT_NOTYPE);
     			break;
@@ -293,6 +293,11 @@ section make_strtab_syms_section( File* p_file_Symb, long* p_taille_symb, Elf32_
     			syms[i].st_info = ELF32_ST_INFO(STB_LOCAL, STT_NOTYPE);
     			syms[i].st_shndx  = elf_get_string_index( shstrtab->start, shstrtab->sz, ".bss" );
     			break;
+
+            case ZONE_DATA:
+                syms[i].st_info = ELF32_ST_INFO(STB_LOCAL, STT_NOTYPE);
+                syms[i].st_shndx  = elf_get_string_index( shstrtab->start, shstrtab->sz, ".data" );
+                break;
     		
     		default:
     			ERROR_MSG("Impossible de generer la table des symboles");
@@ -380,24 +385,30 @@ int taille_tab_rel(long* taille_text_reloc, long* taille_data_reloc, File* p_fil
 void file_realoc_to_tab_realoc(File* p_file_realoc, Elf32_Rel text_reloc[], Elf32_Rel data_reloc[], 
 								long taille_text_reloc, long taille_data_reloc, section symtab,
 								section shstrtab, section strtab){
-	
-	long cmpt_text = 0, cmpt_data=0;
+    char temp[256] = {0};
+	char* zone[4] = {".data", ".text", ".bss", temp};
+	zone_symb zone_def = ZONE_UNKW;
+    long cmpt_text = 0, cmpt_data=0;
 
 	while((*p_file_realoc)!=NULL){
-		switch(((REALOC)((*p_file_realoc)->val))->zone){
+        zone_def = ((REALOC)((*p_file_realoc)->suiv->val))->zone_def;
+		strcpy(zone[3], (*(((REALOC)((*p_file_realoc)->suiv->val))->p_op))->chain);
+
+        switch(((REALOC)((*p_file_realoc)->suiv->val))->zone){
 			case ZONE_TEXT:
-				text_reloc[cmpt_text].r_offset = ((REALOC)((*p_file_realoc)->val))->decalage;
-				text_reloc[cmpt_text].r_info=ELF32_R_INFO(elf_get_sym_index_from_name(symtab, shstrtab, strtab,".text"), ((REALOC)((*p_file_realoc)->val))->type );
+				text_reloc[cmpt_text].r_offset = ((REALOC)((*p_file_realoc)->suiv->val))->decalage;
+				text_reloc[cmpt_text].r_info=ELF32_R_INFO(elf_get_sym_index_from_name(symtab, shstrtab, strtab,zone[zone_def]), ((REALOC)((*p_file_realoc)->suiv->val))->type );
 				cmpt_text++;
 				break;
 
 			case ZONE_DATA:
-				data_reloc[cmpt_data].r_offset = ((REALOC)((*p_file_realoc)->val))->decalage;
-				data_reloc[cmpt_data].r_info=ELF32_R_INFO(elf_get_sym_index_from_name(symtab, shstrtab, strtab,".data"), ((REALOC)((*p_file_realoc)->val))->type );
+				data_reloc[cmpt_data].r_offset = ((REALOC)((*p_file_realoc)->suiv->val))->decalage;
+				data_reloc[cmpt_data].r_info=ELF32_R_INFO(elf_get_sym_index_from_name(symtab, shstrtab, strtab,zone[zone_def]), ((REALOC)((*p_file_realoc)->suiv->val))->type );
 				cmpt_data++;
 				break;
 
 			default:
+                ERROR_MSG("Impossible de generer les tables de realocation");
 				break;
 		}
 
