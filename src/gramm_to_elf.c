@@ -214,7 +214,9 @@ section make_data_section(File *p_file_Data, long* p_taille_data){
                     /*On trouve .word n, on ecrit n sur un int (4 octets) swappes*/
                     while(data_courant->l_operande != NULL){
                         n = ((OPERANDE)((data_courant->l_operande)->val))->bin;
-                                               
+                        if(!(cmpt_octet%4)){
+                            i++; cmpt_octet += 4 - i%4;
+                        }
                         data_prog[i] = n;
                         data_prog[i] = ((data_prog[i]>>24)  & 0x000000ff) | // move byte 3 to byte 0
                                         ((data_prog[i]<<8)  & 0x00ff0000) | // move byte 1 to byte 2
@@ -235,7 +237,7 @@ section make_data_section(File *p_file_Data, long* p_taille_data){
 			defiler(p_file_Data);
 		}
 
-		write_section(data, (unsigned char *)(data_prog), sizeof(*data_prog)*(*p_taille_data), 0);
+		write_section(data, (unsigned char *)(data_prog), sizeof(*data_prog)*(taille_data_prog), 0);
 	}
 
     DEBUG_MSG("\nData_prog : \n");

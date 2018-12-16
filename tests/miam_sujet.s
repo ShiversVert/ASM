@@ -7,11 +7,12 @@
     ADDI $t1,$t6, 0x2658
     ADDI $a3, $a0, 8
 boucle: BEQ $t0 , $t1 , byebye
-    NOP
+    #NOP
     addi $t1 , $31 , 1
     J boucle
+    OR $5, $7, $31
     #BNE $5, $10, toto
-    NOP
+    #NOP
 byebye:
     #JAL viteviteauru
     JAL 0x14

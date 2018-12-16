@@ -40,7 +40,7 @@ void reallocation_offset(File* p_file_realoc_offset, File* p_file_Symb, long* p_
 		/*On parcours la liste de realoc_offset*/
 		OPERANDE* p_op = (((REALOC)((*p_file_realoc_offset)->suiv->val))->p_op);
 
-		remplace_realoc_offset(p_file_Symb, p_op, p_taille_symb);
+		remplace_realoc_offset(p_file_Symb, p_op, p_taille_symb, ((REALOC)((*p_file_realoc_offset)->suiv->val))->file_text);
 
 		is_in_dic(file_Dic, &(((REALOC)((*p_file_realoc_offset)->suiv->val))->file_text)
 			, NULL, NULL, &inutile, &inutile, (int*)(&inutile) );
@@ -78,7 +78,7 @@ int remplace_realoc(File* p_file_Symb, REALOC maillon_realoc, long* p_taille_sym
 }
 
 
-int remplace_realoc_offset(File* p_file_Symb, OPERANDE* p_op, long* p_taille_symb){
+int remplace_realoc_offset(File* p_file_Symb, OPERANDE* p_op, long* p_taille_symb, File file_text){
 	char* chaine_op = calloc(1, sizeof(*chaine_op)); strcpy(chaine_op, (*p_op)->chain);
 	File file_SYMB_temp = *p_file_Symb;
 	
@@ -93,7 +93,13 @@ int remplace_realoc_offset(File* p_file_Symb, OPERANDE* p_op, long* p_taille_sym
 
 				//sprintf((*p_op)->chain, "%.0lf", (((SYMB)(file_SYMB_temp->val))->decalage));
 				(*p_op)->type = OPER_OFFSET;
-				(*p_op)->bin = (unsigned long) (((SYMB)(file_SYMB_temp->val))->decalage);
+				(*p_op)->bin =  ((long) (((SYMB)(file_SYMB_temp->val))->decalage)) - ((long)(((TEXT)(file_text->val))->decalage)) - 4;
+				/*Final - initial - 4 /4*/
+				if ((*p_op)->bin % 4 == 0){
+					(*p_op)->bin /= 4;
+				}
+				else ERROR_MSG("Valeur de suat non multiple de 4");
+
 				free(chaine_op);
 				return(1);
 			}

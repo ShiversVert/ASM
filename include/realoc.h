@@ -25,6 +25,6 @@ void ajout_maillon_realoc(OPERANDE* p_op, File* p_file_realoc, type_realoc type,
 void zone_def_symb_realoc(File* p_file_realoc, File* p_file_Symb, long* p_taille_symb);
 void reallocation_offset(File* p_file_realoc_offset, File* p_file_Symb, long* p_taille_symb, File file_Dic);
 int remplace_realoc(File* p_file_Symb, REALOC maillon_realoc, long* p_taille_symb);
-int remplace_realoc_offset(File* p_file_Symb, OPERANDE* p_op, long* p_taille_symb);
+int remplace_realoc_offset(File* p_file_Symb, OPERANDE* p_op, long* p_taille_symb, File file_text);
 
 #endif /*_REALOC_H_*/
