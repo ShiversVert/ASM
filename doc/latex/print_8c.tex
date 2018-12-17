@@ -1,0 +1,185 @@
+\hypertarget{print_8c}{\section{/home/phelma/\-Bureau/projet\-\_\-\-Sicom/src/print.c File Reference}
+\label{print_8c}\index{/home/phelma/\-Bureau/projet\-\_\-\-Sicom/src/print.\-c@{/home/phelma/\-Bureau/projet\-\_\-\-Sicom/src/print.\-c}}
+}
+
+
+Print E\-L\-F structures.  
+
+
+{\ttfamily \#include $<$pelf.\-h$>$}\\*
+\subsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\#define \hyperlink{print_8c_a3c631e2d3a4c1f80e57b9591b15ad3fe}{arch\-\_\-print}(arch, descr)
+\end{DoxyCompactItemize}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \hyperlink{print_8c_ab2275b0708c66ea8bba111178064b961}{elf\-\_\-print\-\_\-string\-\_\-table} (unsigned char $\ast$table, size\-\_\-t length)
+\item 
+void \hyperlink{print_8c_a7c9c338d2909022351d5828006fad12f}{elf\-\_\-print\-\_\-ehdr} (\hyperlink{union_elf___ehdr}{Elf\-\_\-\-Ehdr} ehdr)
+\item 
+void \hyperlink{print_8c_a9599e9edf66dcdbc9c76b9643954f6c2}{elf\-\_\-print\-\_\-shdr} (\hyperlink{union_elf___shdr}{Elf\-\_\-\-Shdr} shdr, \hyperlink{union_elf___ehdr}{Elf\-\_\-\-Ehdr} ehdr, unsigned char $\ast$shstrtab)
+\item 
+void \hyperlink{print_8c_a71aea3d39ebf65c873e3ef766b315311}{elf\-\_\-print\-\_\-shtab} (unsigned char $\ast$shtab, \hyperlink{union_elf___ehdr}{Elf\-\_\-\-Ehdr} ehdr, size\-\_\-t offset, unsigned char $\ast$shstrtab)
+\item 
+void \hyperlink{print_8c_a7d4cef05a4480d4848f3c5f722162e52}{elf\-\_\-print\-\_\-rel} (\hyperlink{union_elf___rel}{Elf\-\_\-\-Rel} rel, \hyperlink{union_elf___ehdr}{Elf\-\_\-\-Ehdr} ehdr, unsigned char $\ast$strtab, unsigned char $\ast$shstrtab, unsigned char $\ast$shtab, unsigned char $\ast$symtab)
+\item 
+void \hyperlink{print_8c_a414c018260462c60a6024686fd4e3d7c}{elf\-\_\-print\-\_\-rel\-\_\-table} (char $\ast$name, \hyperlink{union_elf___ehdr}{Elf\-\_\-\-Ehdr} ehdr, unsigned char $\ast$table, size\-\_\-t length, unsigned char $\ast$strtab, unsigned char $\ast$shstrtab, unsigned char $\ast$shtab, unsigned char $\ast$symtab)
+\item 
+void \hyperlink{print_8c_a7898f34207b104122ab6514c6e53f526}{elf\-\_\-print\-\_\-sym} (\hyperlink{union_elf___sym}{Elf\-\_\-\-Sym} sym, \hyperlink{union_elf___ehdr}{Elf\-\_\-\-Ehdr} ehdr, unsigned char $\ast$strtab, unsigned char $\ast$shstrtab, unsigned char $\ast$shtab)
+\item 
+void \hyperlink{print_8c_a1bd179681d5ed4269b4ed5972d6a60a4}{elf\-\_\-print\-\_\-symbol\-\_\-table} (\hyperlink{union_elf___ehdr}{Elf\-\_\-\-Ehdr} ehdr, unsigned char $\ast$table, size\-\_\-t length, unsigned char $\ast$strtab, unsigned char $\ast$shstrtab, unsigned char $\ast$shtab)
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Print E\-L\-F structures. \begin{DoxyAuthor}{Author}
+François Cayre \href{mailto:francois.cayre@grenoble-inp.fr}{\tt francois.\-cayre@grenoble-\/inp.\-fr} 
+\end{DoxyAuthor}
+\begin{DoxyDate}{Date}
+Fri Sep 22 19\-:02\-:40 2017 Print E\-L\-F structures. 
+\end{DoxyDate}
+
+
+Definition in file \hyperlink{print_8c_source}{print.\-c}.
+
+
+
+\subsection{Macro Definition Documentation}
+\hypertarget{print_8c_a3c631e2d3a4c1f80e57b9591b15ad3fe}{\index{print.\-c@{print.\-c}!arch\-\_\-print@{arch\-\_\-print}}
+\index{arch\-\_\-print@{arch\-\_\-print}!print.c@{print.\-c}}
+\subsubsection[{arch\-\_\-print}]{\setlength{\rightskip}{0pt plus 5cm}\#define arch\-\_\-print(
+\begin{DoxyParamCaption}
+\item[{}]{arch, }
+\item[{}]{descr}
+\end{DoxyParamCaption}
+)}}\label{print_8c_a3c631e2d3a4c1f80e57b9591b15ad3fe}
+{\bfseries Value\-:}
+\begin{DoxyCode}
+\textcolor{keywordflow}{case} EM\_##arch :                                        \(\backslash\)
+  fprintf( \hyperlink{pelf_8h_a5da5671133829d6cb9b7856815c34b2f}{PSTDOUT}, \textcolor{stringliteral}{"EM\_%s (%s)"}, #arch, descr );        \(\backslash\)
+  break;
+\end{DoxyCode}
+
+
+Definition at line 38 of file print.\-c.
+
+
+
+\subsection{Function Documentation}
+\hypertarget{print_8c_a7c9c338d2909022351d5828006fad12f}{\index{print.\-c@{print.\-c}!elf\-\_\-print\-\_\-ehdr@{elf\-\_\-print\-\_\-ehdr}}
+\index{elf\-\_\-print\-\_\-ehdr@{elf\-\_\-print\-\_\-ehdr}!print.c@{print.\-c}}
+\subsubsection[{elf\-\_\-print\-\_\-ehdr}]{\setlength{\rightskip}{0pt plus 5cm}void elf\-\_\-print\-\_\-ehdr (
+\begin{DoxyParamCaption}
+\item[{{\bf Elf\-\_\-\-Ehdr}}]{ehdr}
+\end{DoxyParamCaption}
+)}}\label{print_8c_a7c9c338d2909022351d5828006fad12f}
+
+
+Definition at line 49 of file print.\-c.
+
+\hypertarget{print_8c_a7d4cef05a4480d4848f3c5f722162e52}{\index{print.\-c@{print.\-c}!elf\-\_\-print\-\_\-rel@{elf\-\_\-print\-\_\-rel}}
+\index{elf\-\_\-print\-\_\-rel@{elf\-\_\-print\-\_\-rel}!print.c@{print.\-c}}
+\subsubsection[{elf\-\_\-print\-\_\-rel}]{\setlength{\rightskip}{0pt plus 5cm}void elf\-\_\-print\-\_\-rel (
+\begin{DoxyParamCaption}
+\item[{{\bf Elf\-\_\-\-Rel}}]{rel, }
+\item[{{\bf Elf\-\_\-\-Ehdr}}]{ehdr, }
+\item[{unsigned char $\ast$}]{strtab, }
+\item[{unsigned char $\ast$}]{shstrtab, }
+\item[{unsigned char $\ast$}]{shtab, }
+\item[{unsigned char $\ast$}]{symtab}
+\end{DoxyParamCaption}
+)}}\label{print_8c_a7d4cef05a4480d4848f3c5f722162e52}
+
+
+Definition at line 214 of file print.\-c.
+
+\hypertarget{print_8c_a414c018260462c60a6024686fd4e3d7c}{\index{print.\-c@{print.\-c}!elf\-\_\-print\-\_\-rel\-\_\-table@{elf\-\_\-print\-\_\-rel\-\_\-table}}
+\index{elf\-\_\-print\-\_\-rel\-\_\-table@{elf\-\_\-print\-\_\-rel\-\_\-table}!print.c@{print.\-c}}
+\subsubsection[{elf\-\_\-print\-\_\-rel\-\_\-table}]{\setlength{\rightskip}{0pt plus 5cm}void elf\-\_\-print\-\_\-rel\-\_\-table (
+\begin{DoxyParamCaption}
+\item[{char $\ast$}]{name, }
+\item[{{\bf Elf\-\_\-\-Ehdr}}]{ehdr, }
+\item[{unsigned char $\ast$}]{table, }
+\item[{size\-\_\-t}]{length, }
+\item[{unsigned char $\ast$}]{strtab, }
+\item[{unsigned char $\ast$}]{shstrtab, }
+\item[{unsigned char $\ast$}]{shtab, }
+\item[{unsigned char $\ast$}]{symtab}
+\end{DoxyParamCaption}
+)}}\label{print_8c_a414c018260462c60a6024686fd4e3d7c}
+
+
+Definition at line 244 of file print.\-c.
+
+\hypertarget{print_8c_a9599e9edf66dcdbc9c76b9643954f6c2}{\index{print.\-c@{print.\-c}!elf\-\_\-print\-\_\-shdr@{elf\-\_\-print\-\_\-shdr}}
+\index{elf\-\_\-print\-\_\-shdr@{elf\-\_\-print\-\_\-shdr}!print.c@{print.\-c}}
+\subsubsection[{elf\-\_\-print\-\_\-shdr}]{\setlength{\rightskip}{0pt plus 5cm}void elf\-\_\-print\-\_\-shdr (
+\begin{DoxyParamCaption}
+\item[{{\bf Elf\-\_\-\-Shdr}}]{shdr, }
+\item[{{\bf Elf\-\_\-\-Ehdr}}]{ehdr, }
+\item[{unsigned char $\ast$}]{shstrtab}
+\end{DoxyParamCaption}
+)}}\label{print_8c_a9599e9edf66dcdbc9c76b9643954f6c2}
+
+
+Definition at line 142 of file print.\-c.
+
+\hypertarget{print_8c_a71aea3d39ebf65c873e3ef766b315311}{\index{print.\-c@{print.\-c}!elf\-\_\-print\-\_\-shtab@{elf\-\_\-print\-\_\-shtab}}
+\index{elf\-\_\-print\-\_\-shtab@{elf\-\_\-print\-\_\-shtab}!print.c@{print.\-c}}
+\subsubsection[{elf\-\_\-print\-\_\-shtab}]{\setlength{\rightskip}{0pt plus 5cm}void elf\-\_\-print\-\_\-shtab (
+\begin{DoxyParamCaption}
+\item[{unsigned char $\ast$}]{shtab, }
+\item[{{\bf Elf\-\_\-\-Ehdr}}]{ehdr, }
+\item[{size\-\_\-t}]{offset, }
+\item[{unsigned char $\ast$}]{shstrtab}
+\end{DoxyParamCaption}
+)}}\label{print_8c_a71aea3d39ebf65c873e3ef766b315311}
+
+
+Definition at line 190 of file print.\-c.
+
+\hypertarget{print_8c_ab2275b0708c66ea8bba111178064b961}{\index{print.\-c@{print.\-c}!elf\-\_\-print\-\_\-string\-\_\-table@{elf\-\_\-print\-\_\-string\-\_\-table}}
+\index{elf\-\_\-print\-\_\-string\-\_\-table@{elf\-\_\-print\-\_\-string\-\_\-table}!print.c@{print.\-c}}
+\subsubsection[{elf\-\_\-print\-\_\-string\-\_\-table}]{\setlength{\rightskip}{0pt plus 5cm}void elf\-\_\-print\-\_\-string\-\_\-table (
+\begin{DoxyParamCaption}
+\item[{unsigned char $\ast$}]{table, }
+\item[{size\-\_\-t}]{length}
+\end{DoxyParamCaption}
+)}}\label{print_8c_ab2275b0708c66ea8bba111178064b961}
+
+
+Definition at line 26 of file print.\-c.
+
+\hypertarget{print_8c_a7898f34207b104122ab6514c6e53f526}{\index{print.\-c@{print.\-c}!elf\-\_\-print\-\_\-sym@{elf\-\_\-print\-\_\-sym}}
+\index{elf\-\_\-print\-\_\-sym@{elf\-\_\-print\-\_\-sym}!print.c@{print.\-c}}
+\subsubsection[{elf\-\_\-print\-\_\-sym}]{\setlength{\rightskip}{0pt plus 5cm}void elf\-\_\-print\-\_\-sym (
+\begin{DoxyParamCaption}
+\item[{{\bf Elf\-\_\-\-Sym}}]{sym, }
+\item[{{\bf Elf\-\_\-\-Ehdr}}]{ehdr, }
+\item[{unsigned char $\ast$}]{strtab, }
+\item[{unsigned char $\ast$}]{shstrtab, }
+\item[{unsigned char $\ast$}]{shtab}
+\end{DoxyParamCaption}
+)}}\label{print_8c_a7898f34207b104122ab6514c6e53f526}
+
+
+Definition at line 267 of file print.\-c.
+
+\hypertarget{print_8c_a1bd179681d5ed4269b4ed5972d6a60a4}{\index{print.\-c@{print.\-c}!elf\-\_\-print\-\_\-symbol\-\_\-table@{elf\-\_\-print\-\_\-symbol\-\_\-table}}
+\index{elf\-\_\-print\-\_\-symbol\-\_\-table@{elf\-\_\-print\-\_\-symbol\-\_\-table}!print.c@{print.\-c}}
+\subsubsection[{elf\-\_\-print\-\_\-symbol\-\_\-table}]{\setlength{\rightskip}{0pt plus 5cm}void elf\-\_\-print\-\_\-symbol\-\_\-table (
+\begin{DoxyParamCaption}
+\item[{{\bf Elf\-\_\-\-Ehdr}}]{ehdr, }
+\item[{unsigned char $\ast$}]{table, }
+\item[{size\-\_\-t}]{length, }
+\item[{unsigned char $\ast$}]{strtab, }
+\item[{unsigned char $\ast$}]{shstrtab, }
+\item[{unsigned char $\ast$}]{shtab}
+\end{DoxyParamCaption}
+)}}\label{print_8c_a1bd179681d5ed4269b4ed5972d6a60a4}
+
+
+Definition at line 393 of file print.\-c.
+

@@ -24,13 +24,17 @@ void ajout_maillon_realoc(OPERANDE* p_op, File* p_file_realoc, type_realoc type,
 
 /**Parcous la file de realoc a la fin de la passe grammaticale pour mettre la zone de DEFINITION du symbole*/
 void zone_def_symb_realoc(File* p_file_realoc, File* p_file_Symb, long* p_taille_symb, File file_Dic){
-	File pointeur_realoc = (*p_file_realoc)->suiv;
+	File pointeur_realoc;
+	if ((*p_file_realoc)!=NULL){
+	 	pointeur_realoc = (*p_file_realoc)->suiv;
+	 
 
-	do/*On parcours toute la file de realoc*/
-	{
-		remplace_realoc(p_file_Symb, (REALOC)(pointeur_realoc->val), p_taille_symb, file_Dic);		 
-		pointeur_realoc = pointeur_realoc->suiv;
-	} while (pointeur_realoc!=(*p_file_realoc)->suiv);
+		do/*On parcours toute la file de realoc*/
+		{
+			remplace_realoc(p_file_Symb, (REALOC)(pointeur_realoc->val), p_taille_symb, file_Dic);		 
+			pointeur_realoc = pointeur_realoc->suiv;
+		} while (pointeur_realoc!=(*p_file_realoc)->suiv);
+	}
 }
 
 /**Permet de parcourir uniquement la liste d'operande SYMB qui ontdoivent avoir des offset comme operandes et les remplacer*/

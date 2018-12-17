@@ -1,0 +1,122 @@
+\hypertarget{liste_8h}{\section{/home/phelma/\-Bureau/projet\-\_\-\-Sicom/include/liste.h File Reference}
+\label{liste_8h}\index{/home/phelma/\-Bureau/projet\-\_\-\-Sicom/include/liste.\-h@{/home/phelma/\-Bureau/projet\-\_\-\-Sicom/include/liste.\-h}}
+}
+{\ttfamily \#include $<$stdio.\-h$>$}\\*
+{\ttfamily \#include $<$stdlib.\-h$>$}\\*
+{\ttfamily \#include $<$notify.\-h$>$}\\*
+\subsection*{Data Structures}
+\begin{DoxyCompactItemize}
+\item 
+struct \hyperlink{struct___liste__}{\-\_\-\-Liste\-\_\-}
+\end{DoxyCompactItemize}
+\subsection*{Typedefs}
+\begin{DoxyCompactItemize}
+\item 
+typedef struct \hyperlink{struct___liste__}{\-\_\-\-Liste\-\_\-} $\ast$ \hyperlink{liste_8h_a5268448ae2a031c105e053d5ea682580}{Liste}
+\end{DoxyCompactItemize}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{liste_8h_a5268448ae2a031c105e053d5ea682580}{Liste} \hyperlink{liste_8h_a3b2600229ef095de2d626d1eba6d529c}{creer\-\_\-liste} (void)
+\item 
+int \hyperlink{liste_8h_ae73656362c6173c988d9196df32446d7}{liste\-\_\-vide} (\hyperlink{liste_8h_a5268448ae2a031c105e053d5ea682580}{Liste} L)
+\item 
+void \hyperlink{liste_8h_af1eca5384f073392ef0a5d9f148d9b7e}{afficher\-\_\-liste} (\hyperlink{liste_8h_a5268448ae2a031c105e053d5ea682580}{Liste} L, void($\ast$afficher\-\_\-maillon)(void $\ast$))
+\item 
+\hyperlink{liste_8h_a5268448ae2a031c105e053d5ea682580}{Liste} \hyperlink{liste_8h_ab972ae40b9f59ea91ad3b86891fafdf6}{ajout\-\_\-tete} (void $\ast$p, \hyperlink{liste_8h_a5268448ae2a031c105e053d5ea682580}{Liste} L)
+\item 
+\hyperlink{liste_8h_a5268448ae2a031c105e053d5ea682580}{Liste} \hyperlink{liste_8h_a22611b568a3d7389cde585ca0a52c3a2}{ajout\-\_\-queue} (void $\ast$p, \hyperlink{liste_8h_a5268448ae2a031c105e053d5ea682580}{Liste} L)
+\item 
+\hyperlink{liste_8h_a5268448ae2a031c105e053d5ea682580}{Liste} \hyperlink{liste_8h_ae8578e8e3fc9323b406664dac658b914}{supprimer\-\_\-tete} (\hyperlink{liste_8h_a5268448ae2a031c105e053d5ea682580}{Liste} L)
+\item 
+void \hyperlink{liste_8h_a09fa6f61773ddafc1602ba4e01aacfaa}{liberer} (\hyperlink{liste_8h_a5268448ae2a031c105e053d5ea682580}{Liste} L)
+\end{DoxyCompactItemize}
+
+
+\subsection{Typedef Documentation}
+\hypertarget{liste_8h_a5268448ae2a031c105e053d5ea682580}{\index{liste.\-h@{liste.\-h}!Liste@{Liste}}
+\index{Liste@{Liste}!liste.h@{liste.\-h}}
+\subsubsection[{Liste}]{\setlength{\rightskip}{0pt plus 5cm}typedef struct {\bf \-\_\-\-Liste\-\_\-}$\ast$  {\bf Liste}}}\label{liste_8h_a5268448ae2a031c105e053d5ea682580}
+
+
+\subsection{Function Documentation}
+\hypertarget{liste_8h_af1eca5384f073392ef0a5d9f148d9b7e}{\index{liste.\-h@{liste.\-h}!afficher\-\_\-liste@{afficher\-\_\-liste}}
+\index{afficher\-\_\-liste@{afficher\-\_\-liste}!liste.h@{liste.\-h}}
+\subsubsection[{afficher\-\_\-liste}]{\setlength{\rightskip}{0pt plus 5cm}void afficher\-\_\-liste (
+\begin{DoxyParamCaption}
+\item[{{\bf Liste}}]{L, }
+\item[{void($\ast$)(void $\ast$)}]{afficher\-\_\-maillon}
+\end{DoxyParamCaption}
+)}}\label{liste_8h_af1eca5384f073392ef0a5d9f148d9b7e}
+
+
+Definition at line 12 of file liste.\-c.
+
+\hypertarget{liste_8h_a22611b568a3d7389cde585ca0a52c3a2}{\index{liste.\-h@{liste.\-h}!ajout\-\_\-queue@{ajout\-\_\-queue}}
+\index{ajout\-\_\-queue@{ajout\-\_\-queue}!liste.h@{liste.\-h}}
+\subsubsection[{ajout\-\_\-queue}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Liste} ajout\-\_\-queue (
+\begin{DoxyParamCaption}
+\item[{void $\ast$}]{p, }
+\item[{{\bf Liste}}]{L}
+\end{DoxyParamCaption}
+)}}\label{liste_8h_a22611b568a3d7389cde585ca0a52c3a2}
+
+
+Definition at line 47 of file liste.\-c.
+
+\hypertarget{liste_8h_ab972ae40b9f59ea91ad3b86891fafdf6}{\index{liste.\-h@{liste.\-h}!ajout\-\_\-tete@{ajout\-\_\-tete}}
+\index{ajout\-\_\-tete@{ajout\-\_\-tete}!liste.h@{liste.\-h}}
+\subsubsection[{ajout\-\_\-tete}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Liste} ajout\-\_\-tete (
+\begin{DoxyParamCaption}
+\item[{void $\ast$}]{p, }
+\item[{{\bf Liste}}]{L}
+\end{DoxyParamCaption}
+)}}\label{liste_8h_ab972ae40b9f59ea91ad3b86891fafdf6}
+
+
+Definition at line 20 of file liste.\-c.
+
+\hypertarget{liste_8h_a3b2600229ef095de2d626d1eba6d529c}{\index{liste.\-h@{liste.\-h}!creer\-\_\-liste@{creer\-\_\-liste}}
+\index{creer\-\_\-liste@{creer\-\_\-liste}!liste.h@{liste.\-h}}
+\subsubsection[{creer\-\_\-liste}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Liste} creer\-\_\-liste (
+\begin{DoxyParamCaption}
+\item[{void}]{}
+\end{DoxyParamCaption}
+)}}\label{liste_8h_a3b2600229ef095de2d626d1eba6d529c}
+
+
+Definition at line 3 of file liste.\-c.
+
+\hypertarget{liste_8h_a09fa6f61773ddafc1602ba4e01aacfaa}{\index{liste.\-h@{liste.\-h}!liberer@{liberer}}
+\index{liberer@{liberer}!liste.h@{liste.\-h}}
+\subsubsection[{liberer}]{\setlength{\rightskip}{0pt plus 5cm}void liberer (
+\begin{DoxyParamCaption}
+\item[{{\bf Liste}}]{L}
+\end{DoxyParamCaption}
+)}}\label{liste_8h_a09fa6f61773ddafc1602ba4e01aacfaa}
+
+
+Definition at line 41 of file liste.\-c.
+
+\hypertarget{liste_8h_ae73656362c6173c988d9196df32446d7}{\index{liste.\-h@{liste.\-h}!liste\-\_\-vide@{liste\-\_\-vide}}
+\index{liste\-\_\-vide@{liste\-\_\-vide}!liste.h@{liste.\-h}}
+\subsubsection[{liste\-\_\-vide}]{\setlength{\rightskip}{0pt plus 5cm}int liste\-\_\-vide (
+\begin{DoxyParamCaption}
+\item[{{\bf Liste}}]{L}
+\end{DoxyParamCaption}
+)}}\label{liste_8h_ae73656362c6173c988d9196df32446d7}
+
+
+Definition at line 7 of file liste.\-c.
+
+\hypertarget{liste_8h_ae8578e8e3fc9323b406664dac658b914}{\index{liste.\-h@{liste.\-h}!supprimer\-\_\-tete@{supprimer\-\_\-tete}}
+\index{supprimer\-\_\-tete@{supprimer\-\_\-tete}!liste.h@{liste.\-h}}
+\subsubsection[{supprimer\-\_\-tete}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Liste} supprimer\-\_\-tete (
+\begin{DoxyParamCaption}
+\item[{{\bf Liste}}]{L}
+\end{DoxyParamCaption}
+)}}\label{liste_8h_ae8578e8e3fc9323b406664dac658b914}
+
+
+Definition at line 31 of file liste.\-c.
+

@@ -1,0 +1,242 @@
+\hypertarget{gramm__to__elf_8c}{\section{/home/phelma/\-Bureau/projet\-\_\-\-Sicom/src/gramm\-\_\-to\-\_\-elf.c File Reference}
+\label{gramm__to__elf_8c}\index{/home/phelma/\-Bureau/projet\-\_\-\-Sicom/src/gramm\-\_\-to\-\_\-elf.\-c@{/home/phelma/\-Bureau/projet\-\_\-\-Sicom/src/gramm\-\_\-to\-\_\-elf.\-c}}
+}
+{\ttfamily \#include $<$gramm\-\_\-to\-\_\-elf.\-h$>$}\\*
+\subsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\#define \hyperlink{gramm__to__elf_8c_adc15a4a79dd29d070e5afb451721490e}{add\-\_\-string\-\_\-to\-\_\-table}(\hyperlink{structsection}{section}, symbol)
+\end{DoxyCompactItemize}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \hyperlink{gramm__to__elf_8c_a8bf647545ecaf0c87748a4b480588095}{gramm\-\_\-to\-\_\-elf} (\hyperlink{file_8h_ab04aa57a6150b637aa20235ca023731e}{File} $\ast$p\-\_\-file\-\_\-\-Text, \hyperlink{file_8h_ab04aa57a6150b637aa20235ca023731e}{File} $\ast$p\-\_\-file\-\_\-\-Bss, \hyperlink{file_8h_ab04aa57a6150b637aa20235ca023731e}{File} $\ast$p\-\_\-file\-\_\-\-Data, \hyperlink{file_8h_ab04aa57a6150b637aa20235ca023731e}{File} $\ast$p\-\_\-file\-\_\-\-Symb, \hyperlink{file_8h_ab04aa57a6150b637aa20235ca023731e}{File} $\ast$p\-\_\-file\-\_\-realoc, char $\ast$name, long $\ast$p\-\_\-taille\-\_\-symb, long $\ast$p\-\_\-taille\-\_\-data, long $\ast$p\-\_\-taille\-\_\-text, long $\ast$p\-\_\-taille\-\_\-bss, long $\ast$p\-\_\-taille\-\_\-realoc)
+\item 
+\hyperlink{structsection}{section} \hyperlink{gramm__to__elf_8c_acf7116f788c8c6ee115fc2a093ca3486}{make\-\_\-shstrtab\-\_\-section} (void)
+\begin{DoxyCompactList}\small\item\em Generates a predefined shstrtab section containing the basic sections names. \end{DoxyCompactList}\item 
+\hyperlink{structsection}{section} \hyperlink{gramm__to__elf_8c_a2a3e5eb3090746fbd22b14dd4a0b9b51}{make\-\_\-text\-\_\-section} (\hyperlink{file_8h_ab04aa57a6150b637aa20235ca023731e}{File} $\ast$p\-\_\-file\-\_\-\-Text, long $\ast$p\-\_\-taille\-\_\-text)
+\item 
+\hyperlink{structsection}{section} \hyperlink{gramm__to__elf_8c_a859884c289ee7b1ca7b6a565ca7d0400}{make\-\_\-data\-\_\-section} (\hyperlink{file_8h_ab04aa57a6150b637aa20235ca023731e}{File} $\ast$p\-\_\-file\-\_\-\-Data, long $\ast$p\-\_\-taille\-\_\-data)
+\item 
+\hyperlink{structsection}{section} \hyperlink{gramm__to__elf_8c_a8fd596acf14741491df82e57815477dd}{make\-\_\-bss\-\_\-section} (\hyperlink{file_8h_ab04aa57a6150b637aa20235ca023731e}{File} $\ast$p\-\_\-file\-\_\-\-Bss)
+\item 
+\hyperlink{structsection}{section} \hyperlink{gramm__to__elf_8c_ae235a970705378c1f6ae8b47034d1bd8}{make\-\_\-strtab\-\_\-syms\-\_\-section} (\hyperlink{file_8h_ab04aa57a6150b637aa20235ca023731e}{File} $\ast$p\-\_\-file\-\_\-\-Symb, long $\ast$p\-\_\-taille\-\_\-symb, \hyperlink{struct_elf32___sym}{Elf32\-\_\-\-Sym} syms\mbox{[}$\,$\mbox{]}, \hyperlink{structsection}{section} shstrtab)
+\item 
+\hyperlink{structsection}{section} \hyperlink{gramm__to__elf_8c_aff755340219d5b5f6c128ccf7edce4ba}{make\-\_\-symtab\-\_\-section} (\hyperlink{structsection}{section} shstrtab, \hyperlink{structsection}{section} strtab, \hyperlink{struct_elf32___sym}{Elf32\-\_\-\-Sym} symbols\mbox{[}$\,$\mbox{]}, int nb\-\_\-syms)
+\item 
+int \hyperlink{gramm__to__elf_8c_a9ac96d270bcecd22a0533b00111df518}{taille\-\_\-tab\-\_\-rel} (long $\ast$taille\-\_\-text\-\_\-reloc, long $\ast$taille\-\_\-data\-\_\-reloc, \hyperlink{file_8h_ab04aa57a6150b637aa20235ca023731e}{File} $\ast$p\-\_\-file\-\_\-realoc)
+\item 
+void \hyperlink{gramm__to__elf_8c_a9f44ab870281e947b037c3a19e9fbbbb}{file\-\_\-realoc\-\_\-to\-\_\-tab\-\_\-realoc} (\hyperlink{file_8h_ab04aa57a6150b637aa20235ca023731e}{File} $\ast$p\-\_\-file\-\_\-realoc, \hyperlink{struct_elf32___rel}{Elf32\-\_\-\-Rel} text\-\_\-reloc\mbox{[}$\,$\mbox{]}, \hyperlink{struct_elf32___rel}{Elf32\-\_\-\-Rel} data\-\_\-reloc\mbox{[}$\,$\mbox{]}, long taille\-\_\-text\-\_\-reloc, long taille\-\_\-data\-\_\-reloc, \hyperlink{structsection}{section} symtab, \hyperlink{structsection}{section} shstrtab, \hyperlink{structsection}{section} strtab)
+\item 
+\hyperlink{structsection}{section} \hyperlink{gramm__to__elf_8c_a0758a9cc1636440c6cab2d185c94c937}{make\-\_\-rel32\-\_\-section} (char $\ast$relname, \hyperlink{struct_elf32___rel}{Elf32\-\_\-\-Rel} relocations\mbox{[}$\,$\mbox{]}, int nb\-\_\-reloc)
+\item 
+int \hyperlink{gramm__to__elf_8c_a1c0b3472f24539d563509c4f3e226d24}{elf\-\_\-get\-\_\-sym\-\_\-index\-\_\-from\-\_\-name} (\hyperlink{structsection}{section} symtab, \hyperlink{structsection}{section} shstrtab, \hyperlink{structsection}{section} strtab, char $\ast$sym\-\_\-name)
+\item 
+int \hyperlink{gramm__to__elf_8c_af489edf1e1a6d4e727c46edea96ae7d6}{deplace\-\_\-octet} (int a, int num\-\_\-octet)
+\end{DoxyCompactItemize}
+
+
+\subsection{Macro Definition Documentation}
+\hypertarget{gramm__to__elf_8c_adc15a4a79dd29d070e5afb451721490e}{\index{gramm\-\_\-to\-\_\-elf.\-c@{gramm\-\_\-to\-\_\-elf.\-c}!add\-\_\-string\-\_\-to\-\_\-table@{add\-\_\-string\-\_\-to\-\_\-table}}
+\index{add\-\_\-string\-\_\-to\-\_\-table@{add\-\_\-string\-\_\-to\-\_\-table}!gramm_to_elf.c@{gramm\-\_\-to\-\_\-elf.\-c}}
+\subsubsection[{add\-\_\-string\-\_\-to\-\_\-table}]{\setlength{\rightskip}{0pt plus 5cm}\#define add\-\_\-string\-\_\-to\-\_\-table(
+\begin{DoxyParamCaption}
+\item[{}]{{\bf section}, }
+\item[{}]{symbol}
+\end{DoxyParamCaption}
+)}}\label{gramm__to__elf_8c_adc15a4a79dd29d070e5afb451721490e}
+{\bfseries Value\-:}
+\begin{DoxyCode}
+\textcolor{comment}{/* Explicitly add terminal '\(\backslash\)0' */} \hyperlink{section_8c_ad4368da2275bd56d4a9d5798978f8e50}{\(\backslash\)}
+\hyperlink{section_8c_ad4368da2275bd56d4a9d5798978f8e50}{  write\_section}( \hyperlink{structsection}{section}, (\textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{char} *)symbol, 1+strlen(symbol), 
+      \hyperlink{structsection}{section}->\hyperlink{structsection_a2c1bd10d4bbc82d2d6c052c5842c0c8c}{sz})
+\end{DoxyCode}
+
+
+Definition at line 108 of file gramm\-\_\-to\-\_\-elf.\-c.
+
+
+
+\subsection{Function Documentation}
+\hypertarget{gramm__to__elf_8c_af489edf1e1a6d4e727c46edea96ae7d6}{\index{gramm\-\_\-to\-\_\-elf.\-c@{gramm\-\_\-to\-\_\-elf.\-c}!deplace\-\_\-octet@{deplace\-\_\-octet}}
+\index{deplace\-\_\-octet@{deplace\-\_\-octet}!gramm_to_elf.c@{gramm\-\_\-to\-\_\-elf.\-c}}
+\subsubsection[{deplace\-\_\-octet}]{\setlength{\rightskip}{0pt plus 5cm}int deplace\-\_\-octet (
+\begin{DoxyParamCaption}
+\item[{int}]{a, }
+\item[{int}]{num\-\_\-octet}
+\end{DoxyParamCaption}
+)}}\label{gramm__to__elf_8c_af489edf1e1a6d4e727c46edea96ae7d6}
+Deplace l'octet \char`\"{}a\char`\"{} en num\-\_\-octet position 
+\begin{DoxyParams}{Parameters}
+{\em a} & octet a deplacer \\
+\hline
+{\em num\-\_\-octet} & numero de l'octet dans un int (compris entre 0 et 3, inutile pour 3) \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+renvoie l'octet deplace 
+\end{DoxyReturn}
+
+
+Definition at line 462 of file gramm\-\_\-to\-\_\-elf.\-c.
+
+\hypertarget{gramm__to__elf_8c_a1c0b3472f24539d563509c4f3e226d24}{\index{gramm\-\_\-to\-\_\-elf.\-c@{gramm\-\_\-to\-\_\-elf.\-c}!elf\-\_\-get\-\_\-sym\-\_\-index\-\_\-from\-\_\-name@{elf\-\_\-get\-\_\-sym\-\_\-index\-\_\-from\-\_\-name}}
+\index{elf\-\_\-get\-\_\-sym\-\_\-index\-\_\-from\-\_\-name@{elf\-\_\-get\-\_\-sym\-\_\-index\-\_\-from\-\_\-name}!gramm_to_elf.c@{gramm\-\_\-to\-\_\-elf.\-c}}
+\subsubsection[{elf\-\_\-get\-\_\-sym\-\_\-index\-\_\-from\-\_\-name}]{\setlength{\rightskip}{0pt plus 5cm}int elf\-\_\-get\-\_\-sym\-\_\-index\-\_\-from\-\_\-name (
+\begin{DoxyParamCaption}
+\item[{{\bf section}}]{symtab, }
+\item[{{\bf section}}]{shstrtab, }
+\item[{{\bf section}}]{strtab, }
+\item[{char $\ast$}]{sym\-\_\-name}
+\end{DoxyParamCaption}
+)}}\label{gramm__to__elf_8c_a1c0b3472f24539d563509c4f3e226d24}
+
+
+Definition at line 435 of file gramm\-\_\-to\-\_\-elf.\-c.
+
+\hypertarget{gramm__to__elf_8c_a9f44ab870281e947b037c3a19e9fbbbb}{\index{gramm\-\_\-to\-\_\-elf.\-c@{gramm\-\_\-to\-\_\-elf.\-c}!file\-\_\-realoc\-\_\-to\-\_\-tab\-\_\-realoc@{file\-\_\-realoc\-\_\-to\-\_\-tab\-\_\-realoc}}
+\index{file\-\_\-realoc\-\_\-to\-\_\-tab\-\_\-realoc@{file\-\_\-realoc\-\_\-to\-\_\-tab\-\_\-realoc}!gramm_to_elf.c@{gramm\-\_\-to\-\_\-elf.\-c}}
+\subsubsection[{file\-\_\-realoc\-\_\-to\-\_\-tab\-\_\-realoc}]{\setlength{\rightskip}{0pt plus 5cm}void file\-\_\-realoc\-\_\-to\-\_\-tab\-\_\-realoc (
+\begin{DoxyParamCaption}
+\item[{{\bf File} $\ast$}]{p\-\_\-file\-\_\-realoc, }
+\item[{{\bf Elf32\-\_\-\-Rel}}]{text\-\_\-reloc\mbox{[}$\,$\mbox{]}, }
+\item[{{\bf Elf32\-\_\-\-Rel}}]{data\-\_\-reloc\mbox{[}$\,$\mbox{]}, }
+\item[{long}]{taille\-\_\-text\-\_\-reloc, }
+\item[{long}]{taille\-\_\-data\-\_\-reloc, }
+\item[{{\bf section}}]{symtab, }
+\item[{{\bf section}}]{shstrtab, }
+\item[{{\bf section}}]{strtab}
+\end{DoxyParamCaption}
+)}}\label{gramm__to__elf_8c_a9f44ab870281e947b037c3a19e9fbbbb}
+
+
+Definition at line 388 of file gramm\-\_\-to\-\_\-elf.\-c.
+
+\hypertarget{gramm__to__elf_8c_a8bf647545ecaf0c87748a4b480588095}{\index{gramm\-\_\-to\-\_\-elf.\-c@{gramm\-\_\-to\-\_\-elf.\-c}!gramm\-\_\-to\-\_\-elf@{gramm\-\_\-to\-\_\-elf}}
+\index{gramm\-\_\-to\-\_\-elf@{gramm\-\_\-to\-\_\-elf}!gramm_to_elf.c@{gramm\-\_\-to\-\_\-elf.\-c}}
+\subsubsection[{gramm\-\_\-to\-\_\-elf}]{\setlength{\rightskip}{0pt plus 5cm}void gramm\-\_\-to\-\_\-elf (
+\begin{DoxyParamCaption}
+\item[{{\bf File} $\ast$}]{p\-\_\-file\-\_\-\-Text, }
+\item[{{\bf File} $\ast$}]{p\-\_\-file\-\_\-\-Bss, }
+\item[{{\bf File} $\ast$}]{p\-\_\-file\-\_\-\-Data, }
+\item[{{\bf File} $\ast$}]{p\-\_\-file\-\_\-\-Symb, }
+\item[{{\bf File} $\ast$}]{p\-\_\-file\-\_\-realoc, }
+\item[{char $\ast$}]{name, }
+\item[{long $\ast$}]{p\-\_\-taille\-\_\-symb, }
+\item[{long $\ast$}]{p\-\_\-taille\-\_\-data, }
+\item[{long $\ast$}]{p\-\_\-taille\-\_\-text, }
+\item[{long $\ast$}]{p\-\_\-taille\-\_\-bss, }
+\item[{long $\ast$}]{p\-\_\-taille\-\_\-realoc}
+\end{DoxyParamCaption}
+)}}\label{gramm__to__elf_8c_a8bf647545ecaf0c87748a4b480588095}
+
+
+Definition at line 11 of file gramm\-\_\-to\-\_\-elf.\-c.
+
+\hypertarget{gramm__to__elf_8c_a8fd596acf14741491df82e57815477dd}{\index{gramm\-\_\-to\-\_\-elf.\-c@{gramm\-\_\-to\-\_\-elf.\-c}!make\-\_\-bss\-\_\-section@{make\-\_\-bss\-\_\-section}}
+\index{make\-\_\-bss\-\_\-section@{make\-\_\-bss\-\_\-section}!gramm_to_elf.c@{gramm\-\_\-to\-\_\-elf.\-c}}
+\subsubsection[{make\-\_\-bss\-\_\-section}]{\setlength{\rightskip}{0pt plus 5cm}{\bf section} make\-\_\-bss\-\_\-section (
+\begin{DoxyParamCaption}
+\item[{{\bf File} $\ast$}]{p\-\_\-file\-\_\-\-Bss}
+\end{DoxyParamCaption}
+)}}\label{gramm__to__elf_8c_a8fd596acf14741491df82e57815477dd}
+
+
+Definition at line 255 of file gramm\-\_\-to\-\_\-elf.\-c.
+
+\hypertarget{gramm__to__elf_8c_a859884c289ee7b1ca7b6a565ca7d0400}{\index{gramm\-\_\-to\-\_\-elf.\-c@{gramm\-\_\-to\-\_\-elf.\-c}!make\-\_\-data\-\_\-section@{make\-\_\-data\-\_\-section}}
+\index{make\-\_\-data\-\_\-section@{make\-\_\-data\-\_\-section}!gramm_to_elf.c@{gramm\-\_\-to\-\_\-elf.\-c}}
+\subsubsection[{make\-\_\-data\-\_\-section}]{\setlength{\rightskip}{0pt plus 5cm}{\bf section} make\-\_\-data\-\_\-section (
+\begin{DoxyParamCaption}
+\item[{{\bf File} $\ast$}]{p\-\_\-file\-\_\-\-Data, }
+\item[{long $\ast$}]{p\-\_\-taille\-\_\-data}
+\end{DoxyParamCaption}
+)}}\label{gramm__to__elf_8c_a859884c289ee7b1ca7b6a565ca7d0400}
+
+
+Definition at line 155 of file gramm\-\_\-to\-\_\-elf.\-c.
+
+\hypertarget{gramm__to__elf_8c_a0758a9cc1636440c6cab2d185c94c937}{\index{gramm\-\_\-to\-\_\-elf.\-c@{gramm\-\_\-to\-\_\-elf.\-c}!make\-\_\-rel32\-\_\-section@{make\-\_\-rel32\-\_\-section}}
+\index{make\-\_\-rel32\-\_\-section@{make\-\_\-rel32\-\_\-section}!gramm_to_elf.c@{gramm\-\_\-to\-\_\-elf.\-c}}
+\subsubsection[{make\-\_\-rel32\-\_\-section}]{\setlength{\rightskip}{0pt plus 5cm}{\bf section} make\-\_\-rel32\-\_\-section (
+\begin{DoxyParamCaption}
+\item[{char $\ast$}]{relname, }
+\item[{{\bf Elf32\-\_\-\-Rel}}]{relocations\mbox{[}$\,$\mbox{]}, }
+\item[{int}]{nb\-\_\-reloc}
+\end{DoxyParamCaption}
+)}}\label{gramm__to__elf_8c_a0758a9cc1636440c6cab2d185c94c937}
+
+
+Definition at line 422 of file gramm\-\_\-to\-\_\-elf.\-c.
+
+\hypertarget{gramm__to__elf_8c_acf7116f788c8c6ee115fc2a093ca3486}{\index{gramm\-\_\-to\-\_\-elf.\-c@{gramm\-\_\-to\-\_\-elf.\-c}!make\-\_\-shstrtab\-\_\-section@{make\-\_\-shstrtab\-\_\-section}}
+\index{make\-\_\-shstrtab\-\_\-section@{make\-\_\-shstrtab\-\_\-section}!gramm_to_elf.c@{gramm\-\_\-to\-\_\-elf.\-c}}
+\subsubsection[{make\-\_\-shstrtab\-\_\-section}]{\setlength{\rightskip}{0pt plus 5cm}{\bf section} make\-\_\-shstrtab\-\_\-section (
+\begin{DoxyParamCaption}
+\item[{void}]{}
+\end{DoxyParamCaption}
+)}}\label{gramm__to__elf_8c_acf7116f788c8c6ee115fc2a093ca3486}
+
+
+Generates a predefined shstrtab section containing the basic sections names. 
+
+\begin{DoxyReturn}{Returns}
+the completed shstrtab section 
+\end{DoxyReturn}
+
+
+Definition at line 116 of file gramm\-\_\-to\-\_\-elf.\-c.
+
+\hypertarget{gramm__to__elf_8c_ae235a970705378c1f6ae8b47034d1bd8}{\index{gramm\-\_\-to\-\_\-elf.\-c@{gramm\-\_\-to\-\_\-elf.\-c}!make\-\_\-strtab\-\_\-syms\-\_\-section@{make\-\_\-strtab\-\_\-syms\-\_\-section}}
+\index{make\-\_\-strtab\-\_\-syms\-\_\-section@{make\-\_\-strtab\-\_\-syms\-\_\-section}!gramm_to_elf.c@{gramm\-\_\-to\-\_\-elf.\-c}}
+\subsubsection[{make\-\_\-strtab\-\_\-syms\-\_\-section}]{\setlength{\rightskip}{0pt plus 5cm}{\bf section} make\-\_\-strtab\-\_\-syms\-\_\-section (
+\begin{DoxyParamCaption}
+\item[{{\bf File} $\ast$}]{p\-\_\-file\-\_\-\-Symb, }
+\item[{long $\ast$}]{p\-\_\-taille\-\_\-symb, }
+\item[{{\bf Elf32\-\_\-\-Sym}}]{syms\mbox{[}$\,$\mbox{]}, }
+\item[{{\bf section}}]{shstrtab}
+\end{DoxyParamCaption}
+)}}\label{gramm__to__elf_8c_ae235a970705378c1f6ae8b47034d1bd8}
+
+
+Definition at line 273 of file gramm\-\_\-to\-\_\-elf.\-c.
+
+\hypertarget{gramm__to__elf_8c_aff755340219d5b5f6c128ccf7edce4ba}{\index{gramm\-\_\-to\-\_\-elf.\-c@{gramm\-\_\-to\-\_\-elf.\-c}!make\-\_\-symtab\-\_\-section@{make\-\_\-symtab\-\_\-section}}
+\index{make\-\_\-symtab\-\_\-section@{make\-\_\-symtab\-\_\-section}!gramm_to_elf.c@{gramm\-\_\-to\-\_\-elf.\-c}}
+\subsubsection[{make\-\_\-symtab\-\_\-section}]{\setlength{\rightskip}{0pt plus 5cm}{\bf section} make\-\_\-symtab\-\_\-section (
+\begin{DoxyParamCaption}
+\item[{{\bf section}}]{shstrtab, }
+\item[{{\bf section}}]{strtab, }
+\item[{{\bf Elf32\-\_\-\-Sym}}]{symbols\mbox{[}$\,$\mbox{]}, }
+\item[{int}]{nb\-\_\-syms}
+\end{DoxyParamCaption}
+)}}\label{gramm__to__elf_8c_aff755340219d5b5f6c128ccf7edce4ba}
+
+
+Definition at line 316 of file gramm\-\_\-to\-\_\-elf.\-c.
+
+\hypertarget{gramm__to__elf_8c_a2a3e5eb3090746fbd22b14dd4a0b9b51}{\index{gramm\-\_\-to\-\_\-elf.\-c@{gramm\-\_\-to\-\_\-elf.\-c}!make\-\_\-text\-\_\-section@{make\-\_\-text\-\_\-section}}
+\index{make\-\_\-text\-\_\-section@{make\-\_\-text\-\_\-section}!gramm_to_elf.c@{gramm\-\_\-to\-\_\-elf.\-c}}
+\subsubsection[{make\-\_\-text\-\_\-section}]{\setlength{\rightskip}{0pt plus 5cm}{\bf section} make\-\_\-text\-\_\-section (
+\begin{DoxyParamCaption}
+\item[{{\bf File} $\ast$}]{p\-\_\-file\-\_\-\-Text, }
+\item[{long $\ast$}]{p\-\_\-taille\-\_\-text}
+\end{DoxyParamCaption}
+)}}\label{gramm__to__elf_8c_a2a3e5eb3090746fbd22b14dd4a0b9b51}
+
+
+Definition at line 131 of file gramm\-\_\-to\-\_\-elf.\-c.
+
+\hypertarget{gramm__to__elf_8c_a9ac96d270bcecd22a0533b00111df518}{\index{gramm\-\_\-to\-\_\-elf.\-c@{gramm\-\_\-to\-\_\-elf.\-c}!taille\-\_\-tab\-\_\-rel@{taille\-\_\-tab\-\_\-rel}}
+\index{taille\-\_\-tab\-\_\-rel@{taille\-\_\-tab\-\_\-rel}!gramm_to_elf.c@{gramm\-\_\-to\-\_\-elf.\-c}}
+\subsubsection[{taille\-\_\-tab\-\_\-rel}]{\setlength{\rightskip}{0pt plus 5cm}int taille\-\_\-tab\-\_\-rel (
+\begin{DoxyParamCaption}
+\item[{long $\ast$}]{taille\-\_\-text\-\_\-reloc, }
+\item[{long $\ast$}]{taille\-\_\-data\-\_\-reloc, }
+\item[{{\bf File} $\ast$}]{p\-\_\-file\-\_\-realoc}
+\end{DoxyParamCaption}
+)}}\label{gramm__to__elf_8c_a9ac96d270bcecd22a0533b00111df518}
+
+
+Definition at line 367 of file gramm\-\_\-to\-\_\-elf.\-c.
+

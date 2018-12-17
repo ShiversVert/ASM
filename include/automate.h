@@ -34,7 +34,7 @@ typedef enum{	S_ERROR,
 				S_DOUBLEQUOTE} STATE;
 
 File automate_lexical(File f, char* token, int line_nb, int* cmpt_err);
-
+void remove_backslash(char* chaine);
 
 
 

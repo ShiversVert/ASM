@@ -184,7 +184,7 @@ section make_data_section(File *p_file_Data, long* p_taille_data){
                     /*On trouve .space n => Il faut faire n OCTETS nuls dans data_prog */
                     while(data_courant->l_operande != NULL){
                         n = ((OPERANDE)((data_courant->l_operande)->val))->bin;
-                        cmpt_inter = cmpt_octet + i;
+                        cmpt_inter = cmpt_octet + n;
                         for(;cmpt_octet<cmpt_inter; cmpt_octet++){
                             data_prog[i] = data_prog[i] | deplace_octet(0x0, 3-cmpt_octet%4);
                             cmpt_octet++; i = (int)(cmpt_octet/4);
@@ -201,7 +201,7 @@ section make_data_section(File *p_file_Data, long* p_taille_data){
                         strcpy(chaine, ((OPERANDE)((data_courant->l_operande)->val))->chain + 1); /*On enleve la premiere quote*/
                         chaine[n] = '\0';
                         cmpt_inter = n + i;
-                        for(j =0;j<n; j++){
+                        for(j =0;j<=n; j++){
                             data_prog[i] = data_prog[i] | deplace_octet(chaine[j], 3-cmpt_octet%4);
                             cmpt_octet++; i = (int)(cmpt_octet/4);
                         }

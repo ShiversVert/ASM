@@ -1,0 +1,423 @@
+\hypertarget{automate__gramm_8c}{\section{/home/phelma/\-Bureau/projet\-\_\-\-Sicom/src/automate\-\_\-gramm.c File Reference}
+\label{automate__gramm_8c}\index{/home/phelma/\-Bureau/projet\-\_\-\-Sicom/src/automate\-\_\-gramm.\-c@{/home/phelma/\-Bureau/projet\-\_\-\-Sicom/src/automate\-\_\-gramm.\-c}}
+}
+{\ttfamily \#include $<$automate\-\_\-gramm.\-h$>$}\\*
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \hyperlink{automate__gramm_8c_afe8dc6c2ad1d33561bd37e8acbb25701}{automate\-\_\-grammatical} (\hyperlink{file_8h_ab04aa57a6150b637aa20235ca023731e}{File} $\ast$p\-\_\-file\-\_\-\-Lexeme, \hyperlink{file_8h_ab04aa57a6150b637aa20235ca023731e}{File} $\ast$p\-\_\-file\-\_\-\-Text, \hyperlink{file_8h_ab04aa57a6150b637aa20235ca023731e}{File} $\ast$p\-\_\-file\-\_\-\-Bss, \hyperlink{file_8h_ab04aa57a6150b637aa20235ca023731e}{File} $\ast$p\-\_\-file\-\_\-\-Data, \hyperlink{file_8h_ab04aa57a6150b637aa20235ca023731e}{File} $\ast$p\-\_\-file\-\_\-\-Symb, \hyperlink{file_8h_ab04aa57a6150b637aa20235ca023731e}{File} file\-\_\-\-Dic, \hyperlink{file_8h_ab04aa57a6150b637aa20235ca023731e}{File} $\ast$p\-\_\-file\-\_\-realoc, long $\ast$p\-\_\-taille\-\_\-symb, long $\ast$p\-\_\-taille\-\_\-data, long $\ast$p\-\_\-taille\-\_\-text, long $\ast$p\-\_\-taille\-\_\-bss, long $\ast$p\-\_\-taille\-\_\-realoc, int $\ast$p\-\_\-cmpt\-\_\-err)
+\item 
+int \hyperlink{automate__gramm_8c_a73a40d7c75f64544d71790e1d65452c9}{analyse\-\_\-gramm1} (\hyperlink{file_8h_ab04aa57a6150b637aa20235ca023731e}{File} $\ast$p\-\_\-file\-\_\-\-Lexeme, \hyperlink{types_8h_a6ca35c736942240224df7734d00322aa}{S\-T\-A\-T\-E\-\_\-\-G\-R\-A\-M\-M} $\ast$S, \hyperlink{types_8h_aa6d0381b47e7652e2730a406d421e67b}{L\-E\-X\-E\-M\-E} lexeme\-\_\-courant)
+\item 
+void \hyperlink{automate__gramm_8c_a4c743a82572284efadf7701d8e5757e4}{get\-\_\-current\-\_\-\-Lexeme} (\hyperlink{file_8h_ab04aa57a6150b637aa20235ca023731e}{File} $\ast$p\-\_\-file\-\_\-\-Lexeme, \hyperlink{types_8h_aa6d0381b47e7652e2730a406d421e67b}{L\-E\-X\-E\-M\-E} $\ast$p\-\_\-lexeme\-\_\-courant)
+\item 
+int \hyperlink{automate__gramm_8c_aba3d713a2adbe963928ba602984dfa36}{ajout\-\_\-maillon\-\_\-data} (\hyperlink{file_8h_ab04aa57a6150b637aa20235ca023731e}{File} $\ast$p\-\_\-file\-\_\-\-Data, \hyperlink{file_8h_ab04aa57a6150b637aa20235ca023731e}{File} $\ast$p\-\_\-file\-\_\-\-Lexeme, \hyperlink{types_8h_aa6d0381b47e7652e2730a406d421e67b}{L\-E\-X\-E\-M\-E} lexeme\-\_\-courant, \hyperlink{file_8h_ab04aa57a6150b637aa20235ca023731e}{File} $\ast$p\-\_\-file\-\_\-\-Symb, double $\ast$p\-\_\-offset\-\_\-data, \hyperlink{file_8h_ab04aa57a6150b637aa20235ca023731e}{File} $\ast$p\-\_\-file\-\_\-realoc, long $\ast$p\-\_\-taille\-\_\-symb, long $\ast$p\-\_\-taille\-\_\-data, long $\ast$p\-\_\-taille\-\_\-realoc, int $\ast$p\-\_\-cmpt\-\_\-err)
+\item 
+int \hyperlink{automate__gramm_8c_abeac14f81303db0908ba692ca968bb5b}{ajout\-\_\-maillon\-\_\-bss} (\hyperlink{file_8h_ab04aa57a6150b637aa20235ca023731e}{File} $\ast$p\-\_\-file\-\_\-\-Bss, \hyperlink{file_8h_ab04aa57a6150b637aa20235ca023731e}{File} $\ast$p\-\_\-file\-\_\-\-Lexeme, \hyperlink{types_8h_aa6d0381b47e7652e2730a406d421e67b}{L\-E\-X\-E\-M\-E} lexeme\-\_\-courant, \hyperlink{file_8h_ab04aa57a6150b637aa20235ca023731e}{File} $\ast$p\-\_\-file\-\_\-\-Symb, double $\ast$p\-\_\-offset\-\_\-bss, long $\ast$p\-\_\-taille\-\_\-symb, long $\ast$p\-\_\-taille\-\_\-bss, int $\ast$p\-\_\-cmpt\-\_\-err)
+\item 
+int \hyperlink{automate__gramm_8c_a403804ce4cd4716cf32595980232f207}{ajout\-\_\-maillon\-\_\-text} (\hyperlink{file_8h_ab04aa57a6150b637aa20235ca023731e}{File} $\ast$p\-\_\-file\-\_\-\-Text, \hyperlink{file_8h_ab04aa57a6150b637aa20235ca023731e}{File} $\ast$p\-\_\-file\-\_\-\-Lexeme, \hyperlink{types_8h_aa6d0381b47e7652e2730a406d421e67b}{L\-E\-X\-E\-M\-E} lexeme\-\_\-courant, \hyperlink{file_8h_ab04aa57a6150b637aa20235ca023731e}{File} $\ast$p\-\_\-file\-\_\-\-Symb, double $\ast$p\-\_\-offset\-\_\-text, \hyperlink{file_8h_ab04aa57a6150b637aa20235ca023731e}{File} file\-\_\-\-Dic, \hyperlink{file_8h_ab04aa57a6150b637aa20235ca023731e}{File} $\ast$p\-\_\-file\-\_\-realoc, \hyperlink{file_8h_ab04aa57a6150b637aa20235ca023731e}{File} $\ast$p\-\_\-file\-\_\-realoc\-\_\-offset, long $\ast$p\-\_\-taille\-\_\-symb, long $\ast$p\-\_\-taille\-\_\-text, long $\ast$p\-\_\-taille\-\_\-realoc, int $\ast$p\-\_\-cmpt\-\_\-err)
+\item 
+void \hyperlink{automate__gramm_8c_afae03db7b88a7e9e1fe8569c7d09ad01}{calcul\-\_\-decalage\-\_\-\-Data} (\hyperlink{file_8h_ab04aa57a6150b637aa20235ca023731e}{File} $\ast$p\-\_\-file\-\_\-\-Data, \hyperlink{types_8h_a4732e8f80c01befafc1a67cd56593c33}{D\-A\-T\-A} $\ast$p\-\_\-new\-\_\-maillon, double $\ast$p\-\_\-offset\-\_\-data, int $\ast$p\-\_\-cmpt\-\_\-err)
+\item 
+void \hyperlink{automate__gramm_8c_aadea317997ce32c434ffd87114543617}{calcul\-\_\-decalage\-\_\-\-Text} (\hyperlink{file_8h_ab04aa57a6150b637aa20235ca023731e}{File} $\ast$p\-\_\-file\-\_\-\-Text, \hyperlink{types_8h_a285f5238a7a0a3103f07157f351dce4e}{T\-E\-X\-T} $\ast$p\-\_\-new\-\_\-maillon, double $\ast$p\-\_\-offset\-\_\-text)
+\item 
+void \hyperlink{automate__gramm_8c_a784f7436a145d2e1806e9f6e1f698318}{calcul\-\_\-decalage\-\_\-\-Bss} (\hyperlink{file_8h_ab04aa57a6150b637aa20235ca023731e}{File} $\ast$p\-\_\-file\-\_\-\-Bss, \hyperlink{types_8h_afd7550571ea818ee6414511dffa22966}{B\-S\-S} $\ast$p\-\_\-new\-\_\-maillon, double $\ast$p\-\_\-offset\-\_\-bss, int $\ast$p\-\_\-cmpt\-\_\-err)
+\item 
+int \hyperlink{automate__gramm_8c_a57449e98fcbe906639f8fdadb832ce48}{is\-\_\-in\-\_\-dic} (\hyperlink{file_8h_ab04aa57a6150b637aa20235ca023731e}{File} file\-\_\-\-Dic, \hyperlink{file_8h_ab04aa57a6150b637aa20235ca023731e}{File} $\ast$p\-\_\-file\-\_\-\-Text\-\_\-maillon\-\_\-courant, \hyperlink{file_8h_ab04aa57a6150b637aa20235ca023731e}{File} $\ast$p\-\_\-file\-\_\-realoc, \hyperlink{file_8h_ab04aa57a6150b637aa20235ca023731e}{File} $\ast$p\-\_\-file\-\_\-realoc\-\_\-offset, long $\ast$p\-\_\-taille\-\_\-text, long $\ast$p\-\_\-taille\-\_\-realoc, int $\ast$p\-\_\-cmpt\-\_\-err)
+\item 
+int \hyperlink{automate__gramm_8c_a894e870ec836d93db36ca79626f301dc}{is\-\_\-pseudo\-\_\-inst} (\hyperlink{file_8h_ab04aa57a6150b637aa20235ca023731e}{File} file\-\_\-\-Dic, \hyperlink{file_8h_ab04aa57a6150b637aa20235ca023731e}{File} $\ast$p\-\_\-file\-\_\-\-Text\-\_\-maillon\-\_\-courant, \hyperlink{file_8h_ab04aa57a6150b637aa20235ca023731e}{File} $\ast$p\-\_\-file\-\_\-realoc, \hyperlink{file_8h_ab04aa57a6150b637aa20235ca023731e}{File} $\ast$p\-\_\-file\-\_\-realoc\-\_\-offset, \hyperlink{types_8h_a285f5238a7a0a3103f07157f351dce4e}{T\-E\-X\-T} $\ast$p\-\_\-maillon, \hyperlink{liste_8h_a5268448ae2a031c105e053d5ea682580}{Liste} l\-\_\-operande, long $\ast$p\-\_\-taille\-\_\-text, long $\ast$p\-\_\-taille\-\_\-realoc, int $\ast$p\-\_\-cmpt\-\_\-err)
+\item 
+int \hyperlink{automate__gramm_8c_a30fe639d2c57d3f14a45fa87b1ec0578}{is\-\_\-registre} (\hyperlink{types_8h_af7ef87d0454864b6fbf214bdd4ec3165}{O\-P\-E\-R\-A\-N\-D\-E} $\ast$p\-\_\-op, double line\-\_\-nb, int $\ast$p\-\_\-cmpt\-\_\-err)
+\item 
+void \hyperlink{automate__gramm_8c_a71ef27e8dc8c622677b1cc0f099f4657}{generation\-\_\-bin\-\_\-instr} (\hyperlink{types_8h_a285f5238a7a0a3103f07157f351dce4e}{T\-E\-X\-T} maillon, \hyperlink{types_8h_a651c366be7f1547ea6cdf0ab7c671025}{D\-I\-C} definition)
+\end{DoxyCompactItemize}
+
+
+\subsection{Function Documentation}
+\hypertarget{automate__gramm_8c_abeac14f81303db0908ba692ca968bb5b}{\index{automate\-\_\-gramm.\-c@{automate\-\_\-gramm.\-c}!ajout\-\_\-maillon\-\_\-bss@{ajout\-\_\-maillon\-\_\-bss}}
+\index{ajout\-\_\-maillon\-\_\-bss@{ajout\-\_\-maillon\-\_\-bss}!automate_gramm.c@{automate\-\_\-gramm.\-c}}
+\subsubsection[{ajout\-\_\-maillon\-\_\-bss}]{\setlength{\rightskip}{0pt plus 5cm}int ajout\-\_\-maillon\-\_\-bss (
+\begin{DoxyParamCaption}
+\item[{{\bf File} $\ast$}]{p\-\_\-file\-\_\-\-Bss, }
+\item[{{\bf File} $\ast$}]{p\-\_\-file\-\_\-\-Lexeme, }
+\item[{{\bf L\-E\-X\-E\-M\-E}}]{lexeme\-\_\-courant, }
+\item[{{\bf File} $\ast$}]{p\-\_\-file\-\_\-\-Symb, }
+\item[{double $\ast$}]{p\-\_\-offset\-\_\-bss, }
+\item[{long $\ast$}]{p\-\_\-taille\-\_\-symb, }
+\item[{long $\ast$}]{p\-\_\-taille\-\_\-bss, }
+\item[{int $\ast$}]{p\-\_\-cmpt\-\_\-err}
+\end{DoxyParamCaption}
+)}}\label{automate__gramm_8c_abeac14f81303db0908ba692ca968bb5b}
+Permet de creer un maillon Bss en lisant la file de Lexeme et d'ajouter ce dernier a la file Data
+
+
+\begin{DoxyParams}{Parameters}
+{\em p\-\_\-file\-\_\-\-Bss} & pointeur sur la file Bss a completer \\
+\hline
+{\em p\-\_\-file\-\_\-\-Lexeme} & pointeur sur la file de L\-E\-X\-E\-M\-Es a traiter \\
+\hline
+{\em lexeme\-\_\-courant} & Lexeme temporaire qui facilite l'acces au donnees du lexeme courant \\
+\hline
+{\em p\-\_\-file\-\_\-\-Symb} & pointeur sur la file Symb a completer \\
+\hline
+{\em p\-\_\-offset\-\_\-bss} & pointeur vers le dernier offset calcule\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Retourne 0 si tout ce passe correctement, 1 s'il y a une erreur 
+\end{DoxyReturn}
+
+
+Definition at line 288 of file automate\-\_\-gramm.\-c.
+
+\hypertarget{automate__gramm_8c_aba3d713a2adbe963928ba602984dfa36}{\index{automate\-\_\-gramm.\-c@{automate\-\_\-gramm.\-c}!ajout\-\_\-maillon\-\_\-data@{ajout\-\_\-maillon\-\_\-data}}
+\index{ajout\-\_\-maillon\-\_\-data@{ajout\-\_\-maillon\-\_\-data}!automate_gramm.c@{automate\-\_\-gramm.\-c}}
+\subsubsection[{ajout\-\_\-maillon\-\_\-data}]{\setlength{\rightskip}{0pt plus 5cm}int ajout\-\_\-maillon\-\_\-data (
+\begin{DoxyParamCaption}
+\item[{{\bf File} $\ast$}]{p\-\_\-file\-\_\-\-Data, }
+\item[{{\bf File} $\ast$}]{p\-\_\-file\-\_\-\-Lexeme, }
+\item[{{\bf L\-E\-X\-E\-M\-E}}]{lexeme\-\_\-courant, }
+\item[{{\bf File} $\ast$}]{p\-\_\-file\-\_\-\-Symb, }
+\item[{double $\ast$}]{p\-\_\-offset\-\_\-data, }
+\item[{{\bf File} $\ast$}]{p\-\_\-file\-\_\-realoc, }
+\item[{long $\ast$}]{p\-\_\-taille\-\_\-symb, }
+\item[{long $\ast$}]{p\-\_\-taille\-\_\-data, }
+\item[{long $\ast$}]{p\-\_\-taille\-\_\-realoc, }
+\item[{int $\ast$}]{p\-\_\-cmpt\-\_\-err}
+\end{DoxyParamCaption}
+)}}\label{automate__gramm_8c_aba3d713a2adbe963928ba602984dfa36}
+Permet de creer un maillon data en lisant la file de Lexeme et d'ajouter ce dernier a la file Data
+
+
+\begin{DoxyParams}{Parameters}
+{\em p\-\_\-file\-\_\-\-Data} & pointeur sur la file Data a completer \\
+\hline
+{\em p\-\_\-file\-\_\-\-Lexeme} & pointeur sur la file de L\-E\-X\-E\-M\-Es a traiter \\
+\hline
+{\em lexeme\-\_\-courant} & Lexeme temporaire qui facilite l'acces au donnees du lexeme courant \\
+\hline
+{\em p\-\_\-file\-\_\-\-Symb} & pointeur sur la file Symb a completer \\
+\hline
+{\em p\-\_\-offset\-\_\-data} & pointeur vers le dernier offset calcule\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Retourne 0 si tout ce passe correctement, 1 s'il y a une erreur 
+\end{DoxyReturn}
+
+
+Definition at line 160 of file automate\-\_\-gramm.\-c.
+
+\hypertarget{automate__gramm_8c_a403804ce4cd4716cf32595980232f207}{\index{automate\-\_\-gramm.\-c@{automate\-\_\-gramm.\-c}!ajout\-\_\-maillon\-\_\-text@{ajout\-\_\-maillon\-\_\-text}}
+\index{ajout\-\_\-maillon\-\_\-text@{ajout\-\_\-maillon\-\_\-text}!automate_gramm.c@{automate\-\_\-gramm.\-c}}
+\subsubsection[{ajout\-\_\-maillon\-\_\-text}]{\setlength{\rightskip}{0pt plus 5cm}int ajout\-\_\-maillon\-\_\-text (
+\begin{DoxyParamCaption}
+\item[{{\bf File} $\ast$}]{p\-\_\-file\-\_\-\-Text, }
+\item[{{\bf File} $\ast$}]{p\-\_\-file\-\_\-\-Lexeme, }
+\item[{{\bf L\-E\-X\-E\-M\-E}}]{lexeme\-\_\-courant, }
+\item[{{\bf File} $\ast$}]{p\-\_\-file\-\_\-\-Symb, }
+\item[{double $\ast$}]{p\-\_\-offset\-\_\-text, }
+\item[{{\bf File}}]{file\-\_\-\-Dic, }
+\item[{{\bf File} $\ast$}]{p\-\_\-file\-\_\-realoc, }
+\item[{{\bf File} $\ast$}]{p\-\_\-file\-\_\-realoc\-\_\-offset, }
+\item[{long $\ast$}]{p\-\_\-taille\-\_\-symb, }
+\item[{long $\ast$}]{p\-\_\-taille\-\_\-text, }
+\item[{long $\ast$}]{p\-\_\-taille\-\_\-realoc, }
+\item[{int $\ast$}]{p\-\_\-cmpt\-\_\-err}
+\end{DoxyParamCaption}
+)}}\label{automate__gramm_8c_a403804ce4cd4716cf32595980232f207}
+Permet de creer un maillon Text en lisant la file de Lexeme et d'ajouter ce dernier a la file Data
+
+
+\begin{DoxyParams}{Parameters}
+{\em p\-\_\-file\-\_\-\-Text} & pointeur sur la file Text a completer \\
+\hline
+{\em p\-\_\-file\-\_\-\-Lexeme} & pointeur sur la file de L\-E\-X\-E\-M\-Es a traiter \\
+\hline
+{\em lexeme\-\_\-courant} & Lexeme temporaire qui facilite l'acces au donnees du lexeme courant \\
+\hline
+{\em p\-\_\-file\-\_\-\-Symb} & pointeur sur la file Symb a completer \\
+\hline
+{\em p\-\_\-offset\-\_\-text} & pointeur vers le dernier offset calcule \\
+\hline
+{\em file\-\_\-\-Dic} & Dictionnaire d'instructions. La verification du dictionnaire n'est cependant plus geree ici.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Retourne 0 si tout ce passe correctement, 1 s'il y a une erreur 
+\end{DoxyReturn}
+
+
+Definition at line 404 of file automate\-\_\-gramm.\-c.
+
+\hypertarget{automate__gramm_8c_a73a40d7c75f64544d71790e1d65452c9}{\index{automate\-\_\-gramm.\-c@{automate\-\_\-gramm.\-c}!analyse\-\_\-gramm1@{analyse\-\_\-gramm1}}
+\index{analyse\-\_\-gramm1@{analyse\-\_\-gramm1}!automate_gramm.c@{automate\-\_\-gramm.\-c}}
+\subsubsection[{analyse\-\_\-gramm1}]{\setlength{\rightskip}{0pt plus 5cm}int analyse\-\_\-gramm1 (
+\begin{DoxyParamCaption}
+\item[{{\bf File} $\ast$}]{p\-\_\-file\-\_\-\-Lexeme, }
+\item[{{\bf S\-T\-A\-T\-E\-\_\-\-G\-R\-A\-M\-M} $\ast$}]{S, }
+\item[{{\bf L\-E\-X\-E\-M\-E}}]{lexeme\-\_\-courant}
+\end{DoxyParamCaption}
+)}}\label{automate__gramm_8c_a73a40d7c75f64544d71790e1d65452c9}
+Permet de verifier si le lexeme courant est une instruction \-: .set noreorder et la defile .bss et associe l'etat S\-\_\-\-G\-R\-A\-M\-M\-\_\-\-B\-S\-S .data et associe l'etat S\-\_\-\-G\-R\-A\-M\-M\-\_\-\-D\-A\-T\-A .text et associe l'etat S\-\_\-\-G\-R\-A\-M\-M\-\_\-\-T\-E\-X\-T
+
+
+\begin{DoxyParams}{Parameters}
+{\em p\-\_\-file\-\_\-\-Lexeme} & pointeur sur la file de Lexeme a traiter \\
+\hline
+{\em S} & Etat grammatical courant \\
+\hline
+{\em lexeme\-\_\-courant} & lexeme courrant (facilite l'acces a ses valeurs)\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Retourne 1 si des lexemes ont etes defiles, 0 sinon 
+\end{DoxyReturn}
+
+
+Definition at line 93 of file automate\-\_\-gramm.\-c.
+
+\hypertarget{automate__gramm_8c_afe8dc6c2ad1d33561bd37e8acbb25701}{\index{automate\-\_\-gramm.\-c@{automate\-\_\-gramm.\-c}!automate\-\_\-grammatical@{automate\-\_\-grammatical}}
+\index{automate\-\_\-grammatical@{automate\-\_\-grammatical}!automate_gramm.c@{automate\-\_\-gramm.\-c}}
+\subsubsection[{automate\-\_\-grammatical}]{\setlength{\rightskip}{0pt plus 5cm}void automate\-\_\-grammatical (
+\begin{DoxyParamCaption}
+\item[{{\bf File} $\ast$}]{p\-\_\-file\-\_\-\-Lexeme, }
+\item[{{\bf File} $\ast$}]{p\-\_\-file\-\_\-\-Text, }
+\item[{{\bf File} $\ast$}]{p\-\_\-file\-\_\-\-Bss, }
+\item[{{\bf File} $\ast$}]{p\-\_\-file\-\_\-\-Data, }
+\item[{{\bf File} $\ast$}]{p\-\_\-file\-\_\-\-Symb, }
+\item[{{\bf File}}]{file\-\_\-\-Dic, }
+\item[{{\bf File} $\ast$}]{p\-\_\-file\-\_\-realoc, }
+\item[{long $\ast$}]{p\-\_\-taille\-\_\-symb, }
+\item[{long $\ast$}]{p\-\_\-taille\-\_\-data, }
+\item[{long $\ast$}]{p\-\_\-taille\-\_\-text, }
+\item[{long $\ast$}]{p\-\_\-taille\-\_\-bss, }
+\item[{long $\ast$}]{p\-\_\-taille\-\_\-realoc, }
+\item[{int $\ast$}]{p\-\_\-cmpt\-\_\-err}
+\end{DoxyParamCaption}
+)}}\label{automate__gramm_8c_afe8dc6c2ad1d33561bd37e8acbb25701}
+Fonction principale de l'automate grammatical
+
+
+\begin{DoxyParams}{Parameters}
+{\em p\-\_\-file\-\_\-\-Lexeme} & pointeur sur la file de Lexeme a traiter \\
+\hline
+{\em p\-\_\-file\-\_\-\-Text} & pointeur sur la file d'element .Text a remplir \\
+\hline
+{\em p\-\_\-file\-\_\-\-Bss} & pointeur sur la file d'element .Bss a remplir \\
+\hline
+{\em p\-\_\-file\-\_\-\-Data} & pointeur sur la file d'element .Data a remplir \\
+\hline
+{\em p\-\_\-file\-\_\-\-Symb} & pointeur sur la file d'element de Symb a remplir \\
+\hline
+{\em file\-\_\-\-Dic} & file de Dictionnaire \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 14 of file automate\-\_\-gramm.\-c.
+
+\hypertarget{automate__gramm_8c_a784f7436a145d2e1806e9f6e1f698318}{\index{automate\-\_\-gramm.\-c@{automate\-\_\-gramm.\-c}!calcul\-\_\-decalage\-\_\-\-Bss@{calcul\-\_\-decalage\-\_\-\-Bss}}
+\index{calcul\-\_\-decalage\-\_\-\-Bss@{calcul\-\_\-decalage\-\_\-\-Bss}!automate_gramm.c@{automate\-\_\-gramm.\-c}}
+\subsubsection[{calcul\-\_\-decalage\-\_\-\-Bss}]{\setlength{\rightskip}{0pt plus 5cm}void calcul\-\_\-decalage\-\_\-\-Bss (
+\begin{DoxyParamCaption}
+\item[{{\bf File} $\ast$}]{p\-\_\-file\-\_\-\-Bss, }
+\item[{{\bf B\-S\-S} $\ast$}]{p\-\_\-new\-\_\-maillon, }
+\item[{double $\ast$}]{p\-\_\-offset\-\_\-bss, }
+\item[{int $\ast$}]{p\-\_\-cmpt\-\_\-err}
+\end{DoxyParamCaption}
+)}}\label{automate__gramm_8c_a784f7436a145d2e1806e9f6e1f698318}
+Fonction a appeler lors de la creation d'un maillon Bss pour calculer (et ecrire) la valeur du decalage
+
+
+\begin{DoxyParams}{Parameters}
+{\em p\-\_\-file\-\_\-\-Bss} & pointeur sur la file Bss \\
+\hline
+{\em p\-\_\-new\-\_\-maillon} & pointeur sur le nouveau maillon (en cours de creation) pour acceder a ses infos et y ecrire le decalage \\
+\hline
+{\em p\-\_\-offset\-\_\-bss} & dernier offset calcule \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 665 of file automate\-\_\-gramm.\-c.
+
+\hypertarget{automate__gramm_8c_afae03db7b88a7e9e1fe8569c7d09ad01}{\index{automate\-\_\-gramm.\-c@{automate\-\_\-gramm.\-c}!calcul\-\_\-decalage\-\_\-\-Data@{calcul\-\_\-decalage\-\_\-\-Data}}
+\index{calcul\-\_\-decalage\-\_\-\-Data@{calcul\-\_\-decalage\-\_\-\-Data}!automate_gramm.c@{automate\-\_\-gramm.\-c}}
+\subsubsection[{calcul\-\_\-decalage\-\_\-\-Data}]{\setlength{\rightskip}{0pt plus 5cm}void calcul\-\_\-decalage\-\_\-\-Data (
+\begin{DoxyParamCaption}
+\item[{{\bf File} $\ast$}]{p\-\_\-file\-\_\-\-Data, }
+\item[{{\bf D\-A\-T\-A} $\ast$}]{p\-\_\-new\-\_\-maillon, }
+\item[{double $\ast$}]{p\-\_\-offset\-\_\-data, }
+\item[{int $\ast$}]{p\-\_\-cmpt\-\_\-err}
+\end{DoxyParamCaption}
+)}}\label{automate__gramm_8c_afae03db7b88a7e9e1fe8569c7d09ad01}
+Fonction a appeler lors de la creation d'un maillon data pour calculer (et ecrire) la valeur du decalage
+
+
+\begin{DoxyParams}{Parameters}
+{\em p\-\_\-file\-\_\-\-Data} & pointeur sur la file Data \\
+\hline
+{\em p\-\_\-new\-\_\-maillon} & pointeur sur le nouveau maillon (en cours de creation) pour acceder a ses infos et y ecrire le decalage \\
+\hline
+{\em p\-\_\-offset\-\_\-data} & dernier offset calcule \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 555 of file automate\-\_\-gramm.\-c.
+
+\hypertarget{automate__gramm_8c_aadea317997ce32c434ffd87114543617}{\index{automate\-\_\-gramm.\-c@{automate\-\_\-gramm.\-c}!calcul\-\_\-decalage\-\_\-\-Text@{calcul\-\_\-decalage\-\_\-\-Text}}
+\index{calcul\-\_\-decalage\-\_\-\-Text@{calcul\-\_\-decalage\-\_\-\-Text}!automate_gramm.c@{automate\-\_\-gramm.\-c}}
+\subsubsection[{calcul\-\_\-decalage\-\_\-\-Text}]{\setlength{\rightskip}{0pt plus 5cm}void calcul\-\_\-decalage\-\_\-\-Text (
+\begin{DoxyParamCaption}
+\item[{{\bf File} $\ast$}]{p\-\_\-file\-\_\-\-Text, }
+\item[{{\bf T\-E\-X\-T} $\ast$}]{p\-\_\-new\-\_\-maillon, }
+\item[{double $\ast$}]{p\-\_\-offset\-\_\-text}
+\end{DoxyParamCaption}
+)}}\label{automate__gramm_8c_aadea317997ce32c434ffd87114543617}
+Fonction a appeler lors de la creation d'un maillon Text pour calculer (et ecrire) la valeur du decalage
+
+
+\begin{DoxyParams}{Parameters}
+{\em p\-\_\-file\-\_\-\-Text} & pointeur sur la file Text \\
+\hline
+{\em p\-\_\-new\-\_\-maillon} & pointeur sur le nouveau maillon (en cours de creation) pour acceder a ses infos et y ecrire le decalage \\
+\hline
+{\em p\-\_\-offset\-\_\-text} & dernier offset calcule \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 644 of file automate\-\_\-gramm.\-c.
+
+\hypertarget{automate__gramm_8c_a71ef27e8dc8c622677b1cc0f099f4657}{\index{automate\-\_\-gramm.\-c@{automate\-\_\-gramm.\-c}!generation\-\_\-bin\-\_\-instr@{generation\-\_\-bin\-\_\-instr}}
+\index{generation\-\_\-bin\-\_\-instr@{generation\-\_\-bin\-\_\-instr}!automate_gramm.c@{automate\-\_\-gramm.\-c}}
+\subsubsection[{generation\-\_\-bin\-\_\-instr}]{\setlength{\rightskip}{0pt plus 5cm}void generation\-\_\-bin\-\_\-instr (
+\begin{DoxyParamCaption}
+\item[{{\bf T\-E\-X\-T}}]{maillon, }
+\item[{{\bf D\-I\-C}}]{definition}
+\end{DoxyParamCaption}
+)}}\label{automate__gramm_8c_a71ef27e8dc8c622677b1cc0f099f4657}
+
+
+Definition at line 1410 of file automate\-\_\-gramm.\-c.
+
+\hypertarget{automate__gramm_8c_a4c743a82572284efadf7701d8e5757e4}{\index{automate\-\_\-gramm.\-c@{automate\-\_\-gramm.\-c}!get\-\_\-current\-\_\-\-Lexeme@{get\-\_\-current\-\_\-\-Lexeme}}
+\index{get\-\_\-current\-\_\-\-Lexeme@{get\-\_\-current\-\_\-\-Lexeme}!automate_gramm.c@{automate\-\_\-gramm.\-c}}
+\subsubsection[{get\-\_\-current\-\_\-\-Lexeme}]{\setlength{\rightskip}{0pt plus 5cm}void get\-\_\-current\-\_\-\-Lexeme (
+\begin{DoxyParamCaption}
+\item[{{\bf File} $\ast$}]{p\-\_\-file\-\_\-\-Lexeme, }
+\item[{{\bf L\-E\-X\-E\-M\-E} $\ast$}]{p\-\_\-lexeme\-\_\-courant}
+\end{DoxyParamCaption}
+)}}\label{automate__gramm_8c_a4c743a82572284efadf7701d8e5757e4}
+Permet de recuperer les informations du Lexeme\-\_\-courrant (et facilite donc l'ecriture des fonctions)
+
+
+\begin{DoxyParams}{Parameters}
+{\em p\-\_\-file\-\_\-\-Lexeme} & pointeur sur la file de Lexeme a traiter \\
+\hline
+{\em p\-\_\-lexeme\-\_\-courant} & pointeur sur le Lexeme\-\_\-courant que l'on modifie \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 138 of file automate\-\_\-gramm.\-c.
+
+\hypertarget{automate__gramm_8c_a57449e98fcbe906639f8fdadb832ce48}{\index{automate\-\_\-gramm.\-c@{automate\-\_\-gramm.\-c}!is\-\_\-in\-\_\-dic@{is\-\_\-in\-\_\-dic}}
+\index{is\-\_\-in\-\_\-dic@{is\-\_\-in\-\_\-dic}!automate_gramm.c@{automate\-\_\-gramm.\-c}}
+\subsubsection[{is\-\_\-in\-\_\-dic}]{\setlength{\rightskip}{0pt plus 5cm}int is\-\_\-in\-\_\-dic (
+\begin{DoxyParamCaption}
+\item[{{\bf File}}]{file\-\_\-\-Dic, }
+\item[{{\bf File} $\ast$}]{p\-\_\-file\-\_\-\-Text\-\_\-maillon\-\_\-courant, }
+\item[{{\bf File} $\ast$}]{p\-\_\-file\-\_\-realoc, }
+\item[{{\bf File} $\ast$}]{p\-\_\-file\-\_\-realoc\-\_\-offset, }
+\item[{long $\ast$}]{p\-\_\-taille\-\_\-text, }
+\item[{long $\ast$}]{p\-\_\-taille\-\_\-realoc, }
+\item[{int $\ast$}]{p\-\_\-cmpt\-\_\-err}
+\end{DoxyParamCaption}
+)}}\label{automate__gramm_8c_a57449e98fcbe906639f8fdadb832ce48}
+Verifie l'existence d'une instruction et ses operandes. Remplace les pseudos instruction en leur(s) instructions
+
+
+\begin{DoxyParams}{Parameters}
+{\em file\-\_\-\-Dic} & File de dictionnaire \\
+\hline
+{\em p\-\_\-file\-\_\-\-Text\-\_\-maillon\-\_\-courant} & Pointeur sur le maillon courant de la file de texte, permet d'inserer des instruction si on rencontre une peusdo instruction \\
+\hline
+{\em p\-\_\-file\-\_\-realoc} & Table de realoc a completer si l'operande est une etiquette \\
+\hline
+{\em p\-\_\-file\-\_\-realoc\-\_\-offset} & Table a completer si l'operande est une etiquette et de type O\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+retourne 1 si tout se passe bien, 0 sinon 
+\end{DoxyReturn}
+
+
+Definition at line 718 of file automate\-\_\-gramm.\-c.
+
+\hypertarget{automate__gramm_8c_a894e870ec836d93db36ca79626f301dc}{\index{automate\-\_\-gramm.\-c@{automate\-\_\-gramm.\-c}!is\-\_\-pseudo\-\_\-inst@{is\-\_\-pseudo\-\_\-inst}}
+\index{is\-\_\-pseudo\-\_\-inst@{is\-\_\-pseudo\-\_\-inst}!automate_gramm.c@{automate\-\_\-gramm.\-c}}
+\subsubsection[{is\-\_\-pseudo\-\_\-inst}]{\setlength{\rightskip}{0pt plus 5cm}int is\-\_\-pseudo\-\_\-inst (
+\begin{DoxyParamCaption}
+\item[{{\bf File}}]{file\-\_\-\-Dic, }
+\item[{{\bf File} $\ast$}]{p\-\_\-file\-\_\-\-Text\-\_\-maillon\-\_\-courant, }
+\item[{{\bf File} $\ast$}]{p\-\_\-file\-\_\-realoc, }
+\item[{{\bf File} $\ast$}]{p\-\_\-file\-\_\-realoc\-\_\-offset, }
+\item[{{\bf T\-E\-X\-T} $\ast$}]{p\-\_\-maillon, }
+\item[{{\bf Liste}}]{l\-\_\-operande, }
+\item[{long $\ast$}]{p\-\_\-taille\-\_\-text, }
+\item[{long $\ast$}]{p\-\_\-taille\-\_\-realoc, }
+\item[{int $\ast$}]{p\-\_\-cmpt\-\_\-err}
+\end{DoxyParamCaption}
+)}}\label{automate__gramm_8c_a894e870ec836d93db36ca79626f301dc}
+Partie de la fonction is\-\_\-in\-\_\-dic pour les pseudo-\/instructions (codee en dur)
+
+
+\begin{DoxyParams}{Parameters}
+{\em file\-\_\-\-Dic} & File de dictionnaire \\
+\hline
+{\em p\-\_\-file\-\_\-\-Text\-\_\-maillon\-\_\-courant} & Pointeur sur le maillon courant de la file de texte, permet d'inserer des instruction si on rencontre une peusdo instruction \\
+\hline
+{\em p\-\_\-file\-\_\-realoc} & Table de realoc a completer si l'operande est une etiquette \\
+\hline
+{\em p\-\_\-file\-\_\-realoc\-\_\-offset} & Table a completer si l'operande est une etiquette et de type O \\
+\hline
+{\em p\-\_\-maillon} & Pointeur sur le maillon courant de T\-E\-X\-T \\
+\hline
+{\em l\-\_\-operande} & Pointeur sur la liste des operandes de l'instruction courante\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+retourne 1 si on trouve une pseudo instruction, 0 sinon 
+\end{DoxyReturn}
+
+
+Definition at line 861 of file automate\-\_\-gramm.\-c.
+
+\hypertarget{automate__gramm_8c_a30fe639d2c57d3f14a45fa87b1ec0578}{\index{automate\-\_\-gramm.\-c@{automate\-\_\-gramm.\-c}!is\-\_\-registre@{is\-\_\-registre}}
+\index{is\-\_\-registre@{is\-\_\-registre}!automate_gramm.c@{automate\-\_\-gramm.\-c}}
+\subsubsection[{is\-\_\-registre}]{\setlength{\rightskip}{0pt plus 5cm}int is\-\_\-registre (
+\begin{DoxyParamCaption}
+\item[{{\bf O\-P\-E\-R\-A\-N\-D\-E} $\ast$}]{p\-\_\-op, }
+\item[{double}]{line\-\_\-nb, }
+\item[{int $\ast$}]{p\-\_\-cmpt\-\_\-err}
+\end{DoxyParamCaption}
+)}}\label{automate__gramm_8c_a30fe639d2c57d3f14a45fa87b1ec0578}
+Verifie que l'opperande courrante (qui est un registre) est un registre existant
+
+
+\begin{DoxyParams}{Parameters}
+{\em p\-\_\-op} & operande courante contenant un regisre \\
+\hline
+{\em line\-\_\-nb} & numero de ligne de l'operande pour afficher une erreur si besoin\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+retourne 1 si tout se passe bien, 0 sinon 
+\end{DoxyReturn}
+
+
+Definition at line 1308 of file automate\-\_\-gramm.\-c.
+

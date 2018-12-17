@@ -1,0 +1,141 @@
+\hypertarget{read_8c}{\section{/home/phelma/\-Bureau/projet\-\_\-\-Sicom/src/read.c File Reference}
+\label{read_8c}\index{/home/phelma/\-Bureau/projet\-\_\-\-Sicom/src/read.\-c@{/home/phelma/\-Bureau/projet\-\_\-\-Sicom/src/read.\-c}}
+}
+
+
+Read E\-L\-F.  
+
+
+{\ttfamily \#include $<$stdlib.\-h$>$}\\*
+{\ttfamily \#include $<$string.\-h$>$}\\*
+{\ttfamily \#include $<$libgen.\-h$>$}\\*
+{\ttfamily \#include $<$pelf.\-h$>$}\\*
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+int \hyperlink{read_8c_a3c005bd10f6c4d798ed890a215f8f11c}{elf\-\_\-read\-\_\-ehdr} (F\-I\-L\-E $\ast$fp, \hyperlink{union_elf___ehdr}{Elf\-\_\-\-Ehdr} $\ast$ehdr)
+\item 
+unsigned char $\ast$ \hyperlink{read_8c_ae9e62eb8370e1c840deb71d3de900551}{elf\-\_\-read\-\_\-symtab} (F\-I\-L\-E $\ast$fp, \hyperlink{union_elf___ehdr}{Elf\-\_\-\-Ehdr} ehdr, unsigned char $\ast$shtab, size\-\_\-t $\ast$symtabsz)
+\item 
+unsigned char $\ast$ \hyperlink{read_8c_ac87de1f80eadeda8a4c75f2fcca0613c}{elf\-\_\-read\-\_\-section\-\_\-by\-\_\-name} (F\-I\-L\-E $\ast$fp, \hyperlink{union_elf___ehdr}{Elf\-\_\-\-Ehdr} ehdr, unsigned char $\ast$shstrtab, unsigned char $\ast$shtab, size\-\_\-t $\ast$scnsz, char $\ast$scname)
+\item 
+int \hyperlink{read_8c_a207427a919870e500294e770c0d7a1b2}{elf\-\_\-dump\-\_\-section} (F\-I\-L\-E $\ast$fp, char $\ast$input, char $\ast$secname)
+\item 
+unsigned char $\ast$ \hyperlink{read_8c_a55a177de8b48fba22951905774f14232}{elf\-\_\-read\-\_\-shtab} (F\-I\-L\-E $\ast$fp, \hyperlink{union_elf___ehdr}{Elf\-\_\-\-Ehdr} ehdr, size\-\_\-t $\ast$shnum)
+\item 
+unsigned char $\ast$ \hyperlink{read_8c_a0b5f5f658ab8575cbb91b130993927e7}{elf\-\_\-read\-\_\-shstrtab} (F\-I\-L\-E $\ast$fp, \hyperlink{union_elf___ehdr}{Elf\-\_\-\-Ehdr} ehdr, unsigned char $\ast$shtab, size\-\_\-t $\ast$shstrtabsz)
+\item 
+unsigned char $\ast$ \hyperlink{read_8c_ab81fe3a2b430eb1be14b633c6299fb46}{elf\-\_\-read\-\_\-strtab} (F\-I\-L\-E $\ast$fp, \hyperlink{union_elf___ehdr}{Elf\-\_\-\-Ehdr} ehdr, unsigned char $\ast$shtab, size\-\_\-t $\ast$strtabsz)
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Read E\-L\-F. \begin{DoxyAuthor}{Author}
+François Cayre \href{mailto:francois.cayre@grenoble-inp.fr}{\tt francois.\-cayre@grenoble-\/inp.\-fr} 
+\end{DoxyAuthor}
+\begin{DoxyDate}{Date}
+Fri Sep 22 20\-:11\-:13 2017 Read E\-L\-F. 
+\end{DoxyDate}
+
+
+Definition in file \hyperlink{read_8c_source}{read.\-c}.
+
+
+
+\subsection{Function Documentation}
+\hypertarget{read_8c_a207427a919870e500294e770c0d7a1b2}{\index{read.\-c@{read.\-c}!elf\-\_\-dump\-\_\-section@{elf\-\_\-dump\-\_\-section}}
+\index{elf\-\_\-dump\-\_\-section@{elf\-\_\-dump\-\_\-section}!read.c@{read.\-c}}
+\subsubsection[{elf\-\_\-dump\-\_\-section}]{\setlength{\rightskip}{0pt plus 5cm}int elf\-\_\-dump\-\_\-section (
+\begin{DoxyParamCaption}
+\item[{F\-I\-L\-E $\ast$}]{fp, }
+\item[{char $\ast$}]{input, }
+\item[{char $\ast$}]{secname}
+\end{DoxyParamCaption}
+)}}\label{read_8c_a207427a919870e500294e770c0d7a1b2}
+
+
+Definition at line 163 of file read.\-c.
+
+\hypertarget{read_8c_a3c005bd10f6c4d798ed890a215f8f11c}{\index{read.\-c@{read.\-c}!elf\-\_\-read\-\_\-ehdr@{elf\-\_\-read\-\_\-ehdr}}
+\index{elf\-\_\-read\-\_\-ehdr@{elf\-\_\-read\-\_\-ehdr}!read.c@{read.\-c}}
+\subsubsection[{elf\-\_\-read\-\_\-ehdr}]{\setlength{\rightskip}{0pt plus 5cm}int elf\-\_\-read\-\_\-ehdr (
+\begin{DoxyParamCaption}
+\item[{F\-I\-L\-E $\ast$}]{fp, }
+\item[{{\bf Elf\-\_\-\-Ehdr} $\ast$}]{ehdr}
+\end{DoxyParamCaption}
+)}}\label{read_8c_a3c005bd10f6c4d798ed890a215f8f11c}
+
+
+Definition at line 17 of file read.\-c.
+
+\hypertarget{read_8c_ac87de1f80eadeda8a4c75f2fcca0613c}{\index{read.\-c@{read.\-c}!elf\-\_\-read\-\_\-section\-\_\-by\-\_\-name@{elf\-\_\-read\-\_\-section\-\_\-by\-\_\-name}}
+\index{elf\-\_\-read\-\_\-section\-\_\-by\-\_\-name@{elf\-\_\-read\-\_\-section\-\_\-by\-\_\-name}!read.c@{read.\-c}}
+\subsubsection[{elf\-\_\-read\-\_\-section\-\_\-by\-\_\-name}]{\setlength{\rightskip}{0pt plus 5cm}unsigned char$\ast$ elf\-\_\-read\-\_\-section\-\_\-by\-\_\-name (
+\begin{DoxyParamCaption}
+\item[{F\-I\-L\-E $\ast$}]{fp, }
+\item[{{\bf Elf\-\_\-\-Ehdr}}]{ehdr, }
+\item[{unsigned char $\ast$}]{shstrtab, }
+\item[{unsigned char $\ast$}]{shtab, }
+\item[{size\-\_\-t $\ast$}]{scnsz, }
+\item[{char $\ast$}]{scname}
+\end{DoxyParamCaption}
+)}}\label{read_8c_ac87de1f80eadeda8a4c75f2fcca0613c}
+
+
+Definition at line 80 of file read.\-c.
+
+\hypertarget{read_8c_a0b5f5f658ab8575cbb91b130993927e7}{\index{read.\-c@{read.\-c}!elf\-\_\-read\-\_\-shstrtab@{elf\-\_\-read\-\_\-shstrtab}}
+\index{elf\-\_\-read\-\_\-shstrtab@{elf\-\_\-read\-\_\-shstrtab}!read.c@{read.\-c}}
+\subsubsection[{elf\-\_\-read\-\_\-shstrtab}]{\setlength{\rightskip}{0pt plus 5cm}unsigned char$\ast$ elf\-\_\-read\-\_\-shstrtab (
+\begin{DoxyParamCaption}
+\item[{F\-I\-L\-E $\ast$}]{fp, }
+\item[{{\bf Elf\-\_\-\-Ehdr}}]{ehdr, }
+\item[{unsigned char $\ast$}]{shtab, }
+\item[{size\-\_\-t $\ast$}]{shstrtabsz}
+\end{DoxyParamCaption}
+)}}\label{read_8c_a0b5f5f658ab8575cbb91b130993927e7}
+
+
+Definition at line 239 of file read.\-c.
+
+\hypertarget{read_8c_a55a177de8b48fba22951905774f14232}{\index{read.\-c@{read.\-c}!elf\-\_\-read\-\_\-shtab@{elf\-\_\-read\-\_\-shtab}}
+\index{elf\-\_\-read\-\_\-shtab@{elf\-\_\-read\-\_\-shtab}!read.c@{read.\-c}}
+\subsubsection[{elf\-\_\-read\-\_\-shtab}]{\setlength{\rightskip}{0pt plus 5cm}unsigned char$\ast$ elf\-\_\-read\-\_\-shtab (
+\begin{DoxyParamCaption}
+\item[{F\-I\-L\-E $\ast$}]{fp, }
+\item[{{\bf Elf\-\_\-\-Ehdr}}]{ehdr, }
+\item[{size\-\_\-t $\ast$}]{shnum}
+\end{DoxyParamCaption}
+)}}\label{read_8c_a55a177de8b48fba22951905774f14232}
+
+
+Definition at line 206 of file read.\-c.
+
+\hypertarget{read_8c_ab81fe3a2b430eb1be14b633c6299fb46}{\index{read.\-c@{read.\-c}!elf\-\_\-read\-\_\-strtab@{elf\-\_\-read\-\_\-strtab}}
+\index{elf\-\_\-read\-\_\-strtab@{elf\-\_\-read\-\_\-strtab}!read.c@{read.\-c}}
+\subsubsection[{elf\-\_\-read\-\_\-strtab}]{\setlength{\rightskip}{0pt plus 5cm}unsigned char$\ast$ elf\-\_\-read\-\_\-strtab (
+\begin{DoxyParamCaption}
+\item[{F\-I\-L\-E $\ast$}]{fp, }
+\item[{{\bf Elf\-\_\-\-Ehdr}}]{ehdr, }
+\item[{unsigned char $\ast$}]{shtab, }
+\item[{size\-\_\-t $\ast$}]{strtabsz}
+\end{DoxyParamCaption}
+)}}\label{read_8c_ab81fe3a2b430eb1be14b633c6299fb46}
+
+
+Definition at line 263 of file read.\-c.
+
+\hypertarget{read_8c_ae9e62eb8370e1c840deb71d3de900551}{\index{read.\-c@{read.\-c}!elf\-\_\-read\-\_\-symtab@{elf\-\_\-read\-\_\-symtab}}
+\index{elf\-\_\-read\-\_\-symtab@{elf\-\_\-read\-\_\-symtab}!read.c@{read.\-c}}
+\subsubsection[{elf\-\_\-read\-\_\-symtab}]{\setlength{\rightskip}{0pt plus 5cm}unsigned char$\ast$ elf\-\_\-read\-\_\-symtab (
+\begin{DoxyParamCaption}
+\item[{F\-I\-L\-E $\ast$}]{fp, }
+\item[{{\bf Elf\-\_\-\-Ehdr}}]{ehdr, }
+\item[{unsigned char $\ast$}]{shtab, }
+\item[{size\-\_\-t $\ast$}]{symtabsz}
+\end{DoxyParamCaption}
+)}}\label{read_8c_ae9e62eb8370e1c840deb71d3de900551}
+
+
+Definition at line 36 of file read.\-c.
+

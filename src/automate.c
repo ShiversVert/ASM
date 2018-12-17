@@ -181,6 +181,7 @@ File automate_lexical(File f, char* token, int line_nb, int* cmpt_err){
 			break;
 
 		case S_DOUBLEQUOTE:
+			remove_backslash(token);
 			new_lexeme_cat = CHAINE;
 			break;
 	}
@@ -194,4 +195,21 @@ File automate_lexical(File f, char* token, int line_nb, int* cmpt_err){
 
 	f = enfiler(new_lexeme, f);
 	return(f);
+}
+
+void remove_backslash(char* chaine){
+	int size = strlen(chaine);
+	int c, cmpt_backslash = 0;
+	char chaine_tmp[size]; //strcpy(chaine_tmp, chaine);
+
+	for(c = 0; c<size; c++){
+		if(chaine[c] == '\\' && (chaine[c+1] == '"' || chaine[c+1] == '\\' || chaine[c+1] == 'n') ){ 
+			cmpt_backslash ++;
+			strcpy(chaine_tmp+c, chaine+c+1);
+			strcpy(chaine+c, chaine_tmp+c);
+			if(chaine[c] == 'n') chaine[c] = '\n';
+		}	
+	}
+	chaine[size-1 - cmpt_backslash] = '\0';
+	
 }

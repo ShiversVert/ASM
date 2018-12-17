@@ -32,6 +32,7 @@
 char* getNextToken(char** token, char* current_line) {
     char* start = current_line;
     char* end=NULL;
+    char* backslash = NULL;
     int token_size=0;
 
     /* check input parameter*/

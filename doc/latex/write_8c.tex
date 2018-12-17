@@ -1,0 +1,127 @@
+\hypertarget{write_8c}{\section{/home/phelma/\-Bureau/projet\-\_\-\-Sicom/src/write.c File Reference}
+\label{write_8c}\index{/home/phelma/\-Bureau/projet\-\_\-\-Sicom/src/write.\-c@{/home/phelma/\-Bureau/projet\-\_\-\-Sicom/src/write.\-c}}
+}
+
+
+Write E\-L\-F.  
+
+
+{\ttfamily \#include $<$pelf.\-h$>$}\\*
+\subsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\#define \hyperlink{write_8c_a45cb943d1ea3d1b7496a21ab91897ed0}{E\-L\-F\-\_\-\-R\-E\-L\-O\-C\-A\-T\-A\-B\-L\-E\-\_\-\-N\-S\-E\-C\-T\-I\-O\-N\-S}~9
+\item 
+\#define \hyperlink{write_8c_a50c83efd3592cf17379a0016821c5d68}{W\-I\-T\-H\-\_\-\-S\-E\-C\-T\-I\-O\-N}(name, data)
+\item 
+\#define \hyperlink{write_8c_a123b967d91e583fb00b377328ba78b46}{E\-N\-D\-\_\-\-S\-E\-C\-T\-I\-O\-N}
+\end{DoxyCompactItemize}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+int \hyperlink{write_8c_a8117230d6b73a149f01009e1542955fd}{elf\-\_\-write\-\_\-relocatable} (char $\ast$filename, char $\ast$machinename, int noreorder, unsigned char $\ast$text, unsigned int textsz, unsigned char $\ast$data, unsigned int datasz, unsigned char $\ast$bss, unsigned int bsssz, unsigned char $\ast$shstrtab, unsigned int shstrtabsz, unsigned char $\ast$strtab, unsigned int strtabsz, unsigned char $\ast$symtab, unsigned int symtabsz, unsigned char $\ast$reltext, unsigned int reltextsz, unsigned char $\ast$reldata, unsigned int reldatasz)
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Write E\-L\-F. \begin{DoxyAuthor}{Author}
+François Cayre \href{mailto:francois.cayre@grenoble-inp.fr}{\tt francois.\-cayre@grenoble-\/inp.\-fr} 
+\end{DoxyAuthor}
+\begin{DoxyDate}{Date}
+Sat Sep 23 01\-:35\-:48 2017 Write E\-L\-F. 
+\end{DoxyDate}
+
+
+Definition in file \hyperlink{write_8c_source}{write.\-c}.
+
+
+
+\subsection{Macro Definition Documentation}
+\hypertarget{write_8c_a45cb943d1ea3d1b7496a21ab91897ed0}{\index{write.\-c@{write.\-c}!E\-L\-F\-\_\-\-R\-E\-L\-O\-C\-A\-T\-A\-B\-L\-E\-\_\-\-N\-S\-E\-C\-T\-I\-O\-N\-S@{E\-L\-F\-\_\-\-R\-E\-L\-O\-C\-A\-T\-A\-B\-L\-E\-\_\-\-N\-S\-E\-C\-T\-I\-O\-N\-S}}
+\index{E\-L\-F\-\_\-\-R\-E\-L\-O\-C\-A\-T\-A\-B\-L\-E\-\_\-\-N\-S\-E\-C\-T\-I\-O\-N\-S@{E\-L\-F\-\_\-\-R\-E\-L\-O\-C\-A\-T\-A\-B\-L\-E\-\_\-\-N\-S\-E\-C\-T\-I\-O\-N\-S}!write.c@{write.\-c}}
+\subsubsection[{E\-L\-F\-\_\-\-R\-E\-L\-O\-C\-A\-T\-A\-B\-L\-E\-\_\-\-N\-S\-E\-C\-T\-I\-O\-N\-S}]{\setlength{\rightskip}{0pt plus 5cm}\#define E\-L\-F\-\_\-\-R\-E\-L\-O\-C\-A\-T\-A\-B\-L\-E\-\_\-\-N\-S\-E\-C\-T\-I\-O\-N\-S~9}}\label{write_8c_a45cb943d1ea3d1b7496a21ab91897ed0}
+
+
+Definition at line 15 of file write.\-c.
+
+\hypertarget{write_8c_a123b967d91e583fb00b377328ba78b46}{\index{write.\-c@{write.\-c}!E\-N\-D\-\_\-\-S\-E\-C\-T\-I\-O\-N@{E\-N\-D\-\_\-\-S\-E\-C\-T\-I\-O\-N}}
+\index{E\-N\-D\-\_\-\-S\-E\-C\-T\-I\-O\-N@{E\-N\-D\-\_\-\-S\-E\-C\-T\-I\-O\-N}!write.c@{write.\-c}}
+\subsubsection[{E\-N\-D\-\_\-\-S\-E\-C\-T\-I\-O\-N}]{\setlength{\rightskip}{0pt plus 5cm}\#define E\-N\-D\-\_\-\-S\-E\-C\-T\-I\-O\-N}}\label{write_8c_a123b967d91e583fb00b377328ba78b46}
+{\bfseries Value\-:}
+\begin{DoxyCode}
+prev\_shnum               = shnum;                                       \(\backslash\)
+  if ( shdr[shnum].sh\_size ) \{                                          \(\backslash\)
+  if ( shdr[shnum].sh\_size                                              \(\backslash\)
+       !=                                                               \(\backslash\)
+       fwrite( ptr, 1, shdr[shnum].sh\_size, fp ) ) \{                    \(\backslash\)
+    fprintf( stderr, \textcolor{stringliteral}{"Unable to write section %s.\(\backslash\)n"}, \hyperlink{structsection}{section} ); \(\backslash\)
+    return -1;                                                          \(\backslash\)
+  \}                                                                     \(\backslash\)
+  \}                                                                     \(\backslash\)
+  \}
+\end{DoxyCode}
+
+
+Definition at line 105 of file write.\-c.
+
+\hypertarget{write_8c_a50c83efd3592cf17379a0016821c5d68}{\index{write.\-c@{write.\-c}!W\-I\-T\-H\-\_\-\-S\-E\-C\-T\-I\-O\-N@{W\-I\-T\-H\-\_\-\-S\-E\-C\-T\-I\-O\-N}}
+\index{W\-I\-T\-H\-\_\-\-S\-E\-C\-T\-I\-O\-N@{W\-I\-T\-H\-\_\-\-S\-E\-C\-T\-I\-O\-N}!write.c@{write.\-c}}
+\subsubsection[{W\-I\-T\-H\-\_\-\-S\-E\-C\-T\-I\-O\-N}]{\setlength{\rightskip}{0pt plus 5cm}\#define W\-I\-T\-H\-\_\-\-S\-E\-C\-T\-I\-O\-N(
+\begin{DoxyParamCaption}
+\item[{}]{name, }
+\item[{}]{data}
+\end{DoxyParamCaption}
+)}}\label{write_8c_a50c83efd3592cf17379a0016821c5d68}
+{\bfseries Value\-:}
+\begin{DoxyCode}
+\hyperlink{structsection}{section} = name;                                                  \(\backslash\)
+  ptr     = data;                                                       \(\backslash\)
+  size    = data##sz;                                                   \(\backslash\)
+  if ( ptr ) \{                                                          \(\backslash\)
+    shnum                    = \hyperlink{elf_8c_a121258071616326a56eb0eebc6f05f26}{elf\_get\_string\_index}( shstrtab,              \(\backslash\)
+                                                     shstrtabsz,        \(\backslash\)
+                                                     \hyperlink{structsection}{section} );          \(\backslash\)
+    shdr[shnum].sh\_name      = \hyperlink{elf_8c_a6ae8a68ce46ed263b0ca348480363189}{elf\_get\_string\_offset}( shstrtab,            \(\backslash\)
+                                                      shstrtabsz,       \(\backslash\)
+                                                      \hyperlink{structsection}{section} ); \(\backslash\)
+    shdr[shnum].sh\_addr      = 0;                                       \(\backslash\)
+    shdr[shnum].sh\_offset    = shdr[prev\_shnum].sh\_offset +             \(\backslash\)
+      shdr[prev\_shnum].sh\_size;                                         \(\backslash\)
+    shdr[shnum].sh\_size      = size
+\end{DoxyCode}
+
+
+Definition at line 88 of file write.\-c.
+
+
+
+\subsection{Function Documentation}
+\hypertarget{write_8c_a8117230d6b73a149f01009e1542955fd}{\index{write.\-c@{write.\-c}!elf\-\_\-write\-\_\-relocatable@{elf\-\_\-write\-\_\-relocatable}}
+\index{elf\-\_\-write\-\_\-relocatable@{elf\-\_\-write\-\_\-relocatable}!write.c@{write.\-c}}
+\subsubsection[{elf\-\_\-write\-\_\-relocatable}]{\setlength{\rightskip}{0pt plus 5cm}int elf\-\_\-write\-\_\-relocatable (
+\begin{DoxyParamCaption}
+\item[{char $\ast$}]{filename, }
+\item[{char $\ast$}]{machinename, }
+\item[{int}]{noreorder, }
+\item[{unsigned char $\ast$}]{text, }
+\item[{unsigned int}]{textsz, }
+\item[{unsigned char $\ast$}]{data, }
+\item[{unsigned int}]{datasz, }
+\item[{unsigned char $\ast$}]{bss, }
+\item[{unsigned int}]{bsssz, }
+\item[{unsigned char $\ast$}]{shstrtab, }
+\item[{unsigned int}]{shstrtabsz, }
+\item[{unsigned char $\ast$}]{strtab, }
+\item[{unsigned int}]{strtabsz, }
+\item[{unsigned char $\ast$}]{symtab, }
+\item[{unsigned int}]{symtabsz, }
+\item[{unsigned char $\ast$}]{reltext, }
+\item[{unsigned int}]{reltextsz, }
+\item[{unsigned char $\ast$}]{reldata, }
+\item[{unsigned int}]{reldatasz}
+\end{DoxyParamCaption}
+)}}\label{write_8c_a8117230d6b73a149f01009e1542955fd}
+
+
+Definition at line 392 of file write.\-c.
+

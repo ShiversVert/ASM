@@ -1,0 +1,158 @@
+\hypertarget{endian_8c}{\section{/home/phelma/\-Bureau/projet\-\_\-\-Sicom/src/endian.c File Reference}
+\label{endian_8c}\index{/home/phelma/\-Bureau/projet\-\_\-\-Sicom/src/endian.\-c@{/home/phelma/\-Bureau/projet\-\_\-\-Sicom/src/endian.\-c}}
+}
+
+
+Endianness stuff.  
+
+
+{\ttfamily \#include $<$elf.\-h$>$}\\*
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \hyperlink{endian_8c_aa487fa70ded28571bbdc89cc2a0704b7}{elf32\-\_\-endian\-\_\-flip\-\_\-\-Ehdr} (\hyperlink{struct_elf32___ehdr}{Elf32\-\_\-\-Ehdr} $\ast$header)
+\item 
+void \hyperlink{endian_8c_a522004f91a36cbe4723036f65eab3772}{elf32\-\_\-endian\-\_\-flip\-\_\-\-Shdr} (\hyperlink{struct_elf32___shdr}{Elf32\-\_\-\-Shdr} $\ast$header)
+\item 
+void \hyperlink{endian_8c_ad9596b018a476cc6f35ebdc7d2b7e9fa}{elf64\-\_\-endian\-\_\-flip\-\_\-\-Ehdr} (\hyperlink{struct_elf64___ehdr}{Elf64\-\_\-\-Ehdr} $\ast$header)
+\item 
+void \hyperlink{endian_8c_ab9ffa2bffb195031b40903288ec00686}{elf64\-\_\-endian\-\_\-flip\-\_\-\-Shdr} (\hyperlink{struct_elf64___shdr}{Elf64\-\_\-\-Shdr} $\ast$header)
+\item 
+void \hyperlink{endian_8c_a419d11ffbd951f206d68fc746d7de8e7}{elf32\-\_\-endian\-\_\-flip\-\_\-\-Sym} (\hyperlink{struct_elf32___sym}{Elf32\-\_\-\-Sym} $\ast$sym)
+\item 
+void \hyperlink{endian_8c_aa52190f4afbbd8d10118d6e28ac00221}{elf32\-\_\-endian\-\_\-flip\-\_\-\-Rel} (\hyperlink{struct_elf32___rel}{Elf32\-\_\-\-Rel} $\ast$rel)
+\item 
+void \hyperlink{endian_8c_a7f9012e27ff69f181ee36e88f2062631}{elf32\-\_\-endian\-\_\-flip\-\_\-\-Rela} (\hyperlink{struct_elf32___rela}{Elf32\-\_\-\-Rela} $\ast$rel)
+\item 
+void \hyperlink{endian_8c_a1909de061fc2b9719b43077436a18d82}{elf64\-\_\-endian\-\_\-flip\-\_\-\-Sym} (\hyperlink{struct_elf64___sym}{Elf64\-\_\-\-Sym} $\ast$sym)
+\item 
+void \hyperlink{endian_8c_a72cff94bf6da4885e7c34b23efd56021}{elf64\-\_\-endian\-\_\-flip\-\_\-\-Rel} (\hyperlink{struct_elf64___rel}{Elf64\-\_\-\-Rel} $\ast$rel)
+\item 
+void \hyperlink{endian_8c_a14d9d5119610784ac407c7a3a6bb8fe9}{elf64\-\_\-endian\-\_\-flip\-\_\-\-Rela} (\hyperlink{struct_elf64___rela}{Elf64\-\_\-\-Rela} $\ast$rel)
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Endianness stuff. \begin{DoxyAuthor}{Author}
+François Cayre \href{mailto:francois.cayre@grenoble-inp.fr}{\tt francois.\-cayre@grenoble-\/inp.\-fr} 
+\end{DoxyAuthor}
+\begin{DoxyDate}{Date}
+Fri Sep 22 18\-:43\-:12 2017 Endianness stuff. 
+\end{DoxyDate}
+
+
+Definition in file \hyperlink{endian_8c_source}{endian.\-c}.
+
+
+
+\subsection{Function Documentation}
+\hypertarget{endian_8c_aa487fa70ded28571bbdc89cc2a0704b7}{\index{endian.\-c@{endian.\-c}!elf32\-\_\-endian\-\_\-flip\-\_\-\-Ehdr@{elf32\-\_\-endian\-\_\-flip\-\_\-\-Ehdr}}
+\index{elf32\-\_\-endian\-\_\-flip\-\_\-\-Ehdr@{elf32\-\_\-endian\-\_\-flip\-\_\-\-Ehdr}!endian.c@{endian.\-c}}
+\subsubsection[{elf32\-\_\-endian\-\_\-flip\-\_\-\-Ehdr}]{\setlength{\rightskip}{0pt plus 5cm}void elf32\-\_\-endian\-\_\-flip\-\_\-\-Ehdr (
+\begin{DoxyParamCaption}
+\item[{{\bf Elf32\-\_\-\-Ehdr} $\ast$}]{header}
+\end{DoxyParamCaption}
+)}}\label{endian_8c_aa487fa70ded28571bbdc89cc2a0704b7}
+
+
+Definition at line 50 of file endian.\-c.
+
+\hypertarget{endian_8c_aa52190f4afbbd8d10118d6e28ac00221}{\index{endian.\-c@{endian.\-c}!elf32\-\_\-endian\-\_\-flip\-\_\-\-Rel@{elf32\-\_\-endian\-\_\-flip\-\_\-\-Rel}}
+\index{elf32\-\_\-endian\-\_\-flip\-\_\-\-Rel@{elf32\-\_\-endian\-\_\-flip\-\_\-\-Rel}!endian.c@{endian.\-c}}
+\subsubsection[{elf32\-\_\-endian\-\_\-flip\-\_\-\-Rel}]{\setlength{\rightskip}{0pt plus 5cm}void elf32\-\_\-endian\-\_\-flip\-\_\-\-Rel (
+\begin{DoxyParamCaption}
+\item[{{\bf Elf32\-\_\-\-Rel} $\ast$}]{rel}
+\end{DoxyParamCaption}
+)}}\label{endian_8c_aa52190f4afbbd8d10118d6e28ac00221}
+
+
+Definition at line 116 of file endian.\-c.
+
+\hypertarget{endian_8c_a7f9012e27ff69f181ee36e88f2062631}{\index{endian.\-c@{endian.\-c}!elf32\-\_\-endian\-\_\-flip\-\_\-\-Rela@{elf32\-\_\-endian\-\_\-flip\-\_\-\-Rela}}
+\index{elf32\-\_\-endian\-\_\-flip\-\_\-\-Rela@{elf32\-\_\-endian\-\_\-flip\-\_\-\-Rela}!endian.c@{endian.\-c}}
+\subsubsection[{elf32\-\_\-endian\-\_\-flip\-\_\-\-Rela}]{\setlength{\rightskip}{0pt plus 5cm}void elf32\-\_\-endian\-\_\-flip\-\_\-\-Rela (
+\begin{DoxyParamCaption}
+\item[{{\bf Elf32\-\_\-\-Rela} $\ast$}]{rel}
+\end{DoxyParamCaption}
+)}}\label{endian_8c_a7f9012e27ff69f181ee36e88f2062631}
+
+
+Definition at line 121 of file endian.\-c.
+
+\hypertarget{endian_8c_a522004f91a36cbe4723036f65eab3772}{\index{endian.\-c@{endian.\-c}!elf32\-\_\-endian\-\_\-flip\-\_\-\-Shdr@{elf32\-\_\-endian\-\_\-flip\-\_\-\-Shdr}}
+\index{elf32\-\_\-endian\-\_\-flip\-\_\-\-Shdr@{elf32\-\_\-endian\-\_\-flip\-\_\-\-Shdr}!endian.c@{endian.\-c}}
+\subsubsection[{elf32\-\_\-endian\-\_\-flip\-\_\-\-Shdr}]{\setlength{\rightskip}{0pt plus 5cm}void elf32\-\_\-endian\-\_\-flip\-\_\-\-Shdr (
+\begin{DoxyParamCaption}
+\item[{{\bf Elf32\-\_\-\-Shdr} $\ast$}]{header}
+\end{DoxyParamCaption}
+)}}\label{endian_8c_a522004f91a36cbe4723036f65eab3772}
+
+
+Definition at line 66 of file endian.\-c.
+
+\hypertarget{endian_8c_a419d11ffbd951f206d68fc746d7de8e7}{\index{endian.\-c@{endian.\-c}!elf32\-\_\-endian\-\_\-flip\-\_\-\-Sym@{elf32\-\_\-endian\-\_\-flip\-\_\-\-Sym}}
+\index{elf32\-\_\-endian\-\_\-flip\-\_\-\-Sym@{elf32\-\_\-endian\-\_\-flip\-\_\-\-Sym}!endian.c@{endian.\-c}}
+\subsubsection[{elf32\-\_\-endian\-\_\-flip\-\_\-\-Sym}]{\setlength{\rightskip}{0pt plus 5cm}void elf32\-\_\-endian\-\_\-flip\-\_\-\-Sym (
+\begin{DoxyParamCaption}
+\item[{{\bf Elf32\-\_\-\-Sym} $\ast$}]{sym}
+\end{DoxyParamCaption}
+)}}\label{endian_8c_a419d11ffbd951f206d68fc746d7de8e7}
+
+
+Definition at line 109 of file endian.\-c.
+
+\hypertarget{endian_8c_ad9596b018a476cc6f35ebdc7d2b7e9fa}{\index{endian.\-c@{endian.\-c}!elf64\-\_\-endian\-\_\-flip\-\_\-\-Ehdr@{elf64\-\_\-endian\-\_\-flip\-\_\-\-Ehdr}}
+\index{elf64\-\_\-endian\-\_\-flip\-\_\-\-Ehdr@{elf64\-\_\-endian\-\_\-flip\-\_\-\-Ehdr}!endian.c@{endian.\-c}}
+\subsubsection[{elf64\-\_\-endian\-\_\-flip\-\_\-\-Ehdr}]{\setlength{\rightskip}{0pt plus 5cm}void elf64\-\_\-endian\-\_\-flip\-\_\-\-Ehdr (
+\begin{DoxyParamCaption}
+\item[{{\bf Elf64\-\_\-\-Ehdr} $\ast$}]{header}
+\end{DoxyParamCaption}
+)}}\label{endian_8c_ad9596b018a476cc6f35ebdc7d2b7e9fa}
+
+
+Definition at line 80 of file endian.\-c.
+
+\hypertarget{endian_8c_a72cff94bf6da4885e7c34b23efd56021}{\index{endian.\-c@{endian.\-c}!elf64\-\_\-endian\-\_\-flip\-\_\-\-Rel@{elf64\-\_\-endian\-\_\-flip\-\_\-\-Rel}}
+\index{elf64\-\_\-endian\-\_\-flip\-\_\-\-Rel@{elf64\-\_\-endian\-\_\-flip\-\_\-\-Rel}!endian.c@{endian.\-c}}
+\subsubsection[{elf64\-\_\-endian\-\_\-flip\-\_\-\-Rel}]{\setlength{\rightskip}{0pt plus 5cm}void elf64\-\_\-endian\-\_\-flip\-\_\-\-Rel (
+\begin{DoxyParamCaption}
+\item[{{\bf Elf64\-\_\-\-Rel} $\ast$}]{rel}
+\end{DoxyParamCaption}
+)}}\label{endian_8c_a72cff94bf6da4885e7c34b23efd56021}
+
+
+Definition at line 135 of file endian.\-c.
+
+\hypertarget{endian_8c_a14d9d5119610784ac407c7a3a6bb8fe9}{\index{endian.\-c@{endian.\-c}!elf64\-\_\-endian\-\_\-flip\-\_\-\-Rela@{elf64\-\_\-endian\-\_\-flip\-\_\-\-Rela}}
+\index{elf64\-\_\-endian\-\_\-flip\-\_\-\-Rela@{elf64\-\_\-endian\-\_\-flip\-\_\-\-Rela}!endian.c@{endian.\-c}}
+\subsubsection[{elf64\-\_\-endian\-\_\-flip\-\_\-\-Rela}]{\setlength{\rightskip}{0pt plus 5cm}void elf64\-\_\-endian\-\_\-flip\-\_\-\-Rela (
+\begin{DoxyParamCaption}
+\item[{{\bf Elf64\-\_\-\-Rela} $\ast$}]{rel}
+\end{DoxyParamCaption}
+)}}\label{endian_8c_a14d9d5119610784ac407c7a3a6bb8fe9}
+
+
+Definition at line 139 of file endian.\-c.
+
+\hypertarget{endian_8c_ab9ffa2bffb195031b40903288ec00686}{\index{endian.\-c@{endian.\-c}!elf64\-\_\-endian\-\_\-flip\-\_\-\-Shdr@{elf64\-\_\-endian\-\_\-flip\-\_\-\-Shdr}}
+\index{elf64\-\_\-endian\-\_\-flip\-\_\-\-Shdr@{elf64\-\_\-endian\-\_\-flip\-\_\-\-Shdr}!endian.c@{endian.\-c}}
+\subsubsection[{elf64\-\_\-endian\-\_\-flip\-\_\-\-Shdr}]{\setlength{\rightskip}{0pt plus 5cm}void elf64\-\_\-endian\-\_\-flip\-\_\-\-Shdr (
+\begin{DoxyParamCaption}
+\item[{{\bf Elf64\-\_\-\-Shdr} $\ast$}]{header}
+\end{DoxyParamCaption}
+)}}\label{endian_8c_ab9ffa2bffb195031b40903288ec00686}
+
+
+Definition at line 96 of file endian.\-c.
+
+\hypertarget{endian_8c_a1909de061fc2b9719b43077436a18d82}{\index{endian.\-c@{endian.\-c}!elf64\-\_\-endian\-\_\-flip\-\_\-\-Sym@{elf64\-\_\-endian\-\_\-flip\-\_\-\-Sym}}
+\index{elf64\-\_\-endian\-\_\-flip\-\_\-\-Sym@{elf64\-\_\-endian\-\_\-flip\-\_\-\-Sym}!endian.c@{endian.\-c}}
+\subsubsection[{elf64\-\_\-endian\-\_\-flip\-\_\-\-Sym}]{\setlength{\rightskip}{0pt plus 5cm}void elf64\-\_\-endian\-\_\-flip\-\_\-\-Sym (
+\begin{DoxyParamCaption}
+\item[{{\bf Elf64\-\_\-\-Sym} $\ast$}]{sym}
+\end{DoxyParamCaption}
+)}}\label{endian_8c_a1909de061fc2b9719b43077436a18d82}
+
+
+Definition at line 128 of file endian.\-c.
+

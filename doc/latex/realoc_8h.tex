@@ -1,0 +1,114 @@
+\hypertarget{realoc_8h}{\section{/home/phelma/\-Bureau/projet\-\_\-\-Sicom/include/realoc.h File Reference}
+\label{realoc_8h}\index{/home/phelma/\-Bureau/projet\-\_\-\-Sicom/include/realoc.\-h@{/home/phelma/\-Bureau/projet\-\_\-\-Sicom/include/realoc.\-h}}
+}
+{\ttfamily \#include $<$stdio.\-h$>$}\\*
+{\ttfamily \#include $<$stdlib.\-h$>$}\\*
+{\ttfamily \#include $<$strings.\-h$>$}\\*
+{\ttfamily \#include $<$ctype.\-h$>$}\\*
+{\ttfamily \#include $<$global.\-h$>$}\\*
+{\ttfamily \#include $<$string.\-h$>$}\\*
+{\ttfamily \#include $<$types.\-h$>$}\\*
+{\ttfamily \#include $<$liste.\-h$>$}\\*
+{\ttfamily \#include $<$file.\-h$>$}\\*
+{\ttfamily \#include $<$notify.\-h$>$}\\*
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \hyperlink{realoc_8h_a12d10f032682410dbffb8eb1ce9dddda}{ajout\-\_\-maillon\-\_\-realoc} (\hyperlink{types_8h_af7ef87d0454864b6fbf214bdd4ec3165}{O\-P\-E\-R\-A\-N\-D\-E} $\ast$p\-\_\-op, \hyperlink{file_8h_ab04aa57a6150b637aa20235ca023731e}{File} $\ast$p\-\_\-file\-\_\-realoc, \hyperlink{types_8h_aeb4098ae19b2f9e7374c3aae4bf639f7}{type\-\_\-realoc} type, \hyperlink{types_8h_a706120c40630aa23c560dd0144b0f2c0}{zone\-\_\-symb} zone, double decalage, \hyperlink{file_8h_ab04aa57a6150b637aa20235ca023731e}{File} file\-\_\-text)
+\item 
+void \hyperlink{realoc_8h_a5c8b3e90e73750a4604b58a8cbe23f89}{zone\-\_\-def\-\_\-symb\-\_\-realoc} (\hyperlink{file_8h_ab04aa57a6150b637aa20235ca023731e}{File} $\ast$p\-\_\-file\-\_\-realoc, \hyperlink{file_8h_ab04aa57a6150b637aa20235ca023731e}{File} $\ast$p\-\_\-file\-\_\-\-Symb, long $\ast$p\-\_\-taille\-\_\-symb, \hyperlink{file_8h_ab04aa57a6150b637aa20235ca023731e}{File} file\-\_\-\-Dic)
+\item 
+void \hyperlink{realoc_8h_a50f03448a650fb8a4936d2b5215958cb}{reallocation\-\_\-offset} (\hyperlink{file_8h_ab04aa57a6150b637aa20235ca023731e}{File} $\ast$p\-\_\-file\-\_\-realoc\-\_\-offset, \hyperlink{file_8h_ab04aa57a6150b637aa20235ca023731e}{File} $\ast$p\-\_\-file\-\_\-\-Symb, long $\ast$p\-\_\-taille\-\_\-symb, \hyperlink{file_8h_ab04aa57a6150b637aa20235ca023731e}{File} file\-\_\-\-Dic)
+\item 
+int \hyperlink{realoc_8h_a2d5747b503a82723c8efbe4fe8c02dd6}{remplace\-\_\-realoc} (\hyperlink{file_8h_ab04aa57a6150b637aa20235ca023731e}{File} $\ast$p\-\_\-file\-\_\-\-Symb, \hyperlink{types_8h_a36cf755c818d344f45cea3d36cf6ab66}{R\-E\-A\-L\-O\-C} maillon\-\_\-realoc, long $\ast$p\-\_\-taille\-\_\-symb, \hyperlink{file_8h_ab04aa57a6150b637aa20235ca023731e}{File} file\-\_\-\-Dic)
+\item 
+int \hyperlink{realoc_8h_a9617dd94ca0b0cb7cda7bf3c7853400e}{remplace\-\_\-realoc\-\_\-offset} (\hyperlink{file_8h_ab04aa57a6150b637aa20235ca023731e}{File} $\ast$p\-\_\-file\-\_\-\-Symb, \hyperlink{types_8h_af7ef87d0454864b6fbf214bdd4ec3165}{O\-P\-E\-R\-A\-N\-D\-E} $\ast$p\-\_\-op, long $\ast$p\-\_\-taille\-\_\-symb, \hyperlink{file_8h_ab04aa57a6150b637aa20235ca023731e}{File} file\-\_\-text)
+\end{DoxyCompactItemize}
+
+
+\subsection{Function Documentation}
+\hypertarget{realoc_8h_a12d10f032682410dbffb8eb1ce9dddda}{\index{realoc.\-h@{realoc.\-h}!ajout\-\_\-maillon\-\_\-realoc@{ajout\-\_\-maillon\-\_\-realoc}}
+\index{ajout\-\_\-maillon\-\_\-realoc@{ajout\-\_\-maillon\-\_\-realoc}!realoc.h@{realoc.\-h}}
+\subsubsection[{ajout\-\_\-maillon\-\_\-realoc}]{\setlength{\rightskip}{0pt plus 5cm}void ajout\-\_\-maillon\-\_\-realoc (
+\begin{DoxyParamCaption}
+\item[{{\bf O\-P\-E\-R\-A\-N\-D\-E} $\ast$}]{p\-\_\-op, }
+\item[{{\bf File} $\ast$}]{p\-\_\-file\-\_\-realoc, }
+\item[{{\bf type\-\_\-realoc}}]{type, }
+\item[{{\bf zone\-\_\-symb}}]{zone, }
+\item[{double}]{decalage, }
+\item[{{\bf File}}]{file\-\_\-text}
+\end{DoxyParamCaption}
+)}}\label{realoc_8h_a12d10f032682410dbffb8eb1ce9dddda}
+Aoute l'operande a reallouer a la file de realoc\-\_\-offset si c'est un offset a la file de realoc sinon
+
+
+\begin{DoxyParams}{Parameters}
+{\em p\-\_\-op} & \mbox{[}description\mbox{]} \\
+\hline
+{\em p\-\_\-file\-\_\-realoc} & Pointeur sur la File a laquelle on ajoute le maillon a reallouer Si on realloue un type offset, il faut passer en parametre la file file\-\_\-realoc\-\_\-offset \\
+\hline
+{\em type} & Type de realloc a faire -\/$>$ depend de du type de l'operande dans le dictionnaire \\
+\hline
+{\em zone} & Zone ou est definie l'operande /!\textbackslash{} (et pas le symbole) \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 12 of file realoc.\-c.
+
+\hypertarget{realoc_8h_a50f03448a650fb8a4936d2b5215958cb}{\index{realoc.\-h@{realoc.\-h}!reallocation\-\_\-offset@{reallocation\-\_\-offset}}
+\index{reallocation\-\_\-offset@{reallocation\-\_\-offset}!realoc.h@{realoc.\-h}}
+\subsubsection[{reallocation\-\_\-offset}]{\setlength{\rightskip}{0pt plus 5cm}void reallocation\-\_\-offset (
+\begin{DoxyParamCaption}
+\item[{{\bf File} $\ast$}]{p\-\_\-file\-\_\-realoc\-\_\-offset, }
+\item[{{\bf File} $\ast$}]{p\-\_\-file\-\_\-\-Symb, }
+\item[{long $\ast$}]{p\-\_\-taille\-\_\-symb, }
+\item[{{\bf File}}]{file\-\_\-\-Dic}
+\end{DoxyParamCaption}
+)}}\label{realoc_8h_a50f03448a650fb8a4936d2b5215958cb}
+Permet de parcourir uniquement la liste d'operande S\-Y\-M\-B qui ontdoivent avoir des offset comme operandes et les remplacer 
+
+Definition at line 41 of file realoc.\-c.
+
+\hypertarget{realoc_8h_a2d5747b503a82723c8efbe4fe8c02dd6}{\index{realoc.\-h@{realoc.\-h}!remplace\-\_\-realoc@{remplace\-\_\-realoc}}
+\index{remplace\-\_\-realoc@{remplace\-\_\-realoc}!realoc.h@{realoc.\-h}}
+\subsubsection[{remplace\-\_\-realoc}]{\setlength{\rightskip}{0pt plus 5cm}int remplace\-\_\-realoc (
+\begin{DoxyParamCaption}
+\item[{{\bf File} $\ast$}]{p\-\_\-file\-\_\-\-Symb, }
+\item[{{\bf R\-E\-A\-L\-O\-C}}]{maillon\-\_\-realoc, }
+\item[{long $\ast$}]{p\-\_\-taille\-\_\-symb, }
+\item[{{\bf File}}]{file\-\_\-\-Dic}
+\end{DoxyParamCaption}
+)}}\label{realoc_8h_a2d5747b503a82723c8efbe4fe8c02dd6}
+
+
+Definition at line 57 of file realoc.\-c.
+
+\hypertarget{realoc_8h_a9617dd94ca0b0cb7cda7bf3c7853400e}{\index{realoc.\-h@{realoc.\-h}!remplace\-\_\-realoc\-\_\-offset@{remplace\-\_\-realoc\-\_\-offset}}
+\index{remplace\-\_\-realoc\-\_\-offset@{remplace\-\_\-realoc\-\_\-offset}!realoc.h@{realoc.\-h}}
+\subsubsection[{remplace\-\_\-realoc\-\_\-offset}]{\setlength{\rightskip}{0pt plus 5cm}int remplace\-\_\-realoc\-\_\-offset (
+\begin{DoxyParamCaption}
+\item[{{\bf File} $\ast$}]{p\-\_\-file\-\_\-\-Symb, }
+\item[{{\bf O\-P\-E\-R\-A\-N\-D\-E} $\ast$}]{p\-\_\-op, }
+\item[{long $\ast$}]{p\-\_\-taille\-\_\-symb, }
+\item[{{\bf File}}]{file\-\_\-text}
+\end{DoxyParamCaption}
+)}}\label{realoc_8h_a9617dd94ca0b0cb7cda7bf3c7853400e}
+
+
+Definition at line 92 of file realoc.\-c.
+
+\hypertarget{realoc_8h_a5c8b3e90e73750a4604b58a8cbe23f89}{\index{realoc.\-h@{realoc.\-h}!zone\-\_\-def\-\_\-symb\-\_\-realoc@{zone\-\_\-def\-\_\-symb\-\_\-realoc}}
+\index{zone\-\_\-def\-\_\-symb\-\_\-realoc@{zone\-\_\-def\-\_\-symb\-\_\-realoc}!realoc.h@{realoc.\-h}}
+\subsubsection[{zone\-\_\-def\-\_\-symb\-\_\-realoc}]{\setlength{\rightskip}{0pt plus 5cm}void zone\-\_\-def\-\_\-symb\-\_\-realoc (
+\begin{DoxyParamCaption}
+\item[{{\bf File} $\ast$}]{p\-\_\-file\-\_\-realoc, }
+\item[{{\bf File} $\ast$}]{p\-\_\-file\-\_\-\-Symb, }
+\item[{long $\ast$}]{p\-\_\-taille\-\_\-symb, }
+\item[{{\bf File}}]{file\-\_\-\-Dic}
+\end{DoxyParamCaption}
+)}}\label{realoc_8h_a5c8b3e90e73750a4604b58a8cbe23f89}
+Parcous la file de realoc a la fin de la passe grammaticale pour mettre la zone de D\-E\-F\-I\-N\-I\-T\-I\-O\-N du symbole 
+
+Definition at line 26 of file realoc.\-c.
+

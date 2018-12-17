@@ -576,6 +576,9 @@ void calcul_decalage_Data(File* p_file_Data, DATA* p_new_maillon, double* p_offs
 			if (op_temp->type==OPER_DECIMAL){ /*Si l'opperande est bien un nombre*/
 				(*p_offset_data) += atof(op_temp->chain);
 			}
+			else if (op_temp->type==OPER_HEXA){
+				(*p_offset_data) += strtol(op_temp->chain, NULL, 16);	
+			}
 			else{
 				(*p_new_maillon)->type = DATA_ERROR;
 				WARNING_MSG("Erreur ligne %.0lf, l'operande %d n'est pas un nombre\n", (*p_new_maillon)->line_nb, cmpt_operande);
@@ -678,15 +681,18 @@ void calcul_decalage_Bss(File* p_file_Bss, BSS* p_new_maillon, double* p_offset_
  			if (op_temp->type==OPER_DECIMAL){ /*Si l'opperande est bien un nombre*/
  				(*p_offset_bss) += atof(op_temp->chain);
  			}
+ 			else if (op_temp->type==OPER_HEXA){ /*Si l'opperande est bien un nombre*/
+ 				(*p_offset_bss) += strtol(op_temp->chain, NULL, 16);
+ 			}
  			else{
  				(*p_new_maillon)->type = DATA_ERROR;
- 				WARNING_MSG("Erreur ligne %.0lf, l'operande %d n'est pas un nombre", (*p_new_maillon)->line_nb, cmpt_operande);
+ 				WARNING_MSG("Erreur ligne %.0lf, l'operande %d n'est pas un nombre\n", (*p_new_maillon)->line_nb, cmpt_operande);
  				(*p_cmpt_err)++;
  			}
  		}
 
  		else{
- 			WARNING_MSG("Operateur : \"%s\" non reconnu dans un .bss", (*p_new_maillon)->operateur);
+ 			WARNING_MSG("Operateur : \"%s\" non reconnu dans un .bss\n", (*p_new_maillon)->operateur);
  			(*p_cmpt_err)++;
  			break;
  		}

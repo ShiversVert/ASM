@@ -1,0 +1,145 @@
+\hypertarget{section_8c}{\section{/home/phelma/\-Bureau/projet\-\_\-\-Sicom/src/section.c File Reference}
+\label{section_8c}\index{/home/phelma/\-Bureau/projet\-\_\-\-Sicom/src/section.\-c@{/home/phelma/\-Bureau/projet\-\_\-\-Sicom/src/section.\-c}}
+}
+
+
+Sections.  
+
+
+{\ttfamily \#include $<$stdlib.\-h$>$}\\*
+{\ttfamily \#include $<$string.\-h$>$}\\*
+{\ttfamily \#include $<$section.\-h$>$}\\*
+{\ttfamily \#include $<$pelf.\-h$>$}\\*
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{structsection}{section} \hyperlink{section_8c_aaf14ced002b1c9d13ce14dfcfc31adad}{new\-\_\-section} (char $\ast$name, unsigned int sz)
+\item 
+void \hyperlink{section_8c_a2fa3058c87ad259604ad926489c17c3b}{print\-\_\-section} (\hyperlink{structsection}{section} s)
+\begin{DoxyCompactList}\small\item\em utility function to print out section information \end{DoxyCompactList}\item 
+int \hyperlink{section_8c_ad68a8cf72b9d61d14688ecaf5873ead4}{grow\-\_\-section} (\hyperlink{structsection}{section} s, unsigned int increment)
+\begin{DoxyCompactList}\small\item\em utility function to move the current section data to a bigger space \end{DoxyCompactList}\item 
+int \hyperlink{section_8c_ad4368da2275bd56d4a9d5798978f8e50}{write\-\_\-section} (\hyperlink{structsection}{section} s, unsigned char $\ast$bytes, unsigned int nbytes, unsigned int offset)
+\begin{DoxyCompactList}\small\item\em writes data into the section \end{DoxyCompactList}\item 
+void \hyperlink{section_8c_ab95c7711b23b206e5fce54e109cb989d}{del\-\_\-section} (\hyperlink{structsection}{section} s)
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Sections. \begin{DoxyAuthor}{Author}
+François Cayre \href{mailto:francois.cayre@grenoble-inp.fr}{\tt francois.\-cayre@grenoble-\/inp.\-fr} 
+\end{DoxyAuthor}
+\begin{DoxyDate}{Date}
+Wed Sep 20 11\-:15\-:28 2017 
+\end{DoxyDate}
+\begin{DoxyAuthor}{Author}
+François Portet 
+\end{DoxyAuthor}
+\begin{DoxyDate}{Date}
+Nov 20, 2018 Sections. 
+\end{DoxyDate}
+
+
+Definition in file \hyperlink{section_8c_source}{section.\-c}.
+
+
+
+\subsection{Function Documentation}
+\hypertarget{section_8c_ab95c7711b23b206e5fce54e109cb989d}{\index{section.\-c@{section.\-c}!del\-\_\-section@{del\-\_\-section}}
+\index{del\-\_\-section@{del\-\_\-section}!section.c@{section.\-c}}
+\subsubsection[{del\-\_\-section}]{\setlength{\rightskip}{0pt plus 5cm}void del\-\_\-section (
+\begin{DoxyParamCaption}
+\item[{{\bf section}}]{s}
+\end{DoxyParamCaption}
+)}}\label{section_8c_ab95c7711b23b206e5fce54e109cb989d}
+Frees all memory allocated to the section 
+
+Definition at line 112 of file section.\-c.
+
+\hypertarget{section_8c_ad68a8cf72b9d61d14688ecaf5873ead4}{\index{section.\-c@{section.\-c}!grow\-\_\-section@{grow\-\_\-section}}
+\index{grow\-\_\-section@{grow\-\_\-section}!section.c@{section.\-c}}
+\subsubsection[{grow\-\_\-section}]{\setlength{\rightskip}{0pt plus 5cm}int grow\-\_\-section (
+\begin{DoxyParamCaption}
+\item[{{\bf section}}]{s, }
+\item[{unsigned int}]{increment}
+\end{DoxyParamCaption}
+)}}\label{section_8c_ad68a8cf72b9d61d14688ecaf5873ead4}
+
+
+utility function to move the current section data to a bigger space 
+
+
+\begin{DoxyParams}{Parameters}
+{\em s} & the section to grow \\
+\hline
+{\em increment} & the number of bytes to add to the current size \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 75 of file section.\-c.
+
+\hypertarget{section_8c_aaf14ced002b1c9d13ce14dfcfc31adad}{\index{section.\-c@{section.\-c}!new\-\_\-section@{new\-\_\-section}}
+\index{new\-\_\-section@{new\-\_\-section}!section.c@{section.\-c}}
+\subsubsection[{new\-\_\-section}]{\setlength{\rightskip}{0pt plus 5cm}{\bf section} new\-\_\-section (
+\begin{DoxyParamCaption}
+\item[{char $\ast$}]{name, }
+\item[{unsigned int}]{sz}
+\end{DoxyParamCaption}
+)}}\label{section_8c_aaf14ced002b1c9d13ce14dfcfc31adad}
+Creates a new section of a specific size and name 
+\begin{DoxyParams}{Parameters}
+{\em name} & name of the section to create \\
+\hline
+{\em sz} & tentative size of the section \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+the section of at least sz size
+\end{DoxyReturn}
+the section is a binary data structure that manages size by buffer of S\-E\-C\-T\-I\-O\-N\-\_\-\-C\-H\-U\-N\-K size 
+
+Definition at line 30 of file section.\-c.
+
+\hypertarget{section_8c_a2fa3058c87ad259604ad926489c17c3b}{\index{section.\-c@{section.\-c}!print\-\_\-section@{print\-\_\-section}}
+\index{print\-\_\-section@{print\-\_\-section}!section.c@{section.\-c}}
+\subsubsection[{print\-\_\-section}]{\setlength{\rightskip}{0pt plus 5cm}void print\-\_\-section (
+\begin{DoxyParamCaption}
+\item[{{\bf section}}]{s}
+\end{DoxyParamCaption}
+)}}\label{section_8c_a2fa3058c87ad259604ad926489c17c3b}
+
+
+utility function to print out section information 
+
+
+
+Definition at line 44 of file section.\-c.
+
+\hypertarget{section_8c_ad4368da2275bd56d4a9d5798978f8e50}{\index{section.\-c@{section.\-c}!write\-\_\-section@{write\-\_\-section}}
+\index{write\-\_\-section@{write\-\_\-section}!section.c@{section.\-c}}
+\subsubsection[{write\-\_\-section}]{\setlength{\rightskip}{0pt plus 5cm}int write\-\_\-section (
+\begin{DoxyParamCaption}
+\item[{{\bf section}}]{s, }
+\item[{unsigned char $\ast$}]{bytes, }
+\item[{unsigned int}]{nbytes, }
+\item[{unsigned int}]{offset}
+\end{DoxyParamCaption}
+)}}\label{section_8c_ad4368da2275bd56d4a9d5798978f8e50}
+
+
+writes data into the section 
+
+
+\begin{DoxyParams}{Parameters}
+{\em s} & the section to write data to \\
+\hline
+{\em bytes} & the raw data to write into the section \\
+\hline
+{\em offset} & offset from the start of the section to write to \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 92 of file section.\-c.
+

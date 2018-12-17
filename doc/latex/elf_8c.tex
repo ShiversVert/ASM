@@ -1,0 +1,187 @@
+\hypertarget{elf_8c}{\section{/home/phelma/\-Bureau/projet\-\_\-\-Sicom/src/elf.c File Reference}
+\label{elf_8c}\index{/home/phelma/\-Bureau/projet\-\_\-\-Sicom/src/elf.\-c@{/home/phelma/\-Bureau/projet\-\_\-\-Sicom/src/elf.\-c}}
+}
+
+
+E\-L\-F stuff.  
+
+
+{\ttfamily \#include $<$pelf.\-h$>$}\\*
+{\ttfamily \#include $<$stdio.\-h$>$}\\*
+{\ttfamily \#include $<$string.\-h$>$}\\*
+\subsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\#define \hyperlink{elf_8c_aa0f0e94fbf8485b402f62a31936aa102}{catch\-\_\-arch\-\_\-name}(arch, value)~if ( !strcasecmp( arch, machinename ) ) return value;
+\end{DoxyCompactItemize}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+int \hyperlink{elf_8c_a6ae8a68ce46ed263b0ca348480363189}{elf\-\_\-get\-\_\-string\-\_\-offset} (unsigned char $\ast$table, size\-\_\-t size, char $\ast$string)
+\item 
+int \hyperlink{elf_8c_a121258071616326a56eb0eebc6f05f26}{elf\-\_\-get\-\_\-string\-\_\-index} (unsigned char $\ast$table, size\-\_\-t size, char $\ast$string)
+\item 
+char $\ast$ \hyperlink{elf_8c_a38bbccb662caacfe07fb3b2710ad7933}{elf\-\_\-next\-\_\-string} (unsigned char $\ast$table, size\-\_\-t length, char $\ast$$\ast$str)
+\item 
+int \hyperlink{elf_8c_a20922f7928f1859a035b15c8fccf76c6}{elf\-\_\-get\-\_\-machine} (char $\ast$machinename)
+\item 
+int \hyperlink{elf_8c_afe18a099c298f22889f4259a74bcf2e4}{elf\-\_\-get\-\_\-machine\-\_\-class} (unsigned int machine)
+\item 
+int \hyperlink{elf_8c_a7ef1e50c523c312c345db5095c69bdbe}{elf\-\_\-get\-\_\-machine\-\_\-endianness} (unsigned int machine)
+\item 
+int \hyperlink{elf_8c_a17803f4c94d2ec424f1178201c91f580}{elf\-\_\-get\-\_\-machine\-\_\-ehsize} (unsigned int machine)
+\item 
+int \hyperlink{elf_8c_a277dac9e069d92d850f0df4a40609867}{elf\-\_\-get\-\_\-machine\-\_\-phentsize} (unsigned int machine)
+\item 
+int \hyperlink{elf_8c_a67a1ace836015c92bfd7aab1150c33d3}{elf\-\_\-get\-\_\-machine\-\_\-shentsize} (unsigned int machine)
+\item 
+int \hyperlink{elf_8c_ac9c1b9f210c22e0573a310837fb4f890}{elf\-\_\-reloc\-\_\-num} (unsigned int machine, char $\ast$rname)
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+E\-L\-F stuff. \begin{DoxyAuthor}{Author}
+François Cayre \href{mailto:francois.cayre@grenoble-inp.fr}{\tt francois.\-cayre@grenoble-\/inp.\-fr} 
+\end{DoxyAuthor}
+\begin{DoxyDate}{Date}
+Thu Sep 21 19\-:39\-:37 2017 E\-L\-F stuffs. 
+\end{DoxyDate}
+
+
+Definition in file \hyperlink{elf_8c_source}{elf.\-c}.
+
+
+
+\subsection{Macro Definition Documentation}
+\hypertarget{elf_8c_aa0f0e94fbf8485b402f62a31936aa102}{\index{elf.\-c@{elf.\-c}!catch\-\_\-arch\-\_\-name@{catch\-\_\-arch\-\_\-name}}
+\index{catch\-\_\-arch\-\_\-name@{catch\-\_\-arch\-\_\-name}!elf.c@{elf.\-c}}
+\subsubsection[{catch\-\_\-arch\-\_\-name}]{\setlength{\rightskip}{0pt plus 5cm}\#define catch\-\_\-arch\-\_\-name(
+\begin{DoxyParamCaption}
+\item[{}]{arch, }
+\item[{}]{value}
+\end{DoxyParamCaption}
+)~if ( !strcasecmp( arch, machinename ) ) return value;}}\label{elf_8c_aa0f0e94fbf8485b402f62a31936aa102}
+
+
+Definition at line 71 of file elf.\-c.
+
+
+
+\subsection{Function Documentation}
+\hypertarget{elf_8c_a20922f7928f1859a035b15c8fccf76c6}{\index{elf.\-c@{elf.\-c}!elf\-\_\-get\-\_\-machine@{elf\-\_\-get\-\_\-machine}}
+\index{elf\-\_\-get\-\_\-machine@{elf\-\_\-get\-\_\-machine}!elf.c@{elf.\-c}}
+\subsubsection[{elf\-\_\-get\-\_\-machine}]{\setlength{\rightskip}{0pt plus 5cm}int elf\-\_\-get\-\_\-machine (
+\begin{DoxyParamCaption}
+\item[{char $\ast$}]{machinename}
+\end{DoxyParamCaption}
+)}}\label{elf_8c_a20922f7928f1859a035b15c8fccf76c6}
+
+
+Definition at line 74 of file elf.\-c.
+
+\hypertarget{elf_8c_afe18a099c298f22889f4259a74bcf2e4}{\index{elf.\-c@{elf.\-c}!elf\-\_\-get\-\_\-machine\-\_\-class@{elf\-\_\-get\-\_\-machine\-\_\-class}}
+\index{elf\-\_\-get\-\_\-machine\-\_\-class@{elf\-\_\-get\-\_\-machine\-\_\-class}!elf.c@{elf.\-c}}
+\subsubsection[{elf\-\_\-get\-\_\-machine\-\_\-class}]{\setlength{\rightskip}{0pt plus 5cm}int elf\-\_\-get\-\_\-machine\-\_\-class (
+\begin{DoxyParamCaption}
+\item[{unsigned int}]{machine}
+\end{DoxyParamCaption}
+)}}\label{elf_8c_afe18a099c298f22889f4259a74bcf2e4}
+
+
+Definition at line 126 of file elf.\-c.
+
+\hypertarget{elf_8c_a17803f4c94d2ec424f1178201c91f580}{\index{elf.\-c@{elf.\-c}!elf\-\_\-get\-\_\-machine\-\_\-ehsize@{elf\-\_\-get\-\_\-machine\-\_\-ehsize}}
+\index{elf\-\_\-get\-\_\-machine\-\_\-ehsize@{elf\-\_\-get\-\_\-machine\-\_\-ehsize}!elf.c@{elf.\-c}}
+\subsubsection[{elf\-\_\-get\-\_\-machine\-\_\-ehsize}]{\setlength{\rightskip}{0pt plus 5cm}int elf\-\_\-get\-\_\-machine\-\_\-ehsize (
+\begin{DoxyParamCaption}
+\item[{unsigned int}]{machine}
+\end{DoxyParamCaption}
+)}}\label{elf_8c_a17803f4c94d2ec424f1178201c91f580}
+
+
+Definition at line 140 of file elf.\-c.
+
+\hypertarget{elf_8c_a7ef1e50c523c312c345db5095c69bdbe}{\index{elf.\-c@{elf.\-c}!elf\-\_\-get\-\_\-machine\-\_\-endianness@{elf\-\_\-get\-\_\-machine\-\_\-endianness}}
+\index{elf\-\_\-get\-\_\-machine\-\_\-endianness@{elf\-\_\-get\-\_\-machine\-\_\-endianness}!elf.c@{elf.\-c}}
+\subsubsection[{elf\-\_\-get\-\_\-machine\-\_\-endianness}]{\setlength{\rightskip}{0pt plus 5cm}int elf\-\_\-get\-\_\-machine\-\_\-endianness (
+\begin{DoxyParamCaption}
+\item[{unsigned int}]{machine}
+\end{DoxyParamCaption}
+)}}\label{elf_8c_a7ef1e50c523c312c345db5095c69bdbe}
+
+
+Definition at line 133 of file elf.\-c.
+
+\hypertarget{elf_8c_a277dac9e069d92d850f0df4a40609867}{\index{elf.\-c@{elf.\-c}!elf\-\_\-get\-\_\-machine\-\_\-phentsize@{elf\-\_\-get\-\_\-machine\-\_\-phentsize}}
+\index{elf\-\_\-get\-\_\-machine\-\_\-phentsize@{elf\-\_\-get\-\_\-machine\-\_\-phentsize}!elf.c@{elf.\-c}}
+\subsubsection[{elf\-\_\-get\-\_\-machine\-\_\-phentsize}]{\setlength{\rightskip}{0pt plus 5cm}int elf\-\_\-get\-\_\-machine\-\_\-phentsize (
+\begin{DoxyParamCaption}
+\item[{unsigned int}]{machine}
+\end{DoxyParamCaption}
+)}}\label{elf_8c_a277dac9e069d92d850f0df4a40609867}
+
+
+Definition at line 150 of file elf.\-c.
+
+\hypertarget{elf_8c_a67a1ace836015c92bfd7aab1150c33d3}{\index{elf.\-c@{elf.\-c}!elf\-\_\-get\-\_\-machine\-\_\-shentsize@{elf\-\_\-get\-\_\-machine\-\_\-shentsize}}
+\index{elf\-\_\-get\-\_\-machine\-\_\-shentsize@{elf\-\_\-get\-\_\-machine\-\_\-shentsize}!elf.c@{elf.\-c}}
+\subsubsection[{elf\-\_\-get\-\_\-machine\-\_\-shentsize}]{\setlength{\rightskip}{0pt plus 5cm}int elf\-\_\-get\-\_\-machine\-\_\-shentsize (
+\begin{DoxyParamCaption}
+\item[{unsigned int}]{machine}
+\end{DoxyParamCaption}
+)}}\label{elf_8c_a67a1ace836015c92bfd7aab1150c33d3}
+
+
+Definition at line 160 of file elf.\-c.
+
+\hypertarget{elf_8c_a121258071616326a56eb0eebc6f05f26}{\index{elf.\-c@{elf.\-c}!elf\-\_\-get\-\_\-string\-\_\-index@{elf\-\_\-get\-\_\-string\-\_\-index}}
+\index{elf\-\_\-get\-\_\-string\-\_\-index@{elf\-\_\-get\-\_\-string\-\_\-index}!elf.c@{elf.\-c}}
+\subsubsection[{elf\-\_\-get\-\_\-string\-\_\-index}]{\setlength{\rightskip}{0pt plus 5cm}int elf\-\_\-get\-\_\-string\-\_\-index (
+\begin{DoxyParamCaption}
+\item[{unsigned char $\ast$}]{table, }
+\item[{size\-\_\-t}]{size, }
+\item[{char $\ast$}]{string}
+\end{DoxyParamCaption}
+)}}\label{elf_8c_a121258071616326a56eb0eebc6f05f26}
+
+
+Definition at line 36 of file elf.\-c.
+
+\hypertarget{elf_8c_a6ae8a68ce46ed263b0ca348480363189}{\index{elf.\-c@{elf.\-c}!elf\-\_\-get\-\_\-string\-\_\-offset@{elf\-\_\-get\-\_\-string\-\_\-offset}}
+\index{elf\-\_\-get\-\_\-string\-\_\-offset@{elf\-\_\-get\-\_\-string\-\_\-offset}!elf.c@{elf.\-c}}
+\subsubsection[{elf\-\_\-get\-\_\-string\-\_\-offset}]{\setlength{\rightskip}{0pt plus 5cm}int elf\-\_\-get\-\_\-string\-\_\-offset (
+\begin{DoxyParamCaption}
+\item[{unsigned char $\ast$}]{table, }
+\item[{size\-\_\-t}]{size, }
+\item[{char $\ast$}]{string}
+\end{DoxyParamCaption}
+)}}\label{elf_8c_a6ae8a68ce46ed263b0ca348480363189}
+
+
+Definition at line 17 of file elf.\-c.
+
+\hypertarget{elf_8c_a38bbccb662caacfe07fb3b2710ad7933}{\index{elf.\-c@{elf.\-c}!elf\-\_\-next\-\_\-string@{elf\-\_\-next\-\_\-string}}
+\index{elf\-\_\-next\-\_\-string@{elf\-\_\-next\-\_\-string}!elf.c@{elf.\-c}}
+\subsubsection[{elf\-\_\-next\-\_\-string}]{\setlength{\rightskip}{0pt plus 5cm}char$\ast$ elf\-\_\-next\-\_\-string (
+\begin{DoxyParamCaption}
+\item[{unsigned char $\ast$}]{table, }
+\item[{size\-\_\-t}]{length, }
+\item[{char $\ast$$\ast$}]{str}
+\end{DoxyParamCaption}
+)}}\label{elf_8c_a38bbccb662caacfe07fb3b2710ad7933}
+
+
+Definition at line 57 of file elf.\-c.
+
+\hypertarget{elf_8c_ac9c1b9f210c22e0573a310837fb4f890}{\index{elf.\-c@{elf.\-c}!elf\-\_\-reloc\-\_\-num@{elf\-\_\-reloc\-\_\-num}}
+\index{elf\-\_\-reloc\-\_\-num@{elf\-\_\-reloc\-\_\-num}!elf.c@{elf.\-c}}
+\subsubsection[{elf\-\_\-reloc\-\_\-num}]{\setlength{\rightskip}{0pt plus 5cm}int elf\-\_\-reloc\-\_\-num (
+\begin{DoxyParamCaption}
+\item[{unsigned int}]{machine, }
+\item[{char $\ast$}]{rname}
+\end{DoxyParamCaption}
+)}}\label{elf_8c_ac9c1b9f210c22e0573a310837fb4f890}
+
+
+Definition at line 170 of file elf.\-c.
+

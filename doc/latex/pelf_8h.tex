@@ -1,0 +1,797 @@
+\hypertarget{pelf_8h}{\section{/home/phelma/\-Bureau/projet\-\_\-\-Sicom/include/pelf.h File Reference}
+\label{pelf_8h}\index{/home/phelma/\-Bureau/projet\-\_\-\-Sicom/include/pelf.\-h@{/home/phelma/\-Bureau/projet\-\_\-\-Sicom/include/pelf.\-h}}
+}
+
+
+P\-E\-L\-F interface.  
+
+
+{\ttfamily \#include $<$string.\-h$>$}\\*
+{\ttfamily \#include $<$stdio.\-h$>$}\\*
+{\ttfamily \#include $<$stdlib.\-h$>$}\\*
+{\ttfamily \#include $<$strings.\-h$>$}\\*
+{\ttfamily \#include $<$ctype.\-h$>$}\\*
+{\ttfamily \#include $<$global.\-h$>$}\\*
+{\ttfamily \#include $<$types.\-h$>$}\\*
+{\ttfamily \#include $<$liste.\-h$>$}\\*
+{\ttfamily \#include $<$file.\-h$>$}\\*
+{\ttfamily \#include $<$notify.\-h$>$}\\*
+{\ttfamily \#include $<$sys/param.\-h$>$}\\*
+{\ttfamily \#include $<$elf.\-h$>$}\\*
+{\ttfamily \#include $<$elf-\/mips32.\-h$>$}\\*
+\subsection*{Data Structures}
+\begin{DoxyCompactItemize}
+\item 
+union \hyperlink{union_elf___ehdr}{Elf\-\_\-\-Ehdr}
+\item 
+union \hyperlink{union_elf___shdr}{Elf\-\_\-\-Shdr}
+\item 
+union \hyperlink{union_elf___sym}{Elf\-\_\-\-Sym}
+\item 
+union \hyperlink{union_elf___rel}{Elf\-\_\-\-Rel}
+\item 
+union \hyperlink{union_elf___rela}{Elf\-\_\-\-Rela}
+\end{DoxyCompactItemize}
+\subsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\#define \hyperlink{pelf_8h_a1723bd584afc89ca8029e9bfae63c9ee}{\-\_\-\-P\-E\-L\-F\-\_\-\-H\-\_\-}
+\item 
+\#define \hyperlink{pelf_8h_a5da5671133829d6cb9b7856815c34b2f}{P\-S\-T\-D\-O\-U\-T}~stdout
+\item 
+\#define \hyperlink{pelf_8h_aee8bb4db166febfed466074572b6ef53}{P\-E\-L\-F\-\_\-\-H\-O\-S\-T\-\_\-\-E\-N\-D\-I\-A\-N\-N\-E\-S\-S}~\hyperlink{elf_8h_a06385c3e5f0a3b62fae7f5e224e10f89}{E\-L\-F\-D\-A\-T\-A2\-M\-S\-B}
+\item 
+\#define \hyperlink{pelf_8h_a1e3ca90e563bf02ece1198410d0cb152}{P\-E\-L\-F}(width, type, varptr, field)
+\item 
+\#define \hyperlink{pelf_8h_abc88c5bfaa915b87293e497c993f22b3}{P\-E\-L\-F\-\_\-\-S\-I\-Z\-E\-O\-F}(width, type)
+\item 
+\#define \hyperlink{pelf_8h_a004a9eb9df71fcbeaf2cf1c6103059be}{P\-E\-L\-F\-\_\-\-D\-E\-C\-L\-A\-R\-E2}(type, name, var)
+\item 
+\#define \hyperlink{pelf_8h_aae2e565df053f0f3238744f1c00df2b4}{P\-E\-L\-F\-\_\-\-N\-E\-X\-T2}(name)~name\#\#32++, name\#\#64++
+\item 
+\#define \hyperlink{pelf_8h_a25683fb44be7d7d71aaf038f0302b545}{P\-E\-L\-F2}(width, type, varptr, field)
+\item 
+\#define \hyperlink{pelf_8h_a9706490a581ec71005da1bd343492eda}{P\-E\-L\-F\-\_\-\-F\-L\-I\-P2}(width, type, var)
+\item 
+\#define \hyperlink{pelf_8h_a8e8d4383ab09ae14069f8430dc651630}{elf\-\_\-endianness}(ehdr)~((\hyperlink{struct_elf32___ehdr}{Elf32\-\_\-\-Ehdr} $\ast$)\&(ehdr))-\/$>$e\-\_\-ident\mbox{[} \hyperlink{elf_8h_a79c714b4bf89638ff576e163d7d2144f}{E\-I\-\_\-\-D\-A\-T\-A} \mbox{]}
+\item 
+\#define \hyperlink{pelf_8h_a804e06ebf00e7ef7e94ba7aaed1daf84}{elf\-\_\-width}(ehdr)~((\hyperlink{struct_elf32___ehdr}{Elf32\-\_\-\-Ehdr} $\ast$)\&(ehdr))-\/$>$e\-\_\-ident\mbox{[} \hyperlink{elf_8h_a5b508cacf6662e4bc0e98ffe1eb61636}{E\-I\-\_\-\-C\-L\-A\-S\-S} \mbox{]}
+\item 
+\#define \hyperlink{pelf_8h_a4db69be549335a28085eb5f051a528a9}{P\-E\-L\-F\-\_\-\-E\-R\-R\-O\-R}(string)~fprintf( stderr, \char`\"{}\%s\char`\"{}, string )
+\item 
+\#define \hyperlink{pelf_8h_a376c0a9947add2e3a61c9d3bffd86a40}{elf\-\_\-catch\-\_\-reloc}(name, type)~if ( !strcasecmp(\#type, name) ) return type
+\item 
+\#define \hyperlink{pelf_8h_a8159c868fa4971af42deaff0236ba997}{elf\-\_\-catch\-\_\-reloc\-\_\-name}(type)
+\end{DoxyCompactItemize}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \hyperlink{pelf_8h_aa487fa70ded28571bbdc89cc2a0704b7}{elf32\-\_\-endian\-\_\-flip\-\_\-\-Ehdr} (\hyperlink{struct_elf32___ehdr}{Elf32\-\_\-\-Ehdr} $\ast$header)
+\item 
+void \hyperlink{pelf_8h_a522004f91a36cbe4723036f65eab3772}{elf32\-\_\-endian\-\_\-flip\-\_\-\-Shdr} (\hyperlink{struct_elf32___shdr}{Elf32\-\_\-\-Shdr} $\ast$header)
+\item 
+void \hyperlink{pelf_8h_a6b4d7b8ec32f2bba1eede43b58d6f8da}{elf32\-\_\-endian\-\_\-flip\-\_\-\-Sym} (\hyperlink{struct_elf32___sym}{Elf32\-\_\-\-Sym} $\ast$header)
+\item 
+void \hyperlink{pelf_8h_aa52190f4afbbd8d10118d6e28ac00221}{elf32\-\_\-endian\-\_\-flip\-\_\-\-Rel} (\hyperlink{struct_elf32___rel}{Elf32\-\_\-\-Rel} $\ast$rel)
+\item 
+void \hyperlink{pelf_8h_a7f9012e27ff69f181ee36e88f2062631}{elf32\-\_\-endian\-\_\-flip\-\_\-\-Rela} (\hyperlink{struct_elf32___rela}{Elf32\-\_\-\-Rela} $\ast$rel)
+\item 
+void \hyperlink{pelf_8h_ad9596b018a476cc6f35ebdc7d2b7e9fa}{elf64\-\_\-endian\-\_\-flip\-\_\-\-Ehdr} (\hyperlink{struct_elf64___ehdr}{Elf64\-\_\-\-Ehdr} $\ast$header)
+\item 
+void \hyperlink{pelf_8h_ab9ffa2bffb195031b40903288ec00686}{elf64\-\_\-endian\-\_\-flip\-\_\-\-Shdr} (\hyperlink{struct_elf64___shdr}{Elf64\-\_\-\-Shdr} $\ast$header)
+\item 
+void \hyperlink{pelf_8h_af840d26e30c52b3287ca0d0c76636387}{elf64\-\_\-endian\-\_\-flip\-\_\-\-Sym} (\hyperlink{struct_elf64___sym}{Elf64\-\_\-\-Sym} $\ast$header)
+\item 
+void \hyperlink{pelf_8h_a72cff94bf6da4885e7c34b23efd56021}{elf64\-\_\-endian\-\_\-flip\-\_\-\-Rel} (\hyperlink{struct_elf64___rel}{Elf64\-\_\-\-Rel} $\ast$rel)
+\item 
+void \hyperlink{pelf_8h_a14d9d5119610784ac407c7a3a6bb8fe9}{elf64\-\_\-endian\-\_\-flip\-\_\-\-Rela} (\hyperlink{struct_elf64___rela}{Elf64\-\_\-\-Rela} $\ast$rel)
+\item 
+int \hyperlink{pelf_8h_ac9c1b9f210c22e0573a310837fb4f890}{elf\-\_\-reloc\-\_\-num} (unsigned int machine, char $\ast$rname)
+\item 
+int \hyperlink{pelf_8h_a20922f7928f1859a035b15c8fccf76c6}{elf\-\_\-get\-\_\-machine} (char $\ast$machinename)
+\item 
+int \hyperlink{pelf_8h_afe18a099c298f22889f4259a74bcf2e4}{elf\-\_\-get\-\_\-machine\-\_\-class} (unsigned int machine)
+\item 
+int \hyperlink{pelf_8h_a7ef1e50c523c312c345db5095c69bdbe}{elf\-\_\-get\-\_\-machine\-\_\-endianness} (unsigned int machine)
+\item 
+int \hyperlink{pelf_8h_a17803f4c94d2ec424f1178201c91f580}{elf\-\_\-get\-\_\-machine\-\_\-ehsize} (unsigned int machine)
+\item 
+int \hyperlink{pelf_8h_a277dac9e069d92d850f0df4a40609867}{elf\-\_\-get\-\_\-machine\-\_\-phentsize} (unsigned int machine)
+\item 
+int \hyperlink{pelf_8h_a67a1ace836015c92bfd7aab1150c33d3}{elf\-\_\-get\-\_\-machine\-\_\-shentsize} (unsigned int machine)
+\item 
+int \hyperlink{pelf_8h_a3d2969130f089d32572971beea58f67c}{elf\-\_\-get\-\_\-string\-\_\-offset} (unsigned char $\ast$start, size\-\_\-t size, char $\ast$name)
+\item 
+int \hyperlink{pelf_8h_ae476c48c0a880be6e4965bc9b79429c9}{elf\-\_\-get\-\_\-string\-\_\-index} (unsigned char $\ast$start, size\-\_\-t size, char $\ast$name)
+\item 
+char $\ast$ \hyperlink{pelf_8h_a38bbccb662caacfe07fb3b2710ad7933}{elf\-\_\-next\-\_\-string} (unsigned char $\ast$table, size\-\_\-t length, char $\ast$$\ast$str)
+\item 
+int \hyperlink{pelf_8h_a3c005bd10f6c4d798ed890a215f8f11c}{elf\-\_\-read\-\_\-ehdr} (F\-I\-L\-E $\ast$fp, \hyperlink{union_elf___ehdr}{Elf\-\_\-\-Ehdr} $\ast$ehdr)
+\item 
+unsigned char $\ast$ \hyperlink{pelf_8h_ac87de1f80eadeda8a4c75f2fcca0613c}{elf\-\_\-read\-\_\-section\-\_\-by\-\_\-name} (F\-I\-L\-E $\ast$fp, \hyperlink{union_elf___ehdr}{Elf\-\_\-\-Ehdr} ehdr, unsigned char $\ast$shstrtab, unsigned char $\ast$shtab, size\-\_\-t $\ast$scnsz, char $\ast$scname)
+\item 
+unsigned char $\ast$ \hyperlink{pelf_8h_ae9e62eb8370e1c840deb71d3de900551}{elf\-\_\-read\-\_\-symtab} (F\-I\-L\-E $\ast$fp, \hyperlink{union_elf___ehdr}{Elf\-\_\-\-Ehdr} ehdr, unsigned char $\ast$shtab, size\-\_\-t $\ast$symtabsz)
+\item 
+unsigned char $\ast$ \hyperlink{pelf_8h_adb38ed7681ea6bead9fe167b51f6392c}{elf\-\_\-read\-\_\-shtab} (F\-I\-L\-E $\ast$fp, \hyperlink{union_elf___ehdr}{Elf\-\_\-\-Ehdr} ehdr, size\-\_\-t $\ast$shtabsz)
+\item 
+unsigned char $\ast$ \hyperlink{pelf_8h_a0b5f5f658ab8575cbb91b130993927e7}{elf\-\_\-read\-\_\-shstrtab} (F\-I\-L\-E $\ast$fp, \hyperlink{union_elf___ehdr}{Elf\-\_\-\-Ehdr} ehdr, unsigned char $\ast$shtab, size\-\_\-t $\ast$shstrtabsz)
+\item 
+unsigned char $\ast$ \hyperlink{pelf_8h_ab81fe3a2b430eb1be14b633c6299fb46}{elf\-\_\-read\-\_\-strtab} (F\-I\-L\-E $\ast$fp, \hyperlink{union_elf___ehdr}{Elf\-\_\-\-Ehdr} ehdr, unsigned char $\ast$shtab, size\-\_\-t $\ast$strtabsz)
+\item 
+int \hyperlink{pelf_8h_a207427a919870e500294e770c0d7a1b2}{elf\-\_\-dump\-\_\-section} (F\-I\-L\-E $\ast$fp, char $\ast$input, char $\ast$secname)
+\item 
+void \hyperlink{pelf_8h_a7898f34207b104122ab6514c6e53f526}{elf\-\_\-print\-\_\-sym} (\hyperlink{union_elf___sym}{Elf\-\_\-\-Sym} sym, \hyperlink{union_elf___ehdr}{Elf\-\_\-\-Ehdr} ehdr, unsigned char $\ast$strtab, unsigned char $\ast$shstrtab, unsigned char $\ast$shtab)
+\item 
+void \hyperlink{pelf_8h_a1bd179681d5ed4269b4ed5972d6a60a4}{elf\-\_\-print\-\_\-symbol\-\_\-table} (\hyperlink{union_elf___ehdr}{Elf\-\_\-\-Ehdr} ehdr, unsigned char $\ast$table, size\-\_\-t length, unsigned char $\ast$strtab, unsigned char $\ast$shstrtab, unsigned char $\ast$shtab)
+\item 
+void \hyperlink{pelf_8h_ab2275b0708c66ea8bba111178064b961}{elf\-\_\-print\-\_\-string\-\_\-table} (unsigned char $\ast$table, size\-\_\-t length)
+\item 
+void \hyperlink{pelf_8h_a414c018260462c60a6024686fd4e3d7c}{elf\-\_\-print\-\_\-rel\-\_\-table} (char $\ast$name, \hyperlink{union_elf___ehdr}{Elf\-\_\-\-Ehdr} ehdr, unsigned char $\ast$table, size\-\_\-t length, unsigned char $\ast$strtab, unsigned char $\ast$shstrtab, unsigned char $\ast$shtab, unsigned char $\ast$symtab)
+\item 
+void \hyperlink{pelf_8h_a7c9c338d2909022351d5828006fad12f}{elf\-\_\-print\-\_\-ehdr} (\hyperlink{union_elf___ehdr}{Elf\-\_\-\-Ehdr} ehdr)
+\item 
+void \hyperlink{pelf_8h_a9599e9edf66dcdbc9c76b9643954f6c2}{elf\-\_\-print\-\_\-shdr} (\hyperlink{union_elf___shdr}{Elf\-\_\-\-Shdr} shdr, \hyperlink{union_elf___ehdr}{Elf\-\_\-\-Ehdr} ehdr, unsigned char $\ast$shstrtab)
+\item 
+void \hyperlink{pelf_8h_a71aea3d39ebf65c873e3ef766b315311}{elf\-\_\-print\-\_\-shtab} (unsigned char $\ast$shtab, \hyperlink{union_elf___ehdr}{Elf\-\_\-\-Ehdr} ehdr, size\-\_\-t offset, unsigned char $\ast$shstrtab)
+\item 
+int \hyperlink{pelf_8h_a0a207245ac0a666f026124302608aebc}{elf\-\_\-write\-\_\-relocatable} (char $\ast$filename, char $\ast$machine, int noreorder, unsigned char $\ast$text, unsigned int textsz, unsigned char $\ast$data, unsigned int datasz, unsigned char $\ast$bss, unsigned int bsssz, unsigned char $\ast$shstrtab, unsigned int shstrtabsz, unsigned char $\ast$strtab, unsigned int strtabsz, unsigned char $\ast$symtab, unsigned int symtabsz, unsigned char $\ast$reltext, unsigned int reltextsz, unsigned char $\ast$reldata, unsigned int reldatasz)
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+P\-E\-L\-F interface. \begin{DoxyAuthor}{Author}
+François Cayre \href{mailto:francois.cayre@grenoble-inp.fr}{\tt francois.\-cayre@grenoble-\/inp.\-fr} 
+\end{DoxyAuthor}
+\begin{DoxyDate}{Date}
+Sun Sep 24 22\-:07\-:08 2017 P\-E\-L\-F interface. 
+\end{DoxyDate}
+
+
+Definition in file \hyperlink{pelf_8h_source}{pelf.\-h}.
+
+
+
+\subsection{Macro Definition Documentation}
+\hypertarget{pelf_8h_a1723bd584afc89ca8029e9bfae63c9ee}{\index{pelf.\-h@{pelf.\-h}!\-\_\-\-P\-E\-L\-F\-\_\-\-H\-\_\-@{\-\_\-\-P\-E\-L\-F\-\_\-\-H\-\_\-}}
+\index{\-\_\-\-P\-E\-L\-F\-\_\-\-H\-\_\-@{\-\_\-\-P\-E\-L\-F\-\_\-\-H\-\_\-}!pelf.h@{pelf.\-h}}
+\subsubsection[{\-\_\-\-P\-E\-L\-F\-\_\-\-H\-\_\-}]{\setlength{\rightskip}{0pt plus 5cm}\#define \-\_\-\-P\-E\-L\-F\-\_\-\-H\-\_\-}}\label{pelf_8h_a1723bd584afc89ca8029e9bfae63c9ee}
+
+
+Definition at line 28 of file pelf.\-h.
+
+\hypertarget{pelf_8h_a376c0a9947add2e3a61c9d3bffd86a40}{\index{pelf.\-h@{pelf.\-h}!elf\-\_\-catch\-\_\-reloc@{elf\-\_\-catch\-\_\-reloc}}
+\index{elf\-\_\-catch\-\_\-reloc@{elf\-\_\-catch\-\_\-reloc}!pelf.h@{pelf.\-h}}
+\subsubsection[{elf\-\_\-catch\-\_\-reloc}]{\setlength{\rightskip}{0pt plus 5cm}\#define elf\-\_\-catch\-\_\-reloc(
+\begin{DoxyParamCaption}
+\item[{}]{name, }
+\item[{}]{type}
+\end{DoxyParamCaption}
+)~if ( !strcasecmp(\#type, name) ) return type}}\label{pelf_8h_a376c0a9947add2e3a61c9d3bffd86a40}
+
+
+Definition at line 196 of file pelf.\-h.
+
+\hypertarget{pelf_8h_a8159c868fa4971af42deaff0236ba997}{\index{pelf.\-h@{pelf.\-h}!elf\-\_\-catch\-\_\-reloc\-\_\-name@{elf\-\_\-catch\-\_\-reloc\-\_\-name}}
+\index{elf\-\_\-catch\-\_\-reloc\-\_\-name@{elf\-\_\-catch\-\_\-reloc\-\_\-name}!pelf.h@{pelf.\-h}}
+\subsubsection[{elf\-\_\-catch\-\_\-reloc\-\_\-name}]{\setlength{\rightskip}{0pt plus 5cm}\#define elf\-\_\-catch\-\_\-reloc\-\_\-name(
+\begin{DoxyParamCaption}
+\item[{}]{type}
+\end{DoxyParamCaption}
+)}}\label{pelf_8h_a8159c868fa4971af42deaff0236ba997}
+{\bfseries Value\-:}
+\begin{DoxyCode}
+\textcolor{keywordflow}{case} type :                          \(\backslash\)
+  return #type;                      \(\backslash\)
+  break;
+\end{DoxyCode}
+
+
+Definition at line 199 of file pelf.\-h.
+
+\hypertarget{pelf_8h_a8e8d4383ab09ae14069f8430dc651630}{\index{pelf.\-h@{pelf.\-h}!elf\-\_\-endianness@{elf\-\_\-endianness}}
+\index{elf\-\_\-endianness@{elf\-\_\-endianness}!pelf.h@{pelf.\-h}}
+\subsubsection[{elf\-\_\-endianness}]{\setlength{\rightskip}{0pt plus 5cm}\#define elf\-\_\-endianness(
+\begin{DoxyParamCaption}
+\item[{}]{ehdr}
+\end{DoxyParamCaption}
+)~(({\bf Elf32\-\_\-\-Ehdr} $\ast$)\&(ehdr))-\/$>$e\-\_\-ident\mbox{[} {\bf E\-I\-\_\-\-D\-A\-T\-A} \mbox{]}}}\label{pelf_8h_a8e8d4383ab09ae14069f8430dc651630}
+
+
+Definition at line 122 of file pelf.\-h.
+
+\hypertarget{pelf_8h_a804e06ebf00e7ef7e94ba7aaed1daf84}{\index{pelf.\-h@{pelf.\-h}!elf\-\_\-width@{elf\-\_\-width}}
+\index{elf\-\_\-width@{elf\-\_\-width}!pelf.h@{pelf.\-h}}
+\subsubsection[{elf\-\_\-width}]{\setlength{\rightskip}{0pt plus 5cm}\#define elf\-\_\-width(
+\begin{DoxyParamCaption}
+\item[{}]{ehdr}
+\end{DoxyParamCaption}
+)~(({\bf Elf32\-\_\-\-Ehdr} $\ast$)\&(ehdr))-\/$>$e\-\_\-ident\mbox{[} {\bf E\-I\-\_\-\-C\-L\-A\-S\-S} \mbox{]}}}\label{pelf_8h_a804e06ebf00e7ef7e94ba7aaed1daf84}
+
+
+Definition at line 125 of file pelf.\-h.
+
+\hypertarget{pelf_8h_a1e3ca90e563bf02ece1198410d0cb152}{\index{pelf.\-h@{pelf.\-h}!P\-E\-L\-F@{P\-E\-L\-F}}
+\index{P\-E\-L\-F@{P\-E\-L\-F}!pelf.h@{pelf.\-h}}
+\subsubsection[{P\-E\-L\-F}]{\setlength{\rightskip}{0pt plus 5cm}\#define P\-E\-L\-F(
+\begin{DoxyParamCaption}
+\item[{}]{width, }
+\item[{}]{type, }
+\item[{}]{varptr, }
+\item[{}]{field}
+\end{DoxyParamCaption}
+)}}\label{pelf_8h_a1e3ca90e563bf02ece1198410d0cb152}
+{\bfseries Value\-:}
+\begin{DoxyCode}
+( ( \hyperlink{elf_8h_a9ee66b59be5c78ea1f1eea8a36f2c291}{ELFCLASS64} == width ) ?                                           \(\backslash\)
+    (((Elf64\_##type*) (varptr) )->field) :                              \(\backslash\)
+    (((Elf32\_##type*) (varptr) )->field) )
+\end{DoxyCode}
+
+
+Definition at line 87 of file pelf.\-h.
+
+\hypertarget{pelf_8h_a25683fb44be7d7d71aaf038f0302b545}{\index{pelf.\-h@{pelf.\-h}!P\-E\-L\-F2@{P\-E\-L\-F2}}
+\index{P\-E\-L\-F2@{P\-E\-L\-F2}!pelf.h@{pelf.\-h}}
+\subsubsection[{P\-E\-L\-F2}]{\setlength{\rightskip}{0pt plus 5cm}\#define P\-E\-L\-F2(
+\begin{DoxyParamCaption}
+\item[{}]{width, }
+\item[{}]{type, }
+\item[{}]{varptr, }
+\item[{}]{field}
+\end{DoxyParamCaption}
+)}}\label{pelf_8h_a25683fb44be7d7d71aaf038f0302b545}
+{\bfseries Value\-:}
+\begin{DoxyCode}
+( ( \hyperlink{elf_8h_a9ee66b59be5c78ea1f1eea8a36f2c291}{ELFCLASS64} == width ) ?                                           \(\backslash\)
+    ((Elf64\_##type *) varptr##64)->field :                              \(\backslash\)
+    ((Elf32\_##type *) varptr##32)->field)
+\end{DoxyCode}
+
+
+Definition at line 108 of file pelf.\-h.
+
+\hypertarget{pelf_8h_a004a9eb9df71fcbeaf2cf1c6103059be}{\index{pelf.\-h@{pelf.\-h}!P\-E\-L\-F\-\_\-\-D\-E\-C\-L\-A\-R\-E2@{P\-E\-L\-F\-\_\-\-D\-E\-C\-L\-A\-R\-E2}}
+\index{P\-E\-L\-F\-\_\-\-D\-E\-C\-L\-A\-R\-E2@{P\-E\-L\-F\-\_\-\-D\-E\-C\-L\-A\-R\-E2}!pelf.h@{pelf.\-h}}
+\subsubsection[{P\-E\-L\-F\-\_\-\-D\-E\-C\-L\-A\-R\-E2}]{\setlength{\rightskip}{0pt plus 5cm}\#define P\-E\-L\-F\-\_\-\-D\-E\-C\-L\-A\-R\-E2(
+\begin{DoxyParamCaption}
+\item[{}]{type, }
+\item[{}]{name, }
+\item[{}]{var}
+\end{DoxyParamCaption}
+)}}\label{pelf_8h_a004a9eb9df71fcbeaf2cf1c6103059be}
+{\bfseries Value\-:}
+\begin{DoxyCode}
+Elf32\_##type * name##32 = (Elf32\_##type *)(var);        \(\backslash\)
+        Elf64\_##type * name##64 = (Elf64\_##type *)(var)
+\end{DoxyCode}
+
+
+Definition at line 100 of file pelf.\-h.
+
+\hypertarget{pelf_8h_a4db69be549335a28085eb5f051a528a9}{\index{pelf.\-h@{pelf.\-h}!P\-E\-L\-F\-\_\-\-E\-R\-R\-O\-R@{P\-E\-L\-F\-\_\-\-E\-R\-R\-O\-R}}
+\index{P\-E\-L\-F\-\_\-\-E\-R\-R\-O\-R@{P\-E\-L\-F\-\_\-\-E\-R\-R\-O\-R}!pelf.h@{pelf.\-h}}
+\subsubsection[{P\-E\-L\-F\-\_\-\-E\-R\-R\-O\-R}]{\setlength{\rightskip}{0pt plus 5cm}\#define P\-E\-L\-F\-\_\-\-E\-R\-R\-O\-R(
+\begin{DoxyParamCaption}
+\item[{}]{string}
+\end{DoxyParamCaption}
+)~fprintf( stderr, \char`\"{}\%s\char`\"{}, string )}}\label{pelf_8h_a4db69be549335a28085eb5f051a528a9}
+
+
+Definition at line 140 of file pelf.\-h.
+
+\hypertarget{pelf_8h_a9706490a581ec71005da1bd343492eda}{\index{pelf.\-h@{pelf.\-h}!P\-E\-L\-F\-\_\-\-F\-L\-I\-P2@{P\-E\-L\-F\-\_\-\-F\-L\-I\-P2}}
+\index{P\-E\-L\-F\-\_\-\-F\-L\-I\-P2@{P\-E\-L\-F\-\_\-\-F\-L\-I\-P2}!pelf.h@{pelf.\-h}}
+\subsubsection[{P\-E\-L\-F\-\_\-\-F\-L\-I\-P2}]{\setlength{\rightskip}{0pt plus 5cm}\#define P\-E\-L\-F\-\_\-\-F\-L\-I\-P2(
+\begin{DoxyParamCaption}
+\item[{}]{width, }
+\item[{}]{type, }
+\item[{}]{var}
+\end{DoxyParamCaption}
+)}}\label{pelf_8h_a9706490a581ec71005da1bd343492eda}
+{\bfseries Value\-:}
+\begin{DoxyCode}
+\textcolor{keywordflow}{if} ( \hyperlink{elf_8h_a9ee66b59be5c78ea1f1eea8a36f2c291}{ELFCLASS64} == width )                            \(\backslash\)
+    elf64\_endian\_flip\_##type ( var##64 );               \(\backslash\)
+  else                                                  \(\backslash\)
+    elf32\_endian\_flip\_##type ( var##32 )
+\end{DoxyCode}
+
+
+Definition at line 113 of file pelf.\-h.
+
+\hypertarget{pelf_8h_aee8bb4db166febfed466074572b6ef53}{\index{pelf.\-h@{pelf.\-h}!P\-E\-L\-F\-\_\-\-H\-O\-S\-T\-\_\-\-E\-N\-D\-I\-A\-N\-N\-E\-S\-S@{P\-E\-L\-F\-\_\-\-H\-O\-S\-T\-\_\-\-E\-N\-D\-I\-A\-N\-N\-E\-S\-S}}
+\index{P\-E\-L\-F\-\_\-\-H\-O\-S\-T\-\_\-\-E\-N\-D\-I\-A\-N\-N\-E\-S\-S@{P\-E\-L\-F\-\_\-\-H\-O\-S\-T\-\_\-\-E\-N\-D\-I\-A\-N\-N\-E\-S\-S}!pelf.h@{pelf.\-h}}
+\subsubsection[{P\-E\-L\-F\-\_\-\-H\-O\-S\-T\-\_\-\-E\-N\-D\-I\-A\-N\-N\-E\-S\-S}]{\setlength{\rightskip}{0pt plus 5cm}\#define P\-E\-L\-F\-\_\-\-H\-O\-S\-T\-\_\-\-E\-N\-D\-I\-A\-N\-N\-E\-S\-S~{\bf E\-L\-F\-D\-A\-T\-A2\-M\-S\-B}}}\label{pelf_8h_aee8bb4db166febfed466074572b6ef53}
+
+
+Definition at line 39 of file pelf.\-h.
+
+\hypertarget{pelf_8h_aae2e565df053f0f3238744f1c00df2b4}{\index{pelf.\-h@{pelf.\-h}!P\-E\-L\-F\-\_\-\-N\-E\-X\-T2@{P\-E\-L\-F\-\_\-\-N\-E\-X\-T2}}
+\index{P\-E\-L\-F\-\_\-\-N\-E\-X\-T2@{P\-E\-L\-F\-\_\-\-N\-E\-X\-T2}!pelf.h@{pelf.\-h}}
+\subsubsection[{P\-E\-L\-F\-\_\-\-N\-E\-X\-T2}]{\setlength{\rightskip}{0pt plus 5cm}\#define P\-E\-L\-F\-\_\-\-N\-E\-X\-T2(
+\begin{DoxyParamCaption}
+\item[{}]{name}
+\end{DoxyParamCaption}
+)~name\#\#32++, name\#\#64++}}\label{pelf_8h_aae2e565df053f0f3238744f1c00df2b4}
+
+
+Definition at line 104 of file pelf.\-h.
+
+\hypertarget{pelf_8h_abc88c5bfaa915b87293e497c993f22b3}{\index{pelf.\-h@{pelf.\-h}!P\-E\-L\-F\-\_\-\-S\-I\-Z\-E\-O\-F@{P\-E\-L\-F\-\_\-\-S\-I\-Z\-E\-O\-F}}
+\index{P\-E\-L\-F\-\_\-\-S\-I\-Z\-E\-O\-F@{P\-E\-L\-F\-\_\-\-S\-I\-Z\-E\-O\-F}!pelf.h@{pelf.\-h}}
+\subsubsection[{P\-E\-L\-F\-\_\-\-S\-I\-Z\-E\-O\-F}]{\setlength{\rightskip}{0pt plus 5cm}\#define P\-E\-L\-F\-\_\-\-S\-I\-Z\-E\-O\-F(
+\begin{DoxyParamCaption}
+\item[{}]{width, }
+\item[{}]{type}
+\end{DoxyParamCaption}
+)}}\label{pelf_8h_abc88c5bfaa915b87293e497c993f22b3}
+{\bfseries Value\-:}
+\begin{DoxyCode}
+( ( \hyperlink{elf_8h_a9ee66b59be5c78ea1f1eea8a36f2c291}{ELFCLASS64} == width ) ?                                           \(\backslash\)
+    \textcolor{keyword}{sizeof}( Elf64\_##type ) : \textcolor{keyword}{sizeof}( Elf32\_##type ) )
+\end{DoxyCode}
+
+
+Definition at line 92 of file pelf.\-h.
+
+\hypertarget{pelf_8h_a5da5671133829d6cb9b7856815c34b2f}{\index{pelf.\-h@{pelf.\-h}!P\-S\-T\-D\-O\-U\-T@{P\-S\-T\-D\-O\-U\-T}}
+\index{P\-S\-T\-D\-O\-U\-T@{P\-S\-T\-D\-O\-U\-T}!pelf.h@{pelf.\-h}}
+\subsubsection[{P\-S\-T\-D\-O\-U\-T}]{\setlength{\rightskip}{0pt plus 5cm}\#define P\-S\-T\-D\-O\-U\-T~stdout}}\label{pelf_8h_a5da5671133829d6cb9b7856815c34b2f}
+
+
+Definition at line 36 of file pelf.\-h.
+
+
+
+\subsection{Function Documentation}
+\hypertarget{pelf_8h_aa487fa70ded28571bbdc89cc2a0704b7}{\index{pelf.\-h@{pelf.\-h}!elf32\-\_\-endian\-\_\-flip\-\_\-\-Ehdr@{elf32\-\_\-endian\-\_\-flip\-\_\-\-Ehdr}}
+\index{elf32\-\_\-endian\-\_\-flip\-\_\-\-Ehdr@{elf32\-\_\-endian\-\_\-flip\-\_\-\-Ehdr}!pelf.h@{pelf.\-h}}
+\subsubsection[{elf32\-\_\-endian\-\_\-flip\-\_\-\-Ehdr}]{\setlength{\rightskip}{0pt plus 5cm}void elf32\-\_\-endian\-\_\-flip\-\_\-\-Ehdr (
+\begin{DoxyParamCaption}
+\item[{{\bf Elf32\-\_\-\-Ehdr} $\ast$}]{header}
+\end{DoxyParamCaption}
+)}}\label{pelf_8h_aa487fa70ded28571bbdc89cc2a0704b7}
+
+
+Definition at line 50 of file endian.\-c.
+
+\hypertarget{pelf_8h_aa52190f4afbbd8d10118d6e28ac00221}{\index{pelf.\-h@{pelf.\-h}!elf32\-\_\-endian\-\_\-flip\-\_\-\-Rel@{elf32\-\_\-endian\-\_\-flip\-\_\-\-Rel}}
+\index{elf32\-\_\-endian\-\_\-flip\-\_\-\-Rel@{elf32\-\_\-endian\-\_\-flip\-\_\-\-Rel}!pelf.h@{pelf.\-h}}
+\subsubsection[{elf32\-\_\-endian\-\_\-flip\-\_\-\-Rel}]{\setlength{\rightskip}{0pt plus 5cm}void elf32\-\_\-endian\-\_\-flip\-\_\-\-Rel (
+\begin{DoxyParamCaption}
+\item[{{\bf Elf32\-\_\-\-Rel} $\ast$}]{rel}
+\end{DoxyParamCaption}
+)}}\label{pelf_8h_aa52190f4afbbd8d10118d6e28ac00221}
+
+
+Definition at line 116 of file endian.\-c.
+
+\hypertarget{pelf_8h_a7f9012e27ff69f181ee36e88f2062631}{\index{pelf.\-h@{pelf.\-h}!elf32\-\_\-endian\-\_\-flip\-\_\-\-Rela@{elf32\-\_\-endian\-\_\-flip\-\_\-\-Rela}}
+\index{elf32\-\_\-endian\-\_\-flip\-\_\-\-Rela@{elf32\-\_\-endian\-\_\-flip\-\_\-\-Rela}!pelf.h@{pelf.\-h}}
+\subsubsection[{elf32\-\_\-endian\-\_\-flip\-\_\-\-Rela}]{\setlength{\rightskip}{0pt plus 5cm}void elf32\-\_\-endian\-\_\-flip\-\_\-\-Rela (
+\begin{DoxyParamCaption}
+\item[{{\bf Elf32\-\_\-\-Rela} $\ast$}]{rel}
+\end{DoxyParamCaption}
+)}}\label{pelf_8h_a7f9012e27ff69f181ee36e88f2062631}
+
+
+Definition at line 121 of file endian.\-c.
+
+\hypertarget{pelf_8h_a522004f91a36cbe4723036f65eab3772}{\index{pelf.\-h@{pelf.\-h}!elf32\-\_\-endian\-\_\-flip\-\_\-\-Shdr@{elf32\-\_\-endian\-\_\-flip\-\_\-\-Shdr}}
+\index{elf32\-\_\-endian\-\_\-flip\-\_\-\-Shdr@{elf32\-\_\-endian\-\_\-flip\-\_\-\-Shdr}!pelf.h@{pelf.\-h}}
+\subsubsection[{elf32\-\_\-endian\-\_\-flip\-\_\-\-Shdr}]{\setlength{\rightskip}{0pt plus 5cm}void elf32\-\_\-endian\-\_\-flip\-\_\-\-Shdr (
+\begin{DoxyParamCaption}
+\item[{{\bf Elf32\-\_\-\-Shdr} $\ast$}]{header}
+\end{DoxyParamCaption}
+)}}\label{pelf_8h_a522004f91a36cbe4723036f65eab3772}
+
+
+Definition at line 66 of file endian.\-c.
+
+\hypertarget{pelf_8h_a6b4d7b8ec32f2bba1eede43b58d6f8da}{\index{pelf.\-h@{pelf.\-h}!elf32\-\_\-endian\-\_\-flip\-\_\-\-Sym@{elf32\-\_\-endian\-\_\-flip\-\_\-\-Sym}}
+\index{elf32\-\_\-endian\-\_\-flip\-\_\-\-Sym@{elf32\-\_\-endian\-\_\-flip\-\_\-\-Sym}!pelf.h@{pelf.\-h}}
+\subsubsection[{elf32\-\_\-endian\-\_\-flip\-\_\-\-Sym}]{\setlength{\rightskip}{0pt plus 5cm}void elf32\-\_\-endian\-\_\-flip\-\_\-\-Sym (
+\begin{DoxyParamCaption}
+\item[{{\bf Elf32\-\_\-\-Sym} $\ast$}]{header}
+\end{DoxyParamCaption}
+)}}\label{pelf_8h_a6b4d7b8ec32f2bba1eede43b58d6f8da}
+
+
+Definition at line 109 of file endian.\-c.
+
+\hypertarget{pelf_8h_ad9596b018a476cc6f35ebdc7d2b7e9fa}{\index{pelf.\-h@{pelf.\-h}!elf64\-\_\-endian\-\_\-flip\-\_\-\-Ehdr@{elf64\-\_\-endian\-\_\-flip\-\_\-\-Ehdr}}
+\index{elf64\-\_\-endian\-\_\-flip\-\_\-\-Ehdr@{elf64\-\_\-endian\-\_\-flip\-\_\-\-Ehdr}!pelf.h@{pelf.\-h}}
+\subsubsection[{elf64\-\_\-endian\-\_\-flip\-\_\-\-Ehdr}]{\setlength{\rightskip}{0pt plus 5cm}void elf64\-\_\-endian\-\_\-flip\-\_\-\-Ehdr (
+\begin{DoxyParamCaption}
+\item[{{\bf Elf64\-\_\-\-Ehdr} $\ast$}]{header}
+\end{DoxyParamCaption}
+)}}\label{pelf_8h_ad9596b018a476cc6f35ebdc7d2b7e9fa}
+
+
+Definition at line 80 of file endian.\-c.
+
+\hypertarget{pelf_8h_a72cff94bf6da4885e7c34b23efd56021}{\index{pelf.\-h@{pelf.\-h}!elf64\-\_\-endian\-\_\-flip\-\_\-\-Rel@{elf64\-\_\-endian\-\_\-flip\-\_\-\-Rel}}
+\index{elf64\-\_\-endian\-\_\-flip\-\_\-\-Rel@{elf64\-\_\-endian\-\_\-flip\-\_\-\-Rel}!pelf.h@{pelf.\-h}}
+\subsubsection[{elf64\-\_\-endian\-\_\-flip\-\_\-\-Rel}]{\setlength{\rightskip}{0pt plus 5cm}void elf64\-\_\-endian\-\_\-flip\-\_\-\-Rel (
+\begin{DoxyParamCaption}
+\item[{{\bf Elf64\-\_\-\-Rel} $\ast$}]{rel}
+\end{DoxyParamCaption}
+)}}\label{pelf_8h_a72cff94bf6da4885e7c34b23efd56021}
+
+
+Definition at line 135 of file endian.\-c.
+
+\hypertarget{pelf_8h_a14d9d5119610784ac407c7a3a6bb8fe9}{\index{pelf.\-h@{pelf.\-h}!elf64\-\_\-endian\-\_\-flip\-\_\-\-Rela@{elf64\-\_\-endian\-\_\-flip\-\_\-\-Rela}}
+\index{elf64\-\_\-endian\-\_\-flip\-\_\-\-Rela@{elf64\-\_\-endian\-\_\-flip\-\_\-\-Rela}!pelf.h@{pelf.\-h}}
+\subsubsection[{elf64\-\_\-endian\-\_\-flip\-\_\-\-Rela}]{\setlength{\rightskip}{0pt plus 5cm}void elf64\-\_\-endian\-\_\-flip\-\_\-\-Rela (
+\begin{DoxyParamCaption}
+\item[{{\bf Elf64\-\_\-\-Rela} $\ast$}]{rel}
+\end{DoxyParamCaption}
+)}}\label{pelf_8h_a14d9d5119610784ac407c7a3a6bb8fe9}
+
+
+Definition at line 139 of file endian.\-c.
+
+\hypertarget{pelf_8h_ab9ffa2bffb195031b40903288ec00686}{\index{pelf.\-h@{pelf.\-h}!elf64\-\_\-endian\-\_\-flip\-\_\-\-Shdr@{elf64\-\_\-endian\-\_\-flip\-\_\-\-Shdr}}
+\index{elf64\-\_\-endian\-\_\-flip\-\_\-\-Shdr@{elf64\-\_\-endian\-\_\-flip\-\_\-\-Shdr}!pelf.h@{pelf.\-h}}
+\subsubsection[{elf64\-\_\-endian\-\_\-flip\-\_\-\-Shdr}]{\setlength{\rightskip}{0pt plus 5cm}void elf64\-\_\-endian\-\_\-flip\-\_\-\-Shdr (
+\begin{DoxyParamCaption}
+\item[{{\bf Elf64\-\_\-\-Shdr} $\ast$}]{header}
+\end{DoxyParamCaption}
+)}}\label{pelf_8h_ab9ffa2bffb195031b40903288ec00686}
+
+
+Definition at line 96 of file endian.\-c.
+
+\hypertarget{pelf_8h_af840d26e30c52b3287ca0d0c76636387}{\index{pelf.\-h@{pelf.\-h}!elf64\-\_\-endian\-\_\-flip\-\_\-\-Sym@{elf64\-\_\-endian\-\_\-flip\-\_\-\-Sym}}
+\index{elf64\-\_\-endian\-\_\-flip\-\_\-\-Sym@{elf64\-\_\-endian\-\_\-flip\-\_\-\-Sym}!pelf.h@{pelf.\-h}}
+\subsubsection[{elf64\-\_\-endian\-\_\-flip\-\_\-\-Sym}]{\setlength{\rightskip}{0pt plus 5cm}void elf64\-\_\-endian\-\_\-flip\-\_\-\-Sym (
+\begin{DoxyParamCaption}
+\item[{{\bf Elf64\-\_\-\-Sym} $\ast$}]{header}
+\end{DoxyParamCaption}
+)}}\label{pelf_8h_af840d26e30c52b3287ca0d0c76636387}
+
+
+Definition at line 128 of file endian.\-c.
+
+\hypertarget{pelf_8h_a207427a919870e500294e770c0d7a1b2}{\index{pelf.\-h@{pelf.\-h}!elf\-\_\-dump\-\_\-section@{elf\-\_\-dump\-\_\-section}}
+\index{elf\-\_\-dump\-\_\-section@{elf\-\_\-dump\-\_\-section}!pelf.h@{pelf.\-h}}
+\subsubsection[{elf\-\_\-dump\-\_\-section}]{\setlength{\rightskip}{0pt plus 5cm}int elf\-\_\-dump\-\_\-section (
+\begin{DoxyParamCaption}
+\item[{F\-I\-L\-E $\ast$}]{fp, }
+\item[{char $\ast$}]{input, }
+\item[{char $\ast$}]{secname}
+\end{DoxyParamCaption}
+)}}\label{pelf_8h_a207427a919870e500294e770c0d7a1b2}
+
+
+Definition at line 163 of file read.\-c.
+
+\hypertarget{pelf_8h_a20922f7928f1859a035b15c8fccf76c6}{\index{pelf.\-h@{pelf.\-h}!elf\-\_\-get\-\_\-machine@{elf\-\_\-get\-\_\-machine}}
+\index{elf\-\_\-get\-\_\-machine@{elf\-\_\-get\-\_\-machine}!pelf.h@{pelf.\-h}}
+\subsubsection[{elf\-\_\-get\-\_\-machine}]{\setlength{\rightskip}{0pt plus 5cm}int elf\-\_\-get\-\_\-machine (
+\begin{DoxyParamCaption}
+\item[{char $\ast$}]{machinename}
+\end{DoxyParamCaption}
+)}}\label{pelf_8h_a20922f7928f1859a035b15c8fccf76c6}
+
+
+Definition at line 74 of file elf.\-c.
+
+\hypertarget{pelf_8h_afe18a099c298f22889f4259a74bcf2e4}{\index{pelf.\-h@{pelf.\-h}!elf\-\_\-get\-\_\-machine\-\_\-class@{elf\-\_\-get\-\_\-machine\-\_\-class}}
+\index{elf\-\_\-get\-\_\-machine\-\_\-class@{elf\-\_\-get\-\_\-machine\-\_\-class}!pelf.h@{pelf.\-h}}
+\subsubsection[{elf\-\_\-get\-\_\-machine\-\_\-class}]{\setlength{\rightskip}{0pt plus 5cm}int elf\-\_\-get\-\_\-machine\-\_\-class (
+\begin{DoxyParamCaption}
+\item[{unsigned int}]{machine}
+\end{DoxyParamCaption}
+)}}\label{pelf_8h_afe18a099c298f22889f4259a74bcf2e4}
+
+
+Definition at line 126 of file elf.\-c.
+
+\hypertarget{pelf_8h_a17803f4c94d2ec424f1178201c91f580}{\index{pelf.\-h@{pelf.\-h}!elf\-\_\-get\-\_\-machine\-\_\-ehsize@{elf\-\_\-get\-\_\-machine\-\_\-ehsize}}
+\index{elf\-\_\-get\-\_\-machine\-\_\-ehsize@{elf\-\_\-get\-\_\-machine\-\_\-ehsize}!pelf.h@{pelf.\-h}}
+\subsubsection[{elf\-\_\-get\-\_\-machine\-\_\-ehsize}]{\setlength{\rightskip}{0pt plus 5cm}int elf\-\_\-get\-\_\-machine\-\_\-ehsize (
+\begin{DoxyParamCaption}
+\item[{unsigned int}]{machine}
+\end{DoxyParamCaption}
+)}}\label{pelf_8h_a17803f4c94d2ec424f1178201c91f580}
+
+
+Definition at line 140 of file elf.\-c.
+
+\hypertarget{pelf_8h_a7ef1e50c523c312c345db5095c69bdbe}{\index{pelf.\-h@{pelf.\-h}!elf\-\_\-get\-\_\-machine\-\_\-endianness@{elf\-\_\-get\-\_\-machine\-\_\-endianness}}
+\index{elf\-\_\-get\-\_\-machine\-\_\-endianness@{elf\-\_\-get\-\_\-machine\-\_\-endianness}!pelf.h@{pelf.\-h}}
+\subsubsection[{elf\-\_\-get\-\_\-machine\-\_\-endianness}]{\setlength{\rightskip}{0pt plus 5cm}int elf\-\_\-get\-\_\-machine\-\_\-endianness (
+\begin{DoxyParamCaption}
+\item[{unsigned int}]{machine}
+\end{DoxyParamCaption}
+)}}\label{pelf_8h_a7ef1e50c523c312c345db5095c69bdbe}
+
+
+Definition at line 133 of file elf.\-c.
+
+\hypertarget{pelf_8h_a277dac9e069d92d850f0df4a40609867}{\index{pelf.\-h@{pelf.\-h}!elf\-\_\-get\-\_\-machine\-\_\-phentsize@{elf\-\_\-get\-\_\-machine\-\_\-phentsize}}
+\index{elf\-\_\-get\-\_\-machine\-\_\-phentsize@{elf\-\_\-get\-\_\-machine\-\_\-phentsize}!pelf.h@{pelf.\-h}}
+\subsubsection[{elf\-\_\-get\-\_\-machine\-\_\-phentsize}]{\setlength{\rightskip}{0pt plus 5cm}int elf\-\_\-get\-\_\-machine\-\_\-phentsize (
+\begin{DoxyParamCaption}
+\item[{unsigned int}]{machine}
+\end{DoxyParamCaption}
+)}}\label{pelf_8h_a277dac9e069d92d850f0df4a40609867}
+
+
+Definition at line 150 of file elf.\-c.
+
+\hypertarget{pelf_8h_a67a1ace836015c92bfd7aab1150c33d3}{\index{pelf.\-h@{pelf.\-h}!elf\-\_\-get\-\_\-machine\-\_\-shentsize@{elf\-\_\-get\-\_\-machine\-\_\-shentsize}}
+\index{elf\-\_\-get\-\_\-machine\-\_\-shentsize@{elf\-\_\-get\-\_\-machine\-\_\-shentsize}!pelf.h@{pelf.\-h}}
+\subsubsection[{elf\-\_\-get\-\_\-machine\-\_\-shentsize}]{\setlength{\rightskip}{0pt plus 5cm}int elf\-\_\-get\-\_\-machine\-\_\-shentsize (
+\begin{DoxyParamCaption}
+\item[{unsigned int}]{machine}
+\end{DoxyParamCaption}
+)}}\label{pelf_8h_a67a1ace836015c92bfd7aab1150c33d3}
+
+
+Definition at line 160 of file elf.\-c.
+
+\hypertarget{pelf_8h_ae476c48c0a880be6e4965bc9b79429c9}{\index{pelf.\-h@{pelf.\-h}!elf\-\_\-get\-\_\-string\-\_\-index@{elf\-\_\-get\-\_\-string\-\_\-index}}
+\index{elf\-\_\-get\-\_\-string\-\_\-index@{elf\-\_\-get\-\_\-string\-\_\-index}!pelf.h@{pelf.\-h}}
+\subsubsection[{elf\-\_\-get\-\_\-string\-\_\-index}]{\setlength{\rightskip}{0pt plus 5cm}int elf\-\_\-get\-\_\-string\-\_\-index (
+\begin{DoxyParamCaption}
+\item[{unsigned char $\ast$}]{start, }
+\item[{size\-\_\-t}]{size, }
+\item[{char $\ast$}]{name}
+\end{DoxyParamCaption}
+)}}\label{pelf_8h_ae476c48c0a880be6e4965bc9b79429c9}
+
+
+Definition at line 36 of file elf.\-c.
+
+\hypertarget{pelf_8h_a3d2969130f089d32572971beea58f67c}{\index{pelf.\-h@{pelf.\-h}!elf\-\_\-get\-\_\-string\-\_\-offset@{elf\-\_\-get\-\_\-string\-\_\-offset}}
+\index{elf\-\_\-get\-\_\-string\-\_\-offset@{elf\-\_\-get\-\_\-string\-\_\-offset}!pelf.h@{pelf.\-h}}
+\subsubsection[{elf\-\_\-get\-\_\-string\-\_\-offset}]{\setlength{\rightskip}{0pt plus 5cm}int elf\-\_\-get\-\_\-string\-\_\-offset (
+\begin{DoxyParamCaption}
+\item[{unsigned char $\ast$}]{start, }
+\item[{size\-\_\-t}]{size, }
+\item[{char $\ast$}]{name}
+\end{DoxyParamCaption}
+)}}\label{pelf_8h_a3d2969130f089d32572971beea58f67c}
+
+
+Definition at line 17 of file elf.\-c.
+
+\hypertarget{pelf_8h_a38bbccb662caacfe07fb3b2710ad7933}{\index{pelf.\-h@{pelf.\-h}!elf\-\_\-next\-\_\-string@{elf\-\_\-next\-\_\-string}}
+\index{elf\-\_\-next\-\_\-string@{elf\-\_\-next\-\_\-string}!pelf.h@{pelf.\-h}}
+\subsubsection[{elf\-\_\-next\-\_\-string}]{\setlength{\rightskip}{0pt plus 5cm}char$\ast$ elf\-\_\-next\-\_\-string (
+\begin{DoxyParamCaption}
+\item[{unsigned char $\ast$}]{table, }
+\item[{size\-\_\-t}]{length, }
+\item[{char $\ast$$\ast$}]{str}
+\end{DoxyParamCaption}
+)}}\label{pelf_8h_a38bbccb662caacfe07fb3b2710ad7933}
+
+
+Definition at line 57 of file elf.\-c.
+
+\hypertarget{pelf_8h_a7c9c338d2909022351d5828006fad12f}{\index{pelf.\-h@{pelf.\-h}!elf\-\_\-print\-\_\-ehdr@{elf\-\_\-print\-\_\-ehdr}}
+\index{elf\-\_\-print\-\_\-ehdr@{elf\-\_\-print\-\_\-ehdr}!pelf.h@{pelf.\-h}}
+\subsubsection[{elf\-\_\-print\-\_\-ehdr}]{\setlength{\rightskip}{0pt plus 5cm}void elf\-\_\-print\-\_\-ehdr (
+\begin{DoxyParamCaption}
+\item[{{\bf Elf\-\_\-\-Ehdr}}]{ehdr}
+\end{DoxyParamCaption}
+)}}\label{pelf_8h_a7c9c338d2909022351d5828006fad12f}
+
+
+Definition at line 49 of file print.\-c.
+
+\hypertarget{pelf_8h_a414c018260462c60a6024686fd4e3d7c}{\index{pelf.\-h@{pelf.\-h}!elf\-\_\-print\-\_\-rel\-\_\-table@{elf\-\_\-print\-\_\-rel\-\_\-table}}
+\index{elf\-\_\-print\-\_\-rel\-\_\-table@{elf\-\_\-print\-\_\-rel\-\_\-table}!pelf.h@{pelf.\-h}}
+\subsubsection[{elf\-\_\-print\-\_\-rel\-\_\-table}]{\setlength{\rightskip}{0pt plus 5cm}void elf\-\_\-print\-\_\-rel\-\_\-table (
+\begin{DoxyParamCaption}
+\item[{char $\ast$}]{name, }
+\item[{{\bf Elf\-\_\-\-Ehdr}}]{ehdr, }
+\item[{unsigned char $\ast$}]{table, }
+\item[{size\-\_\-t}]{length, }
+\item[{unsigned char $\ast$}]{strtab, }
+\item[{unsigned char $\ast$}]{shstrtab, }
+\item[{unsigned char $\ast$}]{shtab, }
+\item[{unsigned char $\ast$}]{symtab}
+\end{DoxyParamCaption}
+)}}\label{pelf_8h_a414c018260462c60a6024686fd4e3d7c}
+
+
+Definition at line 244 of file print.\-c.
+
+\hypertarget{pelf_8h_a9599e9edf66dcdbc9c76b9643954f6c2}{\index{pelf.\-h@{pelf.\-h}!elf\-\_\-print\-\_\-shdr@{elf\-\_\-print\-\_\-shdr}}
+\index{elf\-\_\-print\-\_\-shdr@{elf\-\_\-print\-\_\-shdr}!pelf.h@{pelf.\-h}}
+\subsubsection[{elf\-\_\-print\-\_\-shdr}]{\setlength{\rightskip}{0pt plus 5cm}void elf\-\_\-print\-\_\-shdr (
+\begin{DoxyParamCaption}
+\item[{{\bf Elf\-\_\-\-Shdr}}]{shdr, }
+\item[{{\bf Elf\-\_\-\-Ehdr}}]{ehdr, }
+\item[{unsigned char $\ast$}]{shstrtab}
+\end{DoxyParamCaption}
+)}}\label{pelf_8h_a9599e9edf66dcdbc9c76b9643954f6c2}
+
+
+Definition at line 142 of file print.\-c.
+
+\hypertarget{pelf_8h_a71aea3d39ebf65c873e3ef766b315311}{\index{pelf.\-h@{pelf.\-h}!elf\-\_\-print\-\_\-shtab@{elf\-\_\-print\-\_\-shtab}}
+\index{elf\-\_\-print\-\_\-shtab@{elf\-\_\-print\-\_\-shtab}!pelf.h@{pelf.\-h}}
+\subsubsection[{elf\-\_\-print\-\_\-shtab}]{\setlength{\rightskip}{0pt plus 5cm}void elf\-\_\-print\-\_\-shtab (
+\begin{DoxyParamCaption}
+\item[{unsigned char $\ast$}]{shtab, }
+\item[{{\bf Elf\-\_\-\-Ehdr}}]{ehdr, }
+\item[{size\-\_\-t}]{offset, }
+\item[{unsigned char $\ast$}]{shstrtab}
+\end{DoxyParamCaption}
+)}}\label{pelf_8h_a71aea3d39ebf65c873e3ef766b315311}
+
+
+Definition at line 190 of file print.\-c.
+
+\hypertarget{pelf_8h_ab2275b0708c66ea8bba111178064b961}{\index{pelf.\-h@{pelf.\-h}!elf\-\_\-print\-\_\-string\-\_\-table@{elf\-\_\-print\-\_\-string\-\_\-table}}
+\index{elf\-\_\-print\-\_\-string\-\_\-table@{elf\-\_\-print\-\_\-string\-\_\-table}!pelf.h@{pelf.\-h}}
+\subsubsection[{elf\-\_\-print\-\_\-string\-\_\-table}]{\setlength{\rightskip}{0pt plus 5cm}void elf\-\_\-print\-\_\-string\-\_\-table (
+\begin{DoxyParamCaption}
+\item[{unsigned char $\ast$}]{table, }
+\item[{size\-\_\-t}]{length}
+\end{DoxyParamCaption}
+)}}\label{pelf_8h_ab2275b0708c66ea8bba111178064b961}
+
+
+Definition at line 26 of file print.\-c.
+
+\hypertarget{pelf_8h_a7898f34207b104122ab6514c6e53f526}{\index{pelf.\-h@{pelf.\-h}!elf\-\_\-print\-\_\-sym@{elf\-\_\-print\-\_\-sym}}
+\index{elf\-\_\-print\-\_\-sym@{elf\-\_\-print\-\_\-sym}!pelf.h@{pelf.\-h}}
+\subsubsection[{elf\-\_\-print\-\_\-sym}]{\setlength{\rightskip}{0pt plus 5cm}void elf\-\_\-print\-\_\-sym (
+\begin{DoxyParamCaption}
+\item[{{\bf Elf\-\_\-\-Sym}}]{sym, }
+\item[{{\bf Elf\-\_\-\-Ehdr}}]{ehdr, }
+\item[{unsigned char $\ast$}]{strtab, }
+\item[{unsigned char $\ast$}]{shstrtab, }
+\item[{unsigned char $\ast$}]{shtab}
+\end{DoxyParamCaption}
+)}}\label{pelf_8h_a7898f34207b104122ab6514c6e53f526}
+
+
+Definition at line 267 of file print.\-c.
+
+\hypertarget{pelf_8h_a1bd179681d5ed4269b4ed5972d6a60a4}{\index{pelf.\-h@{pelf.\-h}!elf\-\_\-print\-\_\-symbol\-\_\-table@{elf\-\_\-print\-\_\-symbol\-\_\-table}}
+\index{elf\-\_\-print\-\_\-symbol\-\_\-table@{elf\-\_\-print\-\_\-symbol\-\_\-table}!pelf.h@{pelf.\-h}}
+\subsubsection[{elf\-\_\-print\-\_\-symbol\-\_\-table}]{\setlength{\rightskip}{0pt plus 5cm}void elf\-\_\-print\-\_\-symbol\-\_\-table (
+\begin{DoxyParamCaption}
+\item[{{\bf Elf\-\_\-\-Ehdr}}]{ehdr, }
+\item[{unsigned char $\ast$}]{table, }
+\item[{size\-\_\-t}]{length, }
+\item[{unsigned char $\ast$}]{strtab, }
+\item[{unsigned char $\ast$}]{shstrtab, }
+\item[{unsigned char $\ast$}]{shtab}
+\end{DoxyParamCaption}
+)}}\label{pelf_8h_a1bd179681d5ed4269b4ed5972d6a60a4}
+
+
+Definition at line 393 of file print.\-c.
+
+\hypertarget{pelf_8h_a3c005bd10f6c4d798ed890a215f8f11c}{\index{pelf.\-h@{pelf.\-h}!elf\-\_\-read\-\_\-ehdr@{elf\-\_\-read\-\_\-ehdr}}
+\index{elf\-\_\-read\-\_\-ehdr@{elf\-\_\-read\-\_\-ehdr}!pelf.h@{pelf.\-h}}
+\subsubsection[{elf\-\_\-read\-\_\-ehdr}]{\setlength{\rightskip}{0pt plus 5cm}int elf\-\_\-read\-\_\-ehdr (
+\begin{DoxyParamCaption}
+\item[{F\-I\-L\-E $\ast$}]{fp, }
+\item[{{\bf Elf\-\_\-\-Ehdr} $\ast$}]{ehdr}
+\end{DoxyParamCaption}
+)}}\label{pelf_8h_a3c005bd10f6c4d798ed890a215f8f11c}
+
+
+Definition at line 17 of file read.\-c.
+
+\hypertarget{pelf_8h_ac87de1f80eadeda8a4c75f2fcca0613c}{\index{pelf.\-h@{pelf.\-h}!elf\-\_\-read\-\_\-section\-\_\-by\-\_\-name@{elf\-\_\-read\-\_\-section\-\_\-by\-\_\-name}}
+\index{elf\-\_\-read\-\_\-section\-\_\-by\-\_\-name@{elf\-\_\-read\-\_\-section\-\_\-by\-\_\-name}!pelf.h@{pelf.\-h}}
+\subsubsection[{elf\-\_\-read\-\_\-section\-\_\-by\-\_\-name}]{\setlength{\rightskip}{0pt plus 5cm}unsigned char$\ast$ elf\-\_\-read\-\_\-section\-\_\-by\-\_\-name (
+\begin{DoxyParamCaption}
+\item[{F\-I\-L\-E $\ast$}]{fp, }
+\item[{{\bf Elf\-\_\-\-Ehdr}}]{ehdr, }
+\item[{unsigned char $\ast$}]{shstrtab, }
+\item[{unsigned char $\ast$}]{shtab, }
+\item[{size\-\_\-t $\ast$}]{scnsz, }
+\item[{char $\ast$}]{scname}
+\end{DoxyParamCaption}
+)}}\label{pelf_8h_ac87de1f80eadeda8a4c75f2fcca0613c}
+
+
+Definition at line 80 of file read.\-c.
+
+\hypertarget{pelf_8h_a0b5f5f658ab8575cbb91b130993927e7}{\index{pelf.\-h@{pelf.\-h}!elf\-\_\-read\-\_\-shstrtab@{elf\-\_\-read\-\_\-shstrtab}}
+\index{elf\-\_\-read\-\_\-shstrtab@{elf\-\_\-read\-\_\-shstrtab}!pelf.h@{pelf.\-h}}
+\subsubsection[{elf\-\_\-read\-\_\-shstrtab}]{\setlength{\rightskip}{0pt plus 5cm}unsigned char$\ast$ elf\-\_\-read\-\_\-shstrtab (
+\begin{DoxyParamCaption}
+\item[{F\-I\-L\-E $\ast$}]{fp, }
+\item[{{\bf Elf\-\_\-\-Ehdr}}]{ehdr, }
+\item[{unsigned char $\ast$}]{shtab, }
+\item[{size\-\_\-t $\ast$}]{shstrtabsz}
+\end{DoxyParamCaption}
+)}}\label{pelf_8h_a0b5f5f658ab8575cbb91b130993927e7}
+
+
+Definition at line 239 of file read.\-c.
+
+\hypertarget{pelf_8h_adb38ed7681ea6bead9fe167b51f6392c}{\index{pelf.\-h@{pelf.\-h}!elf\-\_\-read\-\_\-shtab@{elf\-\_\-read\-\_\-shtab}}
+\index{elf\-\_\-read\-\_\-shtab@{elf\-\_\-read\-\_\-shtab}!pelf.h@{pelf.\-h}}
+\subsubsection[{elf\-\_\-read\-\_\-shtab}]{\setlength{\rightskip}{0pt plus 5cm}unsigned char$\ast$ elf\-\_\-read\-\_\-shtab (
+\begin{DoxyParamCaption}
+\item[{F\-I\-L\-E $\ast$}]{fp, }
+\item[{{\bf Elf\-\_\-\-Ehdr}}]{ehdr, }
+\item[{size\-\_\-t $\ast$}]{shtabsz}
+\end{DoxyParamCaption}
+)}}\label{pelf_8h_adb38ed7681ea6bead9fe167b51f6392c}
+
+
+Definition at line 206 of file read.\-c.
+
+\hypertarget{pelf_8h_ab81fe3a2b430eb1be14b633c6299fb46}{\index{pelf.\-h@{pelf.\-h}!elf\-\_\-read\-\_\-strtab@{elf\-\_\-read\-\_\-strtab}}
+\index{elf\-\_\-read\-\_\-strtab@{elf\-\_\-read\-\_\-strtab}!pelf.h@{pelf.\-h}}
+\subsubsection[{elf\-\_\-read\-\_\-strtab}]{\setlength{\rightskip}{0pt plus 5cm}unsigned char$\ast$ elf\-\_\-read\-\_\-strtab (
+\begin{DoxyParamCaption}
+\item[{F\-I\-L\-E $\ast$}]{fp, }
+\item[{{\bf Elf\-\_\-\-Ehdr}}]{ehdr, }
+\item[{unsigned char $\ast$}]{shtab, }
+\item[{size\-\_\-t $\ast$}]{strtabsz}
+\end{DoxyParamCaption}
+)}}\label{pelf_8h_ab81fe3a2b430eb1be14b633c6299fb46}
+
+
+Definition at line 263 of file read.\-c.
+
+\hypertarget{pelf_8h_ae9e62eb8370e1c840deb71d3de900551}{\index{pelf.\-h@{pelf.\-h}!elf\-\_\-read\-\_\-symtab@{elf\-\_\-read\-\_\-symtab}}
+\index{elf\-\_\-read\-\_\-symtab@{elf\-\_\-read\-\_\-symtab}!pelf.h@{pelf.\-h}}
+\subsubsection[{elf\-\_\-read\-\_\-symtab}]{\setlength{\rightskip}{0pt plus 5cm}unsigned char$\ast$ elf\-\_\-read\-\_\-symtab (
+\begin{DoxyParamCaption}
+\item[{F\-I\-L\-E $\ast$}]{fp, }
+\item[{{\bf Elf\-\_\-\-Ehdr}}]{ehdr, }
+\item[{unsigned char $\ast$}]{shtab, }
+\item[{size\-\_\-t $\ast$}]{symtabsz}
+\end{DoxyParamCaption}
+)}}\label{pelf_8h_ae9e62eb8370e1c840deb71d3de900551}
+
+
+Definition at line 36 of file read.\-c.
+
+\hypertarget{pelf_8h_ac9c1b9f210c22e0573a310837fb4f890}{\index{pelf.\-h@{pelf.\-h}!elf\-\_\-reloc\-\_\-num@{elf\-\_\-reloc\-\_\-num}}
+\index{elf\-\_\-reloc\-\_\-num@{elf\-\_\-reloc\-\_\-num}!pelf.h@{pelf.\-h}}
+\subsubsection[{elf\-\_\-reloc\-\_\-num}]{\setlength{\rightskip}{0pt plus 5cm}int elf\-\_\-reloc\-\_\-num (
+\begin{DoxyParamCaption}
+\item[{unsigned int}]{machine, }
+\item[{char $\ast$}]{rname}
+\end{DoxyParamCaption}
+)}}\label{pelf_8h_ac9c1b9f210c22e0573a310837fb4f890}
+
+
+Definition at line 170 of file elf.\-c.
+
+\hypertarget{pelf_8h_a0a207245ac0a666f026124302608aebc}{\index{pelf.\-h@{pelf.\-h}!elf\-\_\-write\-\_\-relocatable@{elf\-\_\-write\-\_\-relocatable}}
+\index{elf\-\_\-write\-\_\-relocatable@{elf\-\_\-write\-\_\-relocatable}!pelf.h@{pelf.\-h}}
+\subsubsection[{elf\-\_\-write\-\_\-relocatable}]{\setlength{\rightskip}{0pt plus 5cm}int elf\-\_\-write\-\_\-relocatable (
+\begin{DoxyParamCaption}
+\item[{char $\ast$}]{filename, }
+\item[{char $\ast$}]{machine, }
+\item[{int}]{noreorder, }
+\item[{unsigned char $\ast$}]{text, }
+\item[{unsigned int}]{textsz, }
+\item[{unsigned char $\ast$}]{data, }
+\item[{unsigned int}]{datasz, }
+\item[{unsigned char $\ast$}]{bss, }
+\item[{unsigned int}]{bsssz, }
+\item[{unsigned char $\ast$}]{shstrtab, }
+\item[{unsigned int}]{shstrtabsz, }
+\item[{unsigned char $\ast$}]{strtab, }
+\item[{unsigned int}]{strtabsz, }
+\item[{unsigned char $\ast$}]{symtab, }
+\item[{unsigned int}]{symtabsz, }
+\item[{unsigned char $\ast$}]{reltext, }
+\item[{unsigned int}]{reltextsz, }
+\item[{unsigned char $\ast$}]{reldata, }
+\item[{unsigned int}]{reldatasz}
+\end{DoxyParamCaption}
+)}}\label{pelf_8h_a0a207245ac0a666f026124302608aebc}
+
+
+Definition at line 392 of file write.\-c.
+
