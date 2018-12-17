@@ -154,7 +154,7 @@ section make_text_section(File *p_file_Text, long* p_taille_text){
 
 section make_data_section(File *p_file_Data, long* p_taille_data){
 	section        data = new_section( ".data", SECTION_CHUNK_SZ );
-    int cmpt_octet;
+    int cmpt_octet = 0;
     int i = 0; int n, cmpt_inter,j ;
     int taille_data_prog = (int)((*p_taille_data)/4);
 	int data_prog[taille_data_prog]; /*EN OCTETS*/
@@ -214,7 +214,8 @@ section make_data_section(File *p_file_Data, long* p_taille_data){
                     /*On trouve .word n, on ecrit n sur un int (4 octets) swappes*/
                     while(data_courant->l_operande != NULL){
                         n = ((OPERANDE)((data_courant->l_operande)->val))->bin;
-                        if(!(cmpt_octet%4)){
+                        
+                        if(cmpt_octet%4!=0 && cmpt_octet != 0){
                             i++; cmpt_octet += 4 - i%4;
                         }
                         data_prog[i] = n;

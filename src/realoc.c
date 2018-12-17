@@ -23,12 +23,12 @@ void ajout_maillon_realoc(OPERANDE* p_op, File* p_file_realoc, type_realoc type,
 }
 
 /**Parcous la file de realoc a la fin de la passe grammaticale pour mettre la zone de DEFINITION du symbole*/
-void zone_def_symb_realoc(File* p_file_realoc, File* p_file_Symb, long* p_taille_symb){
+void zone_def_symb_realoc(File* p_file_realoc, File* p_file_Symb, long* p_taille_symb, File file_Dic){
 	File pointeur_realoc = (*p_file_realoc)->suiv;
 
 	do/*On parcours toute la file de realoc*/
 	{
-		remplace_realoc(p_file_Symb, (REALOC)(pointeur_realoc->val), p_taille_symb);		 
+		remplace_realoc(p_file_Symb, (REALOC)(pointeur_realoc->val), p_taille_symb, file_Dic);		 
 		pointeur_realoc = pointeur_realoc->suiv;
 	} while (pointeur_realoc!=(*p_file_realoc)->suiv);
 }
@@ -50,14 +50,21 @@ void reallocation_offset(File* p_file_realoc_offset, File* p_file_Symb, long* p_
 	}
 }
 
-int remplace_realoc(File* p_file_Symb, REALOC maillon_realoc, long* p_taille_symb){
+int remplace_realoc(File* p_file_Symb, REALOC maillon_realoc, long* p_taille_symb, File file_Dic){
 	File pointeur_symb = (*p_file_Symb)->suiv;
 	char* chaine_op = calloc(1, sizeof(*chaine_op)); strcpy(chaine_op, (*(maillon_realoc->p_op))->chain);
+	long inutile;
 
 	do/*On parcours toute la file de realoc*/
 	{
 		if(!strcmp(chaine_op, ((SYMB)(pointeur_symb->val))->nom )){
 			maillon_realoc->zone_def = ((SYMB)(pointeur_symb->val))->zone;
+
+			if(maillon_realoc->type == R_MIPS_26){
+				(*(maillon_realoc->p_op))->bin = ((SYMB)(pointeur_symb->val))->decalage;
+				(*(maillon_realoc->p_op))->type = OPER_DECIMAL;
+				is_in_dic(file_Dic, &(maillon_realoc->file_text), NULL, NULL, &inutile, &inutile, (int*)(&inutile) );
+			}
 			return(1);
 		}				 
 		pointeur_symb = pointeur_symb->suiv;
@@ -98,7 +105,7 @@ int remplace_realoc_offset(File* p_file_Symb, OPERANDE* p_op, long* p_taille_sym
 				if ((*p_op)->bin % 4 == 0){
 					(*p_op)->bin /= 4;
 				}
-				else ERROR_MSG("Valeur de suat non multiple de 4");
+				else ERROR_MSG("Valeur de saut non multiple de 4");
 
 				free(chaine_op);
 				return(1);

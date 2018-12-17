@@ -71,7 +71,7 @@ void automate_grammatical(File* p_file_Lexeme, 		File* p_file_Text, 		File* p_fi
 
 	free(lexeme_courant);
 	reallocation_offset(&file_realoc_offset, p_file_Symb, p_taille_symb, file_Dic);
-	zone_def_symb_realoc(p_file_realoc, p_file_Symb, p_taille_symb);
+	zone_def_symb_realoc(p_file_realoc, p_file_Symb, p_taille_symb, file_Dic);
 	(*p_taille_data)=(offset_data); /*TAille de data EN OCTET*/
 }
 
@@ -775,7 +775,7 @@ int is_in_dic(File file_Dic, File* p_file_Text_maillon_courant, File* p_file_rea
 							if (type_op_courrante == OPER_SYMBOLE){
 								if((*p_maillon)->line_nb >= 0){
 									(*p_taille_realoc)++;
-									ajout_maillon_realoc((OPERANDE*)&(l_operande->val), p_file_realoc, R_MIPS_26, ZONE_TEXT, (*p_maillon)->decalage, NULL);
+									ajout_maillon_realoc((OPERANDE*)&(l_operande->val), p_file_realoc, R_MIPS_26, ZONE_TEXT, (*p_maillon)->decalage, *p_file_Text_maillon_courant);
 								}
 							}
 							else if (type_op_courrante != OPER_DECIMAL && type_op_courrante != OPER_HEXA && type_op_courrante != OPER_REG){
@@ -783,7 +783,9 @@ int is_in_dic(File file_Dic, File* p_file_Text_maillon_courant, File* p_file_rea
 								WARNING_MSG("Erreur ligne %.0lf, l'opperande no %d de \"%s\" doit etre un offset\n", (*p_maillon)->line_nb, i, (*p_maillon)->operateur);
 								(*p_cmpt_err)++;
 							}
-
+							else{
+								((OPERANDE)(l_operande->val))->bin /= 4;
+							}
 							break;
 
 						case 'I':

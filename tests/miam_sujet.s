@@ -2,6 +2,7 @@
 .set noreorder
 .text
     ADD $t1, $t2, $t3
+code:
     Lw $t1 , lunchtime
     LW $zero, -200($k0)
     ADDI $t1,$t6, 0x2658
@@ -14,15 +15,15 @@ boucle: BEQ $t0 , $t1 , byebye
     #BNE $5, $10, toto
     #NOP
 byebye:
-    #JAL viteviteauru
+    JAL code
     JAL 0x14
 
 .data
 lunchtime: .word 12
-    .word menu
+    .word menu #0
     .space 13
 lunchtime_bis:
-    .word test
+    .word test #unkw
     .asciiz "ils disent : \"au ru!\""
     .byte 6, 8
     .word 2
